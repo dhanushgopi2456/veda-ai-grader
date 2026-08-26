@@ -11,9 +11,16 @@ const DEFAULT_MODELS: Record<"openrouter" | "gemini", string> = {
   gemini: "gemini-2.5-flash",
 };
 
-export function resolveModel(bodyModel: string | null, apiKey: string): string {
+export function resolveModel(
+  bodyModel: string | null,
+  apiKey: string
+): string {
   const model = (bodyModel || "").trim();
-  if (model) return model;
+
+  if (model) {
+    return model;
+  }
+
   return DEFAULT_MODELS[detectProvider(apiKey)];
 }
 
@@ -24,12 +31,14 @@ export function resolveApiKey(bodyKey: string | null): string {
     process.env.OPENROUTER_API_KEY ||
     ""
   ).trim();
+
   if (!key) {
     throw new ApiError(
       "No AI API key found. Add your Gemini or OpenRouter key in Settings (top-right) to run the evaluation.",
       400
     );
   }
+
   return key;
 }
 
@@ -37,28 +46,61 @@ export async function filesToMediaParts(
   files: File[]
 ): Promise<MediaPart[]> {
   const parts: MediaPart[] = [];
+
   for (const file of files) {
+    // Only image pages are accepted here.
+    // PDFs should be converted to image pages before reaching this function.
     if (!SUPPORTED_IMAGE_TYPES.has(file.type)) {
       throw new ApiError(
         `Unsupported file type: ${file.name}. Upload PDF or image files.`,
         400
       );
     }
+
     const buffer = Buffer.from(await file.arrayBuffer());
+
+    if (buffer.length === 0) {
+      throw new ApiError(
+        `The uploaded file "${file.name}" is empty or could not be read.`,
+        400
+      );
+    }
+
     parts.push({
-      inlineData: { mimeType: "image/jpeg", data: buffer.toString("base64") },
+      inlineData: {
+        // IMPORTANT:
+        // Preserve the real MIME type instead of always using image/jpeg.
+        mimeType: file.type,
+        data: buffer.toString("base64"),
+      },
     });
   }
+
   if (parts.length === 0) {
-    throw new ApiError("No pages received. Please upload your files again.", 400);
+    throw new ApiError(
+      "No pages received. Please upload your files again.",
+      400
+    );
   }
+
   return parts;
 }
 
 export function jsonError(err: unknown): Response {
   if (err instanceof ApiError) {
-    return Response.json({ error: err.message }, { status: err.status });
+    return Response.json(
+      { error: err.message },
+      { status: err.status }
+    );
   }
-  const msg = err instanceof Error ? err.message : "Unexpected server error";
-  return Response.json({ error: msg.slice(0, 300) }, { status: 500 });
+
+  const msg =
+    err instanceof Error
+      ? err.message
+      : "Unexpected server error";
+
+  return Response.json(
+    { error: msg.slice(0, 300) },
+    { status: 500 }
+  );
 }
