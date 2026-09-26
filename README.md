@@ -1,301 +1,864 @@
-# VedaAI — AI Answer Sheet Evaluation
+# 🧠 VedaAI — AI Answer Sheet Evaluation
 
-Upload a **question paper** and a **student's handwritten answer sheet** (PDF or images).
-VedaAI extracts every question, locates each handwritten answer on the sheet, maps answers to
-questions, and grades the paper with AI feedback — with the exact answer region highlighted.
+<p align="center">
+  <strong>AI-powered evaluation of handwritten exam answer sheets</strong>
+</p>
 
-Built for the VedaAI Hiring Assignment.
+<p align="center">
+  Upload a question paper + handwritten answer sheet → extract → map → grade → visually verify
+</p>
 
-## Features
+<p align="center">
+  <img src="https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js" alt="Next.js" />
+  <img src="https://img.shields.io/badge/TypeScript-5.x-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS" />
+  <img src="https://img.shields.io/badge/Vision_AI-Gemini%20%2F%20OpenRouter-8E75B2?style=for-the-badge" alt="Vision AI" />
+  <img src="https://img.shields.io/badge/pdf.js-PDF%20Rasterization-red?style=for-the-badge" alt="pdf.js" />
+</p>
 
-- **Upload both files** (PDF/JPG/PNG/WEBP, multiple files supported) with staged processing progress
-- **Question extraction** preserving original numbering and printed order
-  - Labelled sub-parts become separate entries (`11 (a)` and `11 (b)` → two questions)
-  - Internal choices ("OR ...") captured as alternative text
-  - Marks detected from notation like `[2]`, `(5 marks)`, `3M`
-- **Answer extraction** with tight bounding boxes per page (0–1000 normalized coords)
-  - Multi-page answers span multiple regions
-  - Handwriting transcription included for grading and review
-- **Answer mapping** by label matching (handles `Q11.`, `Ans 4`, `11 a)`, roman numerals, …)
-  - Out-of-order answers handled (mapping is label-based, not positional)
-  - Unanswered questions flagged
-  - Answers that match no question listed separately
-  - Uncertain matches flagged with a "Check" badge
-  - Manual re-mapping dropdowns (teacher can link/unlink any answer) with automatic regrading
-- **Grading & feedback** — per-question verdict (correct / partial / incorrect / unanswered),
-  marks awarded, constructive feedback, plus overall score, grade letter, summary, strengths and
-  improvements
-- **Side-by-side results view** — question cards with AI feedback on the left, the answer sheet on
-  the right with color-coded highlight boxes; clicking a question auto-scrolls to and pulses the
-  exact answer region (and vice versa)
-- **History** of evaluations in the current session (in-memory only)
-- **Sample papers** built in ("Try it with sample papers") for instant demo
+<p align="center">
+  <a href="#-features">Features</a> •
+  <a href="#-how-it-works">How It Works</a> •
+  <a href="#-architecture">Architecture</a> •
+  <a href="#-technical-approach">Technical Approach</a> •
+  <a href="#-setup">Setup</a>
+</p>
 
-## How it works
+---
 
-```
-Upload → client-side rasterization (PDF pages → JPEG, size-budgeted)
-       → /api/extract-questions  (vision LLM, JSON-schema constrained)
-       → /api/extract-answers    (vision LLM, bounding boxes + transcription)
-       → label matching (server-of-truth: pure functions in lib/labels.ts)
-       → /api/grade              (LLM per-question verdicts + overall summary)
-       → results UI (highlights, remapping, insights)
-```
+## ✨ What is VedaAI?
 
-PDFs and images are rasterized **in the browser** (pdf.js), so the server never handles PDFs,
-page numbering is deterministic, and highlight boxes align exactly with what you see.
+**VedaAI** is an AI-powered handwritten answer-sheet evaluation system built to evaluate real exam papers rather than relying only on plain text input.
 
-## AI providers
+A teacher can upload:
 
-Works with either key (auto-detected, entered in Settings, stored in `localStorage`):
+* 📄 A **question paper**
+* ✍️ A **student's handwritten answer sheet**
 
-- **OpenRouter** key (`sk-or-…`) — free models such as `dots-3-note`, MiniMax M3, Gemma 4
-- **Google Gemini** key (`AIza…`) from AI Studio — `gemini-2.5-flash` / `gemini-2.5-pro`
+VedaAI then:
 
-You can also provide a key server-side via env var (`OPENROUTER_API_KEY` or `GEMINI_API_KEY`).
-
-## Running locally in VS Code
-
-### 1. Prerequisites
-
-- **Node.js 20 or newer** — check with `node -v` (download from https://nodejs.org if missing)
-- **Visual Studio Code** — https://code.visualstudio.com
-- **An AI API key** (free):
-  - OpenRouter: https://openrouter.ai/keys → create key (starts with `sk-or-…`), or
-  - Google AI Studio: https://aistudio.google.com/apikey → create key (starts with `AIza…`)
-
-Recommended VS Code extensions (optional): **ESLint**, **Prettier**, **Tailwind CSS IntelliSense**.
-
-### 2. Open the project
-
-1. Open VS Code → **File ▸ Open Folder…** → select the `veda-ai-grader` folder
-2. Open the integrated terminal: **Terminal ▸ New Terminal** (or `` Ctrl+` ``)
-
-### 3. Install & run
-
-```bash
-npm install
-npm run dev
+```text
+Extract Questions
+       ↓
+Detect Handwritten Answers
+       ↓
+Map Answers → Questions
+       ↓
+Evaluate Each Answer
+       ↓
+Generate Marks + Feedback
+       ↓
+Highlight Exact Answer Regions
 ```
 
-Then open **http://localhost:3000** in your browser (Ctrl+Click the link printed in the terminal).
+The key idea is simple:
 
-### 4. Add your API key (one time, per browser)
+> **AI performs the difficult vision and grading tasks, while deterministic application logic handles mapping, coordinates, and verification.**
 
-1. Click **Settings** in the left sidebar (or the gear icon, top right)
-2. Paste your OpenRouter or Gemini key → click **Test** → you should see "Key works"
-3. Pick a model (free models are marked) → **Save**
+This makes the evaluation pipeline easier to understand, debug, and verify.
 
-The key is stored only in your browser's `localStorage` — nothing is sent anywhere except the
-AI provider you chose.
+---
 
-### 5. Try it
+## 🎯 Core Experience
 
-- Click **Try it with sample papers** to run the full flow on bundled sample files, or
-- Upload your own question paper + answer sheet (PDF, JPG, PNG) and press **Get Feedback**
+<table>
+<tr>
+<td width="50%">
 
-### Useful commands
+### 📄 Question Paper
 
-| Command           | What it does                              |
-| ----------------- | ----------------------------------------- |
-| `npm run dev`     | Start the dev server (hot reload)         |
-| `npm run build`   | Create a production build                 |
-| `npm start`       | Serve the production build                |
-| `npm run lint`    | Run ESLint                                |
+* Extracts original numbering
+* Detects sub-parts
+* Preserves printed order
+* Detects marks
+* Captures internal `OR` choices
 
-Troubleshooting:
-- **Port already in use** → `npm run dev -- -p 3001`
-- **"No AI API key found"** → add your key in Settings (step 4)
-- **Free model rate-limited (429)** → wait a minute or switch model in Settings
+</td>
+<td width="50%">
 
-## Deployment
+### ✍️ Handwritten Answers
 
-Deployable to any Node host (built with Next.js App Router):
+* Detects answer labels
+* Locates answers on pages
+* Transcribes handwriting
+* Creates normalized bounding boxes
+* Supports answers spanning multiple pages
 
-```bash
-npm run build && npm start
-```
+</td>
+</tr>
 
-Or push to GitHub and import in Vercel. No database, no auth, no server env required —
-teachers bring their own key through the UI. (Optional: set `OPENROUTER_API_KEY` /
-`GEMINI_API_KEY` as an env var to pre-provision a key.)
+<tr>
+<td width="50%">
 
-## Tech stack
+### 🤖 AI Evaluation
 
-- Next.js (App Router) + TypeScript + Tailwind CSS v4
-- Google Gemini / OpenRouter vision models with JSON-schema-constrained output
-- pdf.js for client-side PDF rasterization
-- No database — in-memory session state only
-
-## Approach / Technical Explanation
-
-The main goal of VedaAI was to build an answer-sheet evaluation system that works with real handwritten exam papers rather than relying only on plain text extraction.
-
-### 1. Input Processing
-
-The application accepts a question paper and a student's handwritten answer sheet as PDF or image files.
-
-Instead of sending PDFs directly to the backend, I rasterize PDF pages in the browser using **pdf.js**. Each page is converted into a JPEG image with a controlled size budget.
-
-This approach has two benefits:
-
-* The AI model receives the same page image that the teacher sees.
-* The coordinates returned by the vision model can be directly mapped to the displayed page, making answer highlighting accurate.
-
-### 2. Question Extraction
-
-The question paper images are sent to the vision model through `/api/extract-questions`.
-
-The model is instructed to return structured JSON rather than free-form text. The extraction preserves:
-
-* Original question numbering
-* Sub-parts such as `11 (a)` and `11 (b)`
-* Internal choices such as `OR`
-* Marks such as `[2]`, `(5 marks)`, and `3M`
-* The original printed order
-
-Using schema-constrained JSON makes the output predictable and easier for the application to process.
-
-### 3. Handwritten Answer Extraction
-
-The answer-sheet pages are processed separately through `/api/extract-answers`.
-
-For every detected answer, the model returns:
-
-* Answer label
-* Page number
-* Bounding box
-* Handwriting transcription
-* Confidence information when applicable
-
-Bounding boxes use normalized coordinates from `0–1000`, so they remain independent of the actual image resolution.
-
-For answers that continue onto another page, multiple regions are stored instead of forcing the answer into one bounding box.
-
-### 4. Answer-to-Question Mapping
-
-A key design decision was to **avoid positional matching**.
-
-A student may answer questions in a different order, skip questions, or write labels such as:
-
-* `Q11`
-* `Ans 4`
-* `11 a)`
-* `iv`
-
-Therefore, the server uses pure label-processing functions in `lib/labels.ts` to normalize and compare labels.
-
-The mapping process identifies:
-
-* Correctly matched answers
-* Unanswered questions
-* Answers that do not correspond to any question
-* Uncertain matches that require teacher verification
-
-This makes the mapping deterministic and keeps it independent from the AI grading step.
-
-### 5. AI Grading
-
-Once the questions and answers are mapped, `/api/grade` evaluates each question-answer pair.
-
-The grading model considers the question, expected answer context, marks, and student's transcribed answer.
-
-For every question it produces:
-
-* Verdict: correct / partial / incorrect / unanswered
+* Correct
+* Partially correct
+* Incorrect
+* Unanswered
 * Marks awarded
-* Feedback explaining the result
+* Constructive feedback
 
-The API also generates an overall evaluation containing:
+</td>
+<td width="50%">
+
+### 🔍 Visual Verification
+
+* Exact answer highlighting
+* Question ↔ answer navigation
+* Teacher remapping
+* Automatic regrading
+* Uncertain matches flagged
+
+</td>
+</tr>
+</table>
+
+---
+
+# 🚀 Features
+
+## 📤 Intelligent File Upload
+
+Upload question papers and handwritten answer sheets in:
+
+* PDF
+* JPG
+* PNG
+* WEBP
+* Multiple files
+
+The application provides staged processing progress throughout the evaluation pipeline.
+
+---
+
+## 📝 Smart Question Extraction
+
+VedaAI preserves the structure of the original question paper.
+
+It can detect:
+
+```text
+11 (a)
+11 (b)
+12
+13 (OR)
+```
+
+It also extracts:
+
+* Original numbering
+* Sub-parts
+* Internal choices
+* Marks such as `[2]`, `(5 marks)`, `3M`
+* Original printed order
+
+---
+
+## ✍️ Handwriting & Answer Detection
+
+Every detected answer can contain:
+
+```text
+Answer Label
+Page Number
+Bounding Box
+Handwriting Transcription
+Confidence Information
+```
+
+Bounding boxes use normalized `0–1000` coordinates, making them independent of the original image resolution. Answers continuing onto another page can also contain multiple regions.
+
+---
+
+# 🔗 Intelligent Answer Mapping
+
+One of the most important design decisions is that VedaAI **does not depend on answer position**.
+
+Students can answer questions in any order.
+
+For example:
+
+```text
+Question Paper
+
+11 (a)
+11 (b)
+12
+13
+14
+```
+
+The student might write:
+
+```text
+Ans 14
+Q11
+iv
+11 a)
+Ans 12
+```
+
+VedaAI normalizes these labels and maps them using deterministic label-processing logic.
+
+### Mapping states
+
+| State        | Meaning                                 |
+| ------------ | --------------------------------------- |
+| ✅ Matched    | Answer successfully linked              |
+| ⚠️ Check     | AI/system is uncertain                  |
+| ❌ Unanswered | No answer detected                      |
+| 🔎 Unmatched | Answer doesn't correspond to a question |
+
+Teachers can manually change mappings whenever necessary.
+
+---
+
+# 🤖 AI-Powered Grading
+
+Once the mapping is complete, VedaAI evaluates each question-answer pair.
+
+For every question, the system produces:
+
+```text
+Verdict
+Marks Awarded
+Constructive Feedback
+```
+
+Possible verdicts:
+
+* ✅ Correct
+* 🟡 Partial
+* ❌ Incorrect
+* ⚪ Unanswered
+
+The evaluation also produces:
 
 * Total score
 * Grade
-* Summary
+* Overall summary
 * Strengths
 * Areas for improvement
 
-Separating extraction, mapping, and grading makes the system easier to debug and replace individual components without affecting the complete pipeline.
+---
 
-### 6. Visual Result Verification
+# 🔍 Visual Evidence — No Black-Box Score
 
-The results screen connects the AI evaluation back to the original answer sheet.
+Instead of showing only:
 
-Each question card displays its grading information alongside the corresponding answer region.
+> **Score: 78/100**
 
-When a teacher selects a question:
+VedaAI connects the evaluation back to the original handwritten answer.
 
-1. The application identifies the mapped answer.
-2. The answer-sheet viewer scrolls to the corresponding page.
-3. The exact bounding box is highlighted.
-4. The region is briefly emphasized so the teacher can visually verify it.
-
-The reverse interaction also works: selecting an answer region identifies the related question.
-
-This was important because the system should not only provide an AI-generated score; the teacher should be able to see exactly which handwritten content was evaluated.
-
-### 7. Manual Correction
-
-AI-based label matching can occasionally be uncertain. Instead of hiding those cases, VedaAI exposes them to the teacher.
-
-The teacher can manually:
-
-* Link an answer to a question
-* Remove an incorrect mapping
-* Change an uncertain mapping
-
-After a mapping is changed, the application automatically regrades the affected evaluation.
-
-This provides a human-in-the-loop workflow rather than treating the AI output as permanently authoritative.
-
-### 8. Provider Abstraction
-
-The application supports both **Google Gemini** and **OpenRouter**.
-
-The provider is detected from the configured API key, while the application keeps the extraction and grading pipeline independent of the provider.
-
-This makes it possible to switch models without changing the core evaluation logic.
-
-### 9. Privacy and Architecture
-
-No database is required.
-
-Evaluation history is maintained only for the current session, and API keys entered through Settings are stored in browser `localStorage`.
-
-The architecture is intentionally lightweight:
+### Question → Answer
 
 ```text
-Browser
-   │
-   ├── PDF/Image upload
-   ├── PDF → JPEG rasterization
-   └── Results + highlighting
-          │
-          ▼
-      Next.js API
-          │
-          ├── Question Extraction
-          │
-          ├── Answer Extraction
-          │
-          ├── Deterministic Label Mapping
-          │
-          └── AI Grading
-                  │
-                  ▼
-             Gemini / OpenRouter
+Teacher selects Question
+        ↓
+Find mapped answer
+        ↓
+Scroll to correct page
+        ↓
+Highlight exact region
+        ↓
+Visually verify evaluated content
 ```
 
-### 10. Why This Approach
+And the interaction works in reverse:
 
-The most important design principle was to separate **what the AI does** from **what the application can determine reliably**.
+```text
+Teacher selects answer region
+        ↓
+Find linked question
+        ↓
+Show corresponding evaluation
+```
 
-AI is used for vision, handwriting transcription, question understanding, and grading. Deterministic application logic is used for label normalization, answer mapping, UI state, and coordinate handling.
+This allows teachers to visually verify what the AI actually evaluated.
 
-This reduces unnecessary AI decisions and makes the system easier to debug, test, and extend.
+---
 
-The result is a pipeline that combines:
+# 👩‍🏫 Human-in-the-Loop Correction
 
-**Vision AI + deterministic mapping + human verification + visual evidence**
+AI-based extraction and label matching can occasionally be uncertain.
 
-rather than treating the final AI score as a black box.
+VedaAI doesn't hide those cases.
 
+Teachers can:
+
+* 🔗 Link an answer to a question
+* 🔓 Remove an incorrect mapping
+* 🔄 Change an uncertain mapping
+* ♻️ Automatically regrade after correction
+
+This creates a **human-in-the-loop evaluation workflow** rather than treating AI output as permanently authoritative.
+
+---
+
+# 🧩 How It Works
+
+```text
+┌──────────────────────────────┐
+│        Upload Files          │
+│ Question Paper + Answer Sheet│
+└──────────────┬───────────────┘
+               ↓
+┌──────────────────────────────┐
+│       Browser Processing     │
+│ PDF → JPEG using pdf.js      │
+└──────────────┬───────────────┘
+               ↓
+┌──────────────────────────────┐
+│    Question Extraction       │
+│ Vision AI + Structured JSON  │
+└──────────────┬───────────────┘
+               ↓
+┌──────────────────────────────┐
+│     Answer Extraction        │
+│ Labels + Boxes + Transcripts │
+└──────────────┬───────────────┘
+               ↓
+┌──────────────────────────────┐
+│   Deterministic Mapping      │
+│      lib/labels.ts           │
+└──────────────┬───────────────┘
+               ↓
+┌──────────────────────────────┐
+│        AI Grading            │
+│ Per-question evaluation      │
+└──────────────┬───────────────┘
+               ↓
+┌──────────────────────────────┐
+│       Results UI             │
+│ Feedback + Highlights        │
+│ Remapping + Insights         │
+└──────────────────────────────┘
+```
+
+The production flow is:
+
+```text
+Upload
+  ↓
+Client-side rasterization
+  ↓
+/api/extract-questions
+  ↓
+/api/extract-answers
+  ↓
+Label matching
+  ↓
+/api/grade
+  ↓
+Results + visual verification
+```
+
+---
+
+# 🏗️ Architecture
+
+```text
+                         ┌──────────────────────┐
+                         │      Browser         │
+                         │                      │
+                         │  PDF / Image Upload  │
+                         │  PDF → JPEG          │
+                         │  Results Viewer      │
+                         └──────────┬───────────┘
+                                    │
+                                    ▼
+                         ┌──────────────────────┐
+                         │      Next.js API     │
+                         └──────────┬───────────┘
+                                    │
+                 ┌──────────────────┼──────────────────┐
+                 │                  │                  │
+                 ▼                  ▼                  ▼
+        ┌────────────────┐ ┌────────────────┐ ┌────────────────┐
+        │    Question    │ │     Answer     │ │ Deterministic  │
+        │   Extraction   │ │   Extraction   │ │     Mapping     │
+        └────────────────┘ └────────────────┘ └────────────────┘
+                 │                  │                  │
+                 └──────────────────┼──────────────────┘
+                                    ▼
+                         ┌──────────────────────┐
+                         │     AI Grading       │
+                         └──────────┬───────────┘
+                                    │
+                         ┌──────────┴───────────┐
+                         ▼                      ▼
+                  Google Gemini           OpenRouter
+```
+
+The architecture deliberately separates AI operations from deterministic application logic.
+
+---
+
+# 🧠 Technical Approach
+
+## 1. Browser-Side PDF Rasterization
+
+Instead of sending PDFs directly to the backend, VedaAI converts PDF pages into JPEG images in the browser using **pdf.js**.
+
+```text
+PDF
+ ↓
+pdf.js
+ ↓
+JPEG Pages
+ ↓
+Vision Model
+```
+
+This ensures the AI receives the same page representation that the teacher sees, while allowing returned coordinates to align with the displayed page.
+
+---
+
+## 2. Structured AI Output
+
+Question extraction uses structured JSON rather than free-form model responses.
+
+This makes the output predictable:
+
+```json
+{
+  "questionNumber": "11",
+  "subPart": "a",
+  "marks": 5,
+  "text": "..."
+}
+```
+
+The actual extraction preserves numbering, sub-parts, choices, marks, and printed order.
+
+---
+
+## 3. Normalized Coordinates
+
+Answer bounding boxes use:
+
+```text
+0 → 1000
+```
+
+instead of raw pixel coordinates.
+
+This means:
+
+```text
+Model Coordinates
+       ↓
+Normalized Bounding Box
+       ↓
+Any Display Resolution
+       ↓
+Correct Highlight
+```
+
+This is particularly useful when the same answer-sheet page is rendered at different sizes.
+
+---
+
+## 4. Deterministic Mapping
+
+The application deliberately avoids asking the AI to decide every answer-to-question relationship.
+
+Instead:
+
+```text
+AI
+ ↓
+Extract labels
+ ↓
+Application
+ ↓
+Normalize labels
+ ↓
+Compare labels
+ ↓
+Create mapping
+```
+
+This separation keeps the mapping predictable and easier to test.
+
+---
+
+## 5. Provider Abstraction
+
+VedaAI supports two AI providers:
+
+### Google Gemini
+
+```text
+gemini-2.5-flash
+gemini-2.5-pro
+```
+
+### OpenRouter
+
+Supports compatible vision models configured through the application.
+
+The provider is detected from the configured API key, while the extraction and grading pipeline remains independent from the provider.
+
+---
+
+# 🔐 Privacy & Data Model
+
+VedaAI intentionally avoids a database.
+
+```text
+No Database
+     │
+     ├── Evaluation history
+     │      └── Current session only
+     │
+     └── API key
+            └── Browser localStorage
+```
+
+The API key entered through Settings is stored in browser `localStorage` and is sent only to the selected AI provider.
+
+> **Note:** Anyone deploying this for real educational use should independently review the privacy, security, retention, and API-key handling requirements for their environment.
+
+---
+
+# 🧰 Tech Stack
+
+| Layer          | Technology                 |
+| -------------- | -------------------------- |
+| Framework      | Next.js                    |
+| Language       | TypeScript                 |
+| Styling        | Tailwind CSS v4            |
+| AI             | Google Gemini / OpenRouter |
+| Vision         | Multimodal Vision Models   |
+| PDF Processing | pdf.js                     |
+| API            | Next.js App Router API     |
+| State          | In-memory session state    |
+| Storage        | Browser `localStorage`     |
+| Deployment     | Node.js / Vercel           |
+
+---
+
+# 📂 Project Flow
+
+```text
+veda-ai-grader/
+│
+├── app/
+│   ├── api/
+│   │   ├── extract-questions/
+│   │   ├── extract-answers/
+│   │   └── grade/
+│   │
+│   └── ...
+│
+├── lib/
+│   └── labels.ts
+│
+├── components/
+│   └── ...
+│
+├── public/
+│   └── sample-papers/
+│
+├── package.json
+└── README.md
+```
+
+> The exact repository structure may contain additional files/components beyond the conceptual structure shown above.
+
+---
+
+# ⚡ Getting Started
+
+## Prerequisites
+
+You need:
+
+* **Node.js 20+**
+* **VS Code**
+* An AI API key
+
+Supported providers:
+
+* OpenRouter
+* Google AI Studio / Gemini
+
+---
+
+## 1️⃣ Clone the Repository
+
+```bash
+git clone <your-repository-url>
+cd veda-ai-grader
+```
+
+---
+
+## 2️⃣ Install Dependencies
+
+```bash
+npm install
+```
+
+---
+
+## 3️⃣ Start Development Server
+
+```bash
+npm run dev
+```
+
+Then open:
+
+```text
+http://localhost:3000
+```
+
+---
+
+# 🔑 Configure AI Provider
+
+Open:
+
+```text
+Settings
+```
+
+Then:
+
+1. Paste your OpenRouter or Gemini API key
+2. Click **Test**
+3. Confirm the key works
+4. Select a model
+5. Click **Save**
+
+The key is stored in the browser's `localStorage`.
+
+Alternatively, configure:
+
+```env
+OPENROUTER_API_KEY=your_key
+```
+
+or:
+
+```env
+GEMINI_API_KEY=your_key
+```
+
+---
+
+# 🧪 Try the Demo
+
+You can immediately test the complete pipeline using the bundled sample papers.
+
+```text
+Try it with sample papers
+          ↓
+Upload
+          ↓
+Extract
+          ↓
+Map
+          ↓
+Grade
+          ↓
+Visual Results
+```
+
+You can also upload your own:
+
+* Question paper
+* Handwritten answer sheet
+
+and select **Get Feedback**.
+
+---
+
+# 📜 Available Commands
+
+| Command         | Description              |
+| --------------- | ------------------------ |
+| `npm run dev`   | Start development server |
+| `npm run build` | Create production build  |
+| `npm start`     | Start production server  |
+| `npm run lint`  | Run ESLint               |
+
+---
+
+# 🚀 Deployment
+
+VedaAI is built with the Next.js App Router and can be deployed to a Node host.
+
+### Production build
+
+```bash
+npm run build
+npm start
+```
+
+### Vercel
+
+```text
+GitHub Repository
+       ↓
+Import into Vercel
+       ↓
+Build
+       ↓
+Deploy
+```
+
+The project does not require a database or authentication for the described workflow. API keys can be supplied through the UI or optionally through environment variables.
+
+---
+
+# 🛠️ Troubleshooting
+
+### Port already in use
+
+```bash
+npm run dev -- -p 3001
+```
+
+### No AI API key found
+
+Open **Settings** and configure an API key.
+
+### Model returns `429`
+
+The selected free model may be rate-limited.
+
+Try:
+
+* Waiting briefly
+* Switching to another available model
+
+---
+
+# 💡 Why VedaAI?
+
+Traditional automated evaluation often focuses on text that has already been extracted.
+
+VedaAI starts earlier in the pipeline:
+
+```text
+Real Handwritten Paper
+        ↓
+      Vision
+        ↓
+   Transcription
+        ↓
+Question Mapping
+        ↓
+     Grading
+        ↓
+ Visual Evidence
+```
+
+The project combines:
+
+**Vision AI + deterministic logic + human verification + visual evidence**
+
+instead of treating the final AI score as an unexplained black box.
+
+---
+
+# 🏆 Engineering Highlights
+
+### 🧠 AI
+
+* Multimodal vision processing
+* Handwriting transcription
+* Structured JSON output
+* Per-question evaluation
+* Multiple AI provider support
+
+### ⚙️ Backend
+
+* Independent extraction endpoints
+* Deterministic label mapping
+* Modular grading pipeline
+* Server-side API key support
+
+### 🎨 Frontend
+
+* Interactive answer-sheet viewer
+* Synchronized question/answer navigation
+* Bounding-box highlighting
+* Manual mapping controls
+* Processing progress
+
+### 🧪 Reliability
+
+* Uncertain mappings are surfaced
+* Unanswered questions are detected
+* Unmatched answers are separated
+* Manual corrections trigger regrading
+
+---
+
+# 🔮 Future Improvements
+
+Potential next steps for the system:
+
+* [ ] Persistent evaluation history
+* [ ] Teacher accounts and authentication
+* [ ] Database-backed evaluation storage
+* [ ] Class and student management
+* [ ] Exportable evaluation reports
+* [ ] More advanced handwriting models
+* [ ] Rubric-based grading
+* [ ] Custom teacher grading criteria
+* [ ] Batch evaluation for multiple students
+* [ ] Analytics and class-level insights
+
+---
+
+# 📌 Project Status
+
+**VedaAI** is a functional AI answer-sheet evaluation project built around a real handwritten-paper workflow.
+
+The current architecture intentionally keeps the system lightweight:
+
+```text
+No Database
+No Required Authentication
+Client-side PDF Processing
+Multiple AI Providers
+Human Verification
+```
+
+This makes it suitable for demonstrating the complete AI evaluation pipeline while leaving room for future production-oriented features.
+
+---
+
+# 👨‍💻 Built For
+
+**VedaAI Hiring Assignment**
+
+The project focuses on demonstrating:
+
+* AI/LLM integration
+* Computer vision workflows
+* Handwritten document processing
+* Full-stack development
+* Deterministic business logic
+* Human-in-the-loop AI systems
+* Interactive frontend engineering
+
+---
+
+<p align="center">
+
+### 🧠 VedaAI
+
+**From handwritten answers to explainable AI feedback.**
+
+</p>
+
+<p align="center">
+  Built with Next.js • TypeScript • Tailwind CSS • Gemini • OpenRouter • pdf.js
+</p>
