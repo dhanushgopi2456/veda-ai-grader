@@ -1,948 +1,694 @@
-# 🧠 VedaAI — AI Answer Sheet Evaluation
+# 🤖 AI Sheet Evaluator
 
 <p align="center">
-  <img src="https://img.shields.io/badge/🧠_VedaAI-AI_Answer_Sheet_Evaluation-7C3AED?style=for-the-badge" />
+  <strong>AI-Powered Spreadsheet Evaluation • Automated Scoring • Intelligent Feedback</strong>
 </p>
 
 <p align="center">
-  <strong>Transform handwritten exam papers into explainable AI-powered evaluations.</strong>
+  Transform spreadsheet submissions into structured evaluations with automated analysis, scoring, and actionable feedback.
 </p>
 
 <p align="center">
-  📄 Upload &nbsp;→&nbsp; 👁️ Understand &nbsp;→&nbsp; 🔗 Map &nbsp;→&nbsp; 🤖 Grade &nbsp;→&nbsp; 🔍 Verify
+  <img src="https://img.shields.io/badge/AI-Powered-6366F1?style=for-the-badge&logo=openai&logoColor=white" />
+  <img src="https://img.shields.io/badge/Spreadsheet%20Analysis-16A34A?style=for-the-badge&logo=google-sheets&logoColor=white" />
+  <img src="https://img.shields.io/badge/Automation-0EA5E9?style=for-the-badge&logo=robotframework&logoColor=white" />
+  <img src="https://img.shields.io/badge/Modern%20Web%20App-EC4899?style=for-the-badge" />
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Next.js-15-000000?style=for-the-badge&logo=next.js&logoColor=white" />
-  <img src="https://img.shields.io/badge/TypeScript-5.x-3178C6?style=for-the-badge&logo=typescript&logoColor=white" />
-  <img src="https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" />
-  <img src="https://img.shields.io/badge/Vision_AI-Gemini_|_OpenRouter-8E75B2?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/pdf.js-PDF_Rasterization-E34F26?style=for-the-badge" />
-</p>
-
-<p align="center">
-  <a href="#-what-is-vedaai">About</a> •
-  <a href="#-core-features">Features</a> •
-  <a href="#-how-vedaai-works">Workflow</a> •
+  <a href="#-overview">Overview</a> •
+  <a href="#-features">Features</a> •
+  <a href="#-workflow">Workflow</a> •
   <a href="#-architecture">Architecture</a> •
-  <a href="#-technical-highlights">Technical</a> •
-  <a href="#-setup">Setup</a>
+  <a href="#-setup">Setup</a> •
+  <a href="#-future-roadmap">Roadmap</a>
 </p>
 
 ---
 
-## ✨ What is VedaAI?
+# 🌟 Overview
 
-**VedaAI** is an AI-powered handwritten answer-sheet evaluation system designed for real examination papers.
+**AI Sheet Evaluator** is an intelligent spreadsheet evaluation platform designed to automate the process of analyzing and evaluating structured spreadsheet submissions.
 
-Instead of evaluating only extracted text, VedaAI processes the complete workflow:
+Instead of manually reviewing every row, answer, or submission, the system provides an automated workflow for:
 
 ```text
-┌─────────────────────────────────────────────────────────────┐
-│                    🧠 VedaAI PIPELINE                      │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│   📄 Question Paper          ✍️ Handwritten Answer Sheet   │
-│           │                           │                     │
-│           └──────────────┬────────────┘                     │
-│                          ▼                                  │
-│                  👁️ Vision Processing                      │
-│                          │                                  │
-│                          ▼                                  │
-│                  📝 Text Extraction                        │
-│                          │                                  │
-│                          ▼                                  │
-│                  🔗 Answer Mapping                          │
-│                          │                                  │
-│                          ▼                                  │
-│                    🤖 AI Grading                            │
-│                          │                                  │
-│                          ▼                                  │
-│                 📊 Marks + Feedback                         │
-│                          │                                  │
-│                          ▼                                  │
-│                  🔍 Visual Verification                     │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
+📤 Upload Spreadsheet
+        ↓
+📑 Parse Sheet Data
+        ↓
+🧹 Validate & Process
+        ↓
+🤖 AI Evaluation
+        ↓
+📊 Calculate Scores
+        ↓
+💡 Generate Feedback
+        ↓
+📈 Display Results
 ```
 
-> **AI handles vision and evaluation, while deterministic application logic handles mapping, coordinates, and verification.**
-
-This separation makes the system easier to understand, test, debug, and verify.
+The project combines **spreadsheet processing, AI-assisted evaluation, automated scoring, and a modern web interface** into one streamlined workflow.
 
 ---
 
-# 🌟 Why VedaAI Stands Out
+# 🎯 Why AI Sheet Evaluator?
 
-<table>
-<tr>
-<td align="center" width="25%">
+Traditional spreadsheet evaluation can become repetitive and time-consuming when dealing with large numbers of submissions.
 
-### 👁️
+### ❌ Traditional Workflow
 
-**Vision AI**
+```text
+Open File
+   ↓
+Read Rows
+   ↓
+Check Answers
+   ↓
+Calculate Marks
+   ↓
+Write Feedback
+   ↓
+Repeat...
+```
 
-Understands real handwritten answer sheets.
+### ✅ AI Sheet Evaluator
 
-</td>
+```text
+Upload
+  ↓
+Automatic Processing
+  ↓
+AI Analysis
+  ↓
+Instant Scoring
+  ↓
+Structured Feedback
+  ↓
+Evaluation Report
+```
 
-<td align="center" width="25%">
-
-### 🔗
-
-**Smart Mapping**
-
-Connects answers to questions even when students answer out of order.
-
-</td>
-
-<td align="center" width="25%">
-
-### 🤖
-
-**AI Grading**
-
-Evaluates every question with marks and feedback.
-
-</td>
-
-<td align="center" width="25%">
-
-### 🔍
-
-**Visual Evidence**
-
-Shows exactly which handwritten region was evaluated.
-
-</td>
-</tr>
-</table>
+This makes the evaluation process more **consistent, scalable, and easier to manage**.
 
 ---
 
-# 🎯 Core Features
+# ✨ Key Features
 
-## 📄 01 — Intelligent Question Extraction
+## 📤 Spreadsheet Upload
 
-VedaAI preserves the structure of the original question paper.
+Upload spreadsheet files through a simple interface.
 
-### Detects
+Supported workflows can include:
 
-- 🔢 Question numbers
-- 🔤 Sub-parts
-- 📝 Question text
-- 💯 Marks
-- 🔀 Internal `OR` choices
-- 📑 Original printed order
+- 📊 Question-and-answer sheets
+- 🧑‍🎓 Student submissions
+- 📝 Assessment responses
+- 📋 Evaluation datasets
+- 📈 Structured tabular data
+
+---
+
+## 🤖 AI-Powered Evaluation
+
+The evaluator can analyze submitted responses and assist with determining:
+
+- ✅ Correct responses
+- ❌ Incorrect responses
+- ⚠️ Partially correct responses
+- 💡 Improvement suggestions
+- 🧠 Reasoning-based feedback
+
+The evaluation pipeline transforms raw spreadsheet data into structured results.
+
+---
+
+## 📊 Automated Scoring
+
+Automatically calculate evaluation results based on the configured evaluation criteria.
 
 Example:
 
 ```text
-11 (a)
-11 (b)
-12
-13 (OR)
-14
+┌─────────────────────────────────────┐
+│         EVALUATION RESULT           │
+├─────────────────────────────────────┤
+│ Questions Evaluated       20        │
+│ Correct Answers           16        │
+│ Partial Answers            2        │
+│ Incorrect Answers          2        │
+│                                     │
+│ Final Score             85%         │
+│ Performance             Excellent   │
+└─────────────────────────────────────┘
 ```
 
 ---
 
-## ✍️ 02 — Handwritten Answer Detection
+## 💡 Intelligent Feedback
 
-The system identifies handwritten responses and creates structured answer data.
-
-```text
-┌──────────────────────────────┐
-│ ✍️ DETECTED ANSWER           │
-├──────────────────────────────┤
-│ Answer Label                 │
-│ Page Number                  │
-│ Bounding Box                 │
-│ Handwriting Transcript       │
-│ Confidence Information       │
-└──────────────────────────────┘
-```
-
-Bounding boxes use normalized **0–1000 coordinates**, allowing the same coordinates to work across different display resolutions.
-
----
-
-# 🔗 03 — Intelligent Answer Mapping
-
-Students don't always answer questions in numerical order.
-
-For example:
+Instead of returning only a numerical score, the system can present useful feedback such as:
 
 ```text
-Question Paper              Student Answer Sheet
+Question 04
+────────────────────────────
+Status: Partially Correct
 
-11 (a)                      Ans 14
-11 (b)                      Q11
-12                          iv
-13                          11 a)
-14                          Ans 12
-```
+Feedback:
+Your answer identifies the main concept,
+but the explanation is missing an important
+implementation detail.
 
-VedaAI normalizes answer labels and uses deterministic application logic to establish the mapping.
-
-### Mapping Status
-
-| Status | Meaning |
-|---|---|
-| 🟢 **Matched** | Answer successfully linked |
-| 🟡 **Check** | Mapping requires verification |
-| 🔴 **Unanswered** | No answer detected |
-| 🔵 **Unmatched** | Answer doesn't correspond to a question |
-
-Teachers can manually correct uncertain mappings.
-
----
-
-# 🤖 04 — AI-Powered Grading
-
-After mapping, each question-answer pair is evaluated.
-
-### Evaluation Output
-
-```text
-┌──────────────────────────────┐
-│       🤖 AI EVALUATION       │
-├──────────────────────────────┤
-│ Verdict                      │
-│ Marks Awarded                │
-│ Constructive Feedback        │
-└──────────────────────────────┘
-```
-
-### Verdicts
-
-- ✅ Correct
-- 🟡 Partially Correct
-- ❌ Incorrect
-- ⚪ Unanswered
-
-### Overall Evaluation
-
-VedaAI can generate:
-
-- 📊 Total Score
-- 🏆 Grade
-- 📝 Overall Summary
-- 💪 Strengths
-- 📈 Areas for Improvement
-
----
-
-# 🔍 05 — Visual Evidence
-
-### No Black-Box Score
-
-Instead of simply displaying:
-
-```text
-Score: 78 / 100
-```
-
-VedaAI connects the evaluation back to the original handwritten answer.
-
-```text
-Teacher selects Question
-          │
-          ▼
-Find mapped Answer
-          │
-          ▼
-Open Correct Page
-          │
-          ▼
-Highlight Answer Region
-          │
-          ▼
-Visually Verify AI Evaluation
-```
-
-The interaction also works in reverse:
-
-```text
-Answer Region
-      ↓
-Find Linked Question
-      ↓
-Show Evaluation
-```
-
-This provides a direct visual connection between **AI reasoning output and source evidence**.
-
----
-
-# 👩‍🏫 06 — Human-in-the-Loop
-
-VedaAI does not assume that AI extraction is always perfect.
-
-Teachers can intervene whenever required.
-
-```text
-             🤖 AI
-              │
-              ▼
-        Initial Mapping
-              │
-       ┌──────┴──────┐
-       ▼             ▼
-    ✅ Clear       ⚠️ Uncertain
-       │             │
-       │             ▼
-       │       👩‍🏫 Teacher
-       │             │
-       │       Manual Correction
-       │             │
-       └──────┬──────┘
-              ▼
-          🔄 Re-grade
-```
-
-### Teacher Controls
-
-- 🔗 Link answer to question
-- 🔓 Remove incorrect mapping
-- 🔄 Change uncertain mapping
-- ♻️ Regrade after correction
-
----
-
-# 🚀 How VedaAI Works
-
-```text
-        📤 UPLOAD
-           │
-           ▼
-┌──────────────────────┐
-│ Question Paper       │
-│ +                    │
-│ Handwritten Answers  │
-└──────────┬───────────┘
-           │
-           ▼
-      📄 PDF → JPEG
-       pdf.js
-           │
-           ▼
-   👁️ Vision Extraction
-           │
-     ┌─────┴─────┐
-     ▼           ▼
- Questions     Answers
-     │           │
-     └─────┬─────┘
-           ▼
-     🔗 Label Mapping
-           │
-           ▼
-      🤖 AI Grading
-           │
-           ▼
-   📊 Results & Feedback
-           │
-           ▼
-     🔍 Visual Evidence
+Suggestion:
+Include the relationship between the
+two components to make the answer complete.
 ```
 
 ---
 
-# ⚡ End-to-End Processing
+# 📈 Evaluation Dashboard
+
+A dashboard can provide a quick overview of the evaluation.
+
+### Example Metrics
+
+| Metric | Result |
+|---|---:|
+| 📄 Total Submissions | 50 |
+| 📝 Evaluated Sheets | 47 |
+| ✅ Average Score | 82% |
+| 🏆 Highest Score | 98% |
+| ⚠️ Needs Review | 3 |
+| ⏱️ Processing Status | Completed |
+
+---
+
+# 🧠 Evaluation Pipeline
 
 ```text
-📤 Upload
-   ↓
-📄 Client-side Rasterization
-   ↓
-📝 Extract Questions
-   ↓
-✍️ Extract Answers
-   ↓
-🔗 Normalize & Map Labels
-   ↓
-🤖 Evaluate Question/Answer Pairs
-   ↓
-📊 Generate Marks & Feedback
-   ↓
-🔍 Highlight Source Evidence
-   ↓
-👩‍🏫 Teacher Verification
+                    ┌──────────────────┐
+                    │ Spreadsheet File │
+                    └────────┬─────────┘
+                             │
+                             ▼
+                    ┌──────────────────┐
+                    │ File Validation  │
+                    └────────┬─────────┘
+                             │
+                             ▼
+                    ┌──────────────────┐
+                    │ Sheet Parser     │
+                    └────────┬─────────┘
+                             │
+                             ▼
+                    ┌──────────────────┐
+                    │ Data Normalizer  │
+                    └────────┬─────────┘
+                             │
+                             ▼
+                    ┌──────────────────┐
+                    │ AI Evaluation    │
+                    └────────┬─────────┘
+                             │
+                             ▼
+                    ┌──────────────────┐
+                    │ Scoring Engine   │
+                    └────────┬─────────┘
+                             │
+                             ▼
+                    ┌──────────────────┐
+                    │ Feedback Engine  │
+                    └────────┬─────────┘
+                             │
+                             ▼
+                    ┌──────────────────┐
+                    │ Final Report     │
+                    └──────────────────┘
 ```
 
 ---
 
-# 🏗️ Architecture
+# 🔄 End-to-End Workflow
 
-```text
-                         ┌─────────────────────┐
-                         │       👤 Teacher     │
-                         └──────────┬──────────┘
-                                    │
-                                    ▼
-                         ┌─────────────────────┐
-                         │   ⚛️ Next.js UI     │
-                         │                     │
-                         │ Upload              │
-                         │ Results             │
-                         │ Highlights          │
-                         │ Remapping           │
-                         └──────────┬──────────┘
-                                    │
-                                    ▼
-                         ┌─────────────────────┐
-                         │   Next.js API       │
-                         └──────────┬──────────┘
-                                    │
-                ┌───────────────────┼───────────────────┐
-                │                   │                   │
-                ▼                   ▼                   ▼
-       ┌────────────────┐  ┌────────────────┐  ┌────────────────┐
-       │ ❓ Question    │  │ ✍️ Answer      │  │ 🔗 Deterministic│
-       │ Extraction     │  │ Extraction     │  │ Mapping         │
-       └───────┬────────┘  └───────┬────────┘  └───────┬────────┘
-               │                   │                   │
-               └───────────────────┼───────────────────┘
-                                   ▼
-                         ┌─────────────────────┐
-                         │      🤖 AI Grading  │
-                         └──────────┬──────────┘
-                                    │
-                         ┌──────────┴──────────┐
-                         ▼                     ▼
-                ┌────────────────┐    ┌────────────────┐
-                │ Google Gemini  │    │   OpenRouter   │
-                └────────────────┘    └────────────────┘
-```
+### 1️⃣ Upload
+
+The evaluator receives a spreadsheet submission.
+
+### 2️⃣ Parse
+
+Spreadsheet rows and columns are extracted into structured data.
+
+### 3️⃣ Validate
+
+The application verifies that the uploaded data follows the expected format.
+
+### 4️⃣ Evaluate
+
+Responses are processed against the configured evaluation logic and AI-assisted criteria.
+
+### 5️⃣ Score
+
+Individual results are converted into an overall score.
+
+### 6️⃣ Generate Feedback
+
+The system produces structured feedback for each evaluated response.
+
+### 7️⃣ Review
+
+The final evaluation is presented through a clean dashboard.
 
 ---
 
-# 🧠 Technical Highlights
+# 🛠️ Technology Stack
 
-## 1. 📄 Browser-Side PDF Rasterization
+> Replace or expand the badges below according to the exact technologies used in your repository.
 
-PDF pages are converted into JPEG images using **pdf.js**.
+### Frontend
 
-```text
-PDF
- │
- ▼
-pdf.js
- │
- ▼
-JPEG Pages
- │
- ▼
-Vision Model
-```
+<p>
+  <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black" />
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" />
+  <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white" />
+</p>
 
-This allows the AI to process the same page representation that the teacher sees.
+### Styling
 
----
+<p>
+  <img src="https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" />
+</p>
 
-## 2. 📦 Structured AI Output
+### AI / Data Processing
 
-Instead of relying on free-form model responses, extraction uses structured JSON.
+<p>
+  <img src="https://img.shields.io/badge/AI-Evaluation-7C3AED?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Spreadsheet-Processing-16A34A?style=for-the-badge" />
+</p>
 
-```json
-{
-  "questionNumber": "11",
-  "subPart": "a",
-  "marks": 5,
-  "text": "..."
-}
-```
+### Development
 
-This makes downstream processing more predictable.
+<p>
+  <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white" />
+  <img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white" />
+  <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" />
+</p>
 
 ---
 
-## 3. 📐 Normalized Coordinates
-
-Answer regions use a normalized coordinate system:
+# 🏗️ System Architecture
 
 ```text
-0 ───────────────────────────── 1000
-│                               │
-│       Answer Region           │
-│                               │
-└───────────────────────────────┘
+                         USER
+                           │
+                           ▼
+                 ┌──────────────────┐
+                 │   Web Interface  │
+                 └────────┬─────────┘
+                          │
+                          ▼
+                 ┌──────────────────┐
+                 │ Upload / Input   │
+                 └────────┬─────────┘
+                          │
+                          ▼
+                 ┌──────────────────┐
+                 │ Processing Layer │
+                 └────────┬─────────┘
+                          │
+                ┌─────────┴─────────┐
+                ▼                   ▼
+       ┌────────────────┐   ┌────────────────┐
+       │ Sheet Parser   │   │ Validation     │
+       └────────┬───────┘   └────────┬───────┘
+                │                    │
+                └─────────┬──────────┘
+                          ▼
+                 ┌──────────────────┐
+                 │ AI Evaluation    │
+                 └────────┬─────────┘
+                          │
+                          ▼
+                 ┌──────────────────┐
+                 │ Scoring Engine   │
+                 └────────┬─────────┘
+                          │
+                          ▼
+                 ┌──────────────────┐
+                 │ Results / Report │
+                 └──────────────────┘
 ```
-
-This allows bounding boxes to remain usable across different display sizes.
-
----
-
-## 4. 🔗 Deterministic Mapping
-
-The system intentionally separates AI extraction from answer-question mapping.
-
-```text
-🤖 AI
- │
- ├── Extract labels
- │
- ▼
-⚙️ Application Logic
- │
- ├── Normalize labels
- │
- ├── Compare labels
- │
- └── Create mapping
- │
- ▼
-🔗 Final Question → Answer Relationship
-```
-
----
-
-# 🔌 AI Provider Architecture
-
-VedaAI supports multiple AI providers.
-
-```text
-                 VedaAI
-                    │
-          ┌─────────┴─────────┐
-          ▼                   ▼
-     Google Gemini        OpenRouter
-          │                   │
-          └─────────┬─────────┘
-                    ▼
-            Unified AI Pipeline
-                    │
-        ┌───────────┼───────────┐
-        ▼           ▼           ▼
-    Extraction    Mapping     Grading
-```
-
-### Google Gemini
-
-```text
-gemini-2.5-flash
-gemini-2.5-pro
-```
-
-### OpenRouter
-
-Compatible vision models can be configured through the application.
-
----
-
-# 🔐 Privacy & Data Model
-
-VedaAI intentionally uses a lightweight architecture without a database.
-
-```text
-                  VedaAI
-                     │
-          ┌──────────┴──────────┐
-          ▼                     ▼
-   Current Session          API Key
-          │                     │
-          ▼                     ▼
- Evaluation History       Browser Storage
-          │
-          ▼
-      No Database
-```
-
-API keys configured through Settings are stored in browser `localStorage`.
-
-> ⚠️ For real educational deployments, privacy, security, retention, and API-key handling should be independently reviewed for the target environment.
-
----
-
-# 🧰 Tech Stack
-
-| Layer | Technology |
-|---|---|
-| ⚛️ Framework | Next.js 15 |
-| 💙 Language | TypeScript |
-| 🎨 Styling | Tailwind CSS v4 |
-| 🧠 AI | Google Gemini / OpenRouter |
-| 👁️ Vision | Multimodal Vision Models |
-| 📄 PDF | pdf.js |
-| 🔌 API | Next.js App Router API |
-| 💾 State | In-memory session state |
-| 🔐 Storage | Browser localStorage |
-| ☁️ Deployment | Node.js / Vercel |
 
 ---
 
 # 📂 Project Structure
 
 ```text
-veda-ai-grader/
+AI-Sheet-Evaluator/
 │
-├── 📁 app/
-│   ├── 📁 api/
-│   │   ├── 📁 extract-questions/
-│   │   ├── 📁 extract-answers/
-│   │   └── 📁 grade/
-│   │
+├── public/
+│   └── assets/
+│
+├── src/
+│   ├── components/
+│   ├── pages/
+│   ├── services/
+│   ├── utils/
+│   ├── hooks/
+│   ├── types/
 │   └── ...
 │
-├── 📁 lib/
-│   └── labels.ts
+├── uploads/
 │
-├── 📁 components/
-│   └── ...
-│
-├── 📁 public/
-│   └── sample-papers/
-│
-├── 📄 package.json
-└── 📄 README.md
+├── package.json
+├── vite.config.*
+├── tsconfig.json
+├── .env.example
+└── README.md
 ```
+
+> Adjust the structure above to match the actual repository folders and files.
 
 ---
 
-# ⚡ Getting Started
+# 🚀 Getting Started
 
 ## 📋 Prerequisites
 
-- Node.js **20+**
-- VS Code
-- Google Gemini or OpenRouter API key
+Make sure the following are installed:
+
+```text
+Node.js 18+
+npm
+Git
+VS Code
+```
 
 ---
 
-## 1️⃣ Clone
+## 1️⃣ Clone the Repository
 
 ```bash
-git clone <your-repository-url>
+git clone <YOUR_GITHUB_REPOSITORY_URL>
 
-cd veda-ai-grader
+cd AI-Sheet-Evaluator
 ```
 
-## 2️⃣ Install
+---
+
+## 2️⃣ Install Dependencies
 
 ```bash
 npm install
 ```
 
-## 3️⃣ Start
+---
+
+## 3️⃣ Configure Environment Variables
+
+Create a `.env` file:
+
+```bash
+cp .env.example .env
+```
+
+For Windows PowerShell:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+Add the required configuration values.
+
+```env
+# Example
+AI_API_KEY=your_api_key_here
+```
+
+> Never commit API keys, credentials, or private configuration files to GitHub.
+
+---
+
+## 4️⃣ Start Development Server
 
 ```bash
 npm run dev
 ```
 
-Open:
-
-```text
-http://localhost:3000
-```
+Open the local development URL displayed in your terminal.
 
 ---
 
-# 🔑 Configure AI
+# 🧪 Testing
 
-Open:
-
-```text
-Settings
-```
-
-Then:
-
-```text
-1. Paste API Key
-      ↓
-2. Test Connection
-      ↓
-3. Select Model
-      ↓
-4. Save
-      ↓
-5. Start Evaluation 🚀
-```
-
-Alternatively:
-
-```env
-OPENROUTER_API_KEY=your_key
-```
-
-or:
-
-```env
-GEMINI_API_KEY=your_key
-```
-
----
-
-# 🧪 Try the Demo
-
-Use the bundled sample papers to test the complete pipeline.
-
-```text
-📄 Sample Paper
-      ↓
-📤 Upload
-      ↓
-👁️ Extract
-      ↓
-🔗 Map
-      ↓
-🤖 Grade
-      ↓
-📊 Results
-      ↓
-🔍 Visual Verification
-```
-
-You can also upload your own:
-
-- 📄 Question paper
-- ✍️ Handwritten answer sheet
-
----
-
-# 📜 Available Commands
-
-| Command | Description |
-|---|---|
-| `npm run dev` | Start development server |
-| `npm run build` | Create production build |
-| `npm start` | Start production server |
-| `npm run lint` | Run ESLint |
-
----
-
-# 🚀 Deployment
-
-VedaAI can be deployed using a Node.js host or Vercel.
-
-```text
-💻 Local Development
-        │
-        ▼
-     GitHub
-        │
-        ▼
-   ☁️ Vercel
-        │
-        ▼
-   🚀 Production
-```
-
-### Production
+Run the project's available tests with:
 
 ```bash
-npm run build
-npm start
+npm test
 ```
 
-### Vercel
+For type checking:
+
+```bash
+npm run typecheck
+```
+
+For linting:
+
+```bash
+npm run lint
+```
+
+> Use only the commands actually defined in `package.json`.
+
+---
+
+# 📸 Screenshots & Demo
+
+## 🖥️ Dashboard
+
+Add your dashboard screenshot here:
 
 ```text
-GitHub Repository
-        ↓
-Import into Vercel
-        ↓
-Build
-        ↓
-Deploy
-        ↓
-🎉 Live Application
+docs/screenshots/dashboard.png
+```
+
+## 📤 Upload Interface
+
+```text
+docs/screenshots/upload.png
+```
+
+## 📊 Evaluation Results
+
+```text
+docs/screenshots/results.png
+```
+
+## 🤖 AI Feedback
+
+```text
+docs/screenshots/feedback.png
+```
+
+### 🎥 Demo
+
+Add your deployed application or demonstration video here:
+
+```text
+🔗 Live Demo: YOUR_DEPLOYED_URL
 ```
 
 ---
 
-# 🏆 Engineering Highlights
+# 🔐 Security Considerations
 
-<table>
-<tr>
-<td width="50%">
+The application should follow secure development practices when deployed.
 
-### 🧠 Artificial Intelligence
+### 🔑 Secrets
 
-- Multimodal vision processing
-- Handwriting transcription
-- Structured JSON extraction
-- Question-answer evaluation
-- Multiple AI providers
+Never expose API keys in frontend source code or commit `.env` files.
 
-</td>
+### 📁 File Uploads
 
-<td width="50%">
+Uploaded spreadsheets should be validated for:
 
-### ⚙️ Backend Engineering
+- File type
+- File size
+- Expected structure
+- Malicious content
 
-- Independent extraction APIs
-- Deterministic mapping
-- Modular grading pipeline
-- Server-side API support
+### 🛡️ API Protection
 
-</td>
-</tr>
+Production deployments should implement:
 
-<tr>
-<td>
-
-### 🎨 Frontend Engineering
-
-- Interactive answer viewer
-- Question/answer navigation
-- Bounding-box highlighting
-- Manual mapping controls
-- Processing progress
-
-</td>
-
-<td>
-
-### 🧪 Reliability
-
-- Uncertain mappings surfaced
-- Unanswered questions detected
-- Unmatched answers separated
-- Manual corrections supported
-- Regrading after correction
-
-</td>
-</tr>
-</table>
+- Authentication
+- Authorization
+- Rate limiting
+- Input validation
+- Secure API endpoints
 
 ---
 
-# 💡 The Core Idea
-
-Traditional automated evaluation often begins with already-extracted text.
-
-VedaAI starts with the actual handwritten paper:
+# 📊 Example Evaluation Result
 
 ```text
-        ✍️ REAL HANDWRITTEN PAPER
-                    │
-                    ▼
-              👁️ VISION AI
-                    │
-                    ▼
-             📝 TRANSCRIPTION
-                    │
-                    ▼
-             🔗 QUESTION MAPPING
-                    │
-                    ▼
-                🤖 GRADING
-                    │
-                    ▼
-             📊 SCORE + FEEDBACK
-                    │
-                    ▼
-             🔍 VISUAL EVIDENCE
+╭────────────────────────────────────────╮
+│         🤖 AI EVALUATION REPORT        │
+├────────────────────────────────────────┤
+│                                        │
+│  📄 Submission       Student_01.xlsx   │
+│  📝 Questions                   25     │
+│  ✅ Correct                     20     │
+│  ⚠️ Partial                      3     │
+│  ❌ Incorrect                    2     │
+│                                        │
+│  🎯 SCORE                      86%      │
+│                                        │
+│  Performance: Strong                  │
+│                                        │
+╰────────────────────────────────────────╯
 ```
 
-### The combination
+---
 
-```text
-┌──────────────────────────────────────────┐
-│                                          │
-│       👁️ Vision AI                      │
-│              +                           │
-│       ⚙️ Deterministic Logic             │
-│              +                           │
-│       👩‍🏫 Human Verification             │
-│              +                           │
-│       🔍 Visual Evidence                 │
-│                                          │
-│              =                           │
-│                                          │
-│       🧠 Explainable Evaluation          │
-│                                          │
-└──────────────────────────────────────────┘
-```
+# 💼 Potential Use Cases
+
+AI Sheet Evaluator can be adapted for:
+
+### 🎓 Education
+
+Automated evaluation of student assignments and assessments.
+
+### 🧑‍💼 Recruitment
+
+Screening structured candidate assessments.
+
+### 🏢 Corporate Training
+
+Evaluating employee training exercises and quizzes.
+
+### 📊 Data Review
+
+Analyzing structured spreadsheet-based submissions.
+
+### 🧪 Assessments
+
+Automating repetitive evaluation workflows.
+
+---
+
+# 🚀 Performance & UX Goals
+
+The project focuses on:
+
+| Goal | Description |
+|---|---|
+| ⚡ Speed | Reduce repetitive manual evaluation |
+| 🎯 Consistency | Apply standardized evaluation criteria |
+| 📊 Clarity | Present results in an understandable format |
+| 🤖 Automation | Minimize repetitive spreadsheet processing |
+| 📱 Accessibility | Provide a clean and responsive interface |
+| 🔒 Security | Protect uploaded data and application secrets |
 
 ---
 
 # 🔮 Future Roadmap
 
+- [ ] 📊 Advanced analytics dashboard
+- [ ] 📥 Excel and CSV export
+- [ ] 📄 PDF evaluation reports
+- [ ] 📚 Multiple evaluation templates
+- [ ] 🧠 Custom AI evaluation criteria
+- [ ] 👥 Multi-user evaluator accounts
+- [ ] 📈 Historical performance tracking
+- [ ] 🔍 Advanced filtering and search
+- [ ] 🏆 Leaderboards and ranking views
+- [ ] 🔔 Evaluation notifications
+- [ ] ☁️ Cloud file storage
+- [ ] 🔐 Enterprise authentication
+- [ ] 📱 Mobile-optimized evaluation interface
+
+---
+
+# 🌟 Project Highlights
+
 ```text
-[ ] 💾 Persistent evaluation history
-[ ] 👩‍🏫 Teacher authentication
-[ ] 🗄️ Database-backed evaluations
-[ ] 🎓 Class & student management
-[ ] 📄 Exportable evaluation reports
-[ ] ✍️ Advanced handwriting models
-[ ] 📋 Rubric-based grading
-[ ] 🎯 Custom teacher grading criteria
-[ ] 📚 Batch student evaluation
-[ ] 📊 Class-level analytics
+┌─────────────────────────────────────────────────┐
+│                 AI SHEET EVALUATOR               │
+├─────────────────────────────────────────────────┤
+│                                                 │
+│   📤 Smart Upload        🤖 AI Evaluation       │
+│                                                 │
+│   📊 Auto Scoring        💡 Feedback             │
+│                                                 │
+│   📈 Analytics           ⚡ Automation            │
+│                                                 │
+│   🔐 Secure Workflow     📋 Reports              │
+│                                                 │
+└─────────────────────────────────────────────────┘
 ```
 
 ---
 
-# 📌 Project Status
+# 🧠 What This Project Demonstrates
 
-**VedaAI is a functional AI answer-sheet evaluation project built around a real handwritten-paper workflow.**
+This project showcases practical experience in:
 
-Current architecture:
-
-```text
-🗃️ No Database
-        +
-🔐 No Required Authentication
-        +
-📄 Client-side PDF Processing
-        +
-🧠 Multiple AI Providers
-        +
-👩‍🏫 Human Verification
-```
-
-This lightweight design demonstrates the complete evaluation pipeline while leaving room for future production-oriented capabilities.
+- 🤖 AI-assisted application development
+- 📊 Spreadsheet and structured-data processing
+- ⚙️ Automated evaluation workflows
+- 🧮 Scoring and result generation
+- 🌐 Modern web application development
+- 🔌 API integration
+- 🧩 Component-based architecture
+- 🔐 Secure application practices
+- 🚀 Deployment-ready development
 
 ---
 
-# 🎯 Built For
+# 👨‍💻 Author
 
-### VedaAI Hiring Assignment
+## Dhanush Gopi Kavala
 
-The project demonstrates:
-
-- 🧠 AI / LLM integration
-- 👁️ Computer vision workflows
-- ✍️ Handwritten document processing
-- ⚛️ Full-stack development
-- ⚙️ Deterministic business logic
-- 👩‍🏫 Human-in-the-loop AI
-- 🎨 Interactive frontend engineering
-
----
-
-# 🌟 Final Showcase
+**Software Engineer • Full-Stack Developer • AI/ML Enthusiast**
 
 <p align="center">
 
-## 🧠 VedaAI
+<a href="https://github.com/dhanushgopi2456">
+<img src="https://img.shields.io/badge/GitHub-Dhanush%20Gopi-181717?style=for-the-badge&logo=github" />
+</a>
 
-### **From Handwritten Answers → Explainable AI Feedback**
+<a href="https://www.linkedin.com/in/dhanush-gopi-kavala-a460a528b/">
+<img src="https://img.shields.io/badge/LinkedIn-Dhanush%20Gopi-0A66C2?style=for-the-badge&logo=linkedin" />
+</a>
 
-<br/>
+</p>
 
-📄 **Read** &nbsp; • &nbsp;
-🔗 **Map** &nbsp; • &nbsp;
-🤖 **Grade** &nbsp; • &nbsp;
-🔍 **Verify**
+---
 
-<br/><br/>
+# ⭐ Support
 
-<strong>Built with Next.js • TypeScript • Tailwind CSS • Gemini • OpenRouter • pdf.js</strong>
+If you find **AI Sheet Evaluator** useful or interesting:
+
+⭐ Star the repository  
+🍴 Fork the project  
+🐛 Report issues  
+💡 Suggest improvements  
+🤝 Contribute
+
+---
+
+<p align="center">
+
+## 🤖 From Spreadsheet → Intelligence → Insights
+
+### **Upload. Evaluate. Understand. Improve. 🚀**
+
+<strong>AI Sheet Evaluator</strong>
 
 </p>
 
 ---
 
 <p align="center">
-
-⭐ If you find VedaAI interesting, consider starring the repository.
-
-<br/>
-
-**Built to make AI evaluation more transparent, visual, and verifiable.**
-
+  Built with ❤️ by <strong>Dhanush Gopi Kavala</strong>
 </p>
