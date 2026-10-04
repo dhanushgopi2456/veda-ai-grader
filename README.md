@@ -1,694 +1,128 @@
-# 🤖 AI Sheet Evaluator
+# VedaAI — AI Answer Sheet Evaluation
 
-<p align="center">
-  <strong>AI-Powered Spreadsheet Evaluation • Automated Scoring • Intelligent Feedback</strong>
-</p>
+Upload a **question paper** and a **student's handwritten answer sheet** (PDF or images).
+VedaAI extracts every question, locates each handwritten answer on the sheet, maps answers to
+questions, and grades the paper with AI feedback — with the exact answer region highlighted.
 
-<p align="center">
-  Transform spreadsheet submissions into structured evaluations with automated analysis, scoring, and actionable feedback.
-</p>
+Built for the VedaAI Hiring Assignment.
 
-<p align="center">
-  <img src="https://img.shields.io/badge/AI-Powered-6366F1?style=for-the-badge&logo=openai&logoColor=white" />
-  <img src="https://img.shields.io/badge/Spreadsheet%20Analysis-16A34A?style=for-the-badge&logo=google-sheets&logoColor=white" />
-  <img src="https://img.shields.io/badge/Automation-0EA5E9?style=for-the-badge&logo=robotframework&logoColor=white" />
-  <img src="https://img.shields.io/badge/Modern%20Web%20App-EC4899?style=for-the-badge" />
-</p>
+## Features
 
-<p align="center">
-  <a href="#-overview">Overview</a> •
-  <a href="#-features">Features</a> •
-  <a href="#-workflow">Workflow</a> •
-  <a href="#-architecture">Architecture</a> •
-  <a href="#-setup">Setup</a> •
-  <a href="#-future-roadmap">Roadmap</a>
-</p>
+- **Upload both files** (PDF/JPG/PNG/WEBP, multiple files supported) with staged processing progress
+- **Question extraction** preserving original numbering and printed order
+  - Labelled sub-parts become separate entries (`11 (a)` and `11 (b)` → two questions)
+  - Internal choices ("OR ...") captured as alternative text
+  - Marks detected from notation like `[2]`, `(5 marks)`, `3M`
+- **Answer extraction** with tight bounding boxes per page (0–1000 normalized coords)
+  - Multi-page answers span multiple regions
+  - Handwriting transcription included for grading and review
+- **Answer mapping** by label matching (handles `Q11.`, `Ans 4`, `11 a)`, roman numerals, …)
+  - Out-of-order answers handled (mapping is label-based, not positional)
+  - Unanswered questions flagged
+  - Answers that match no question listed separately
+  - Uncertain matches flagged with a "Check" badge
+  - Manual re-mapping dropdowns (teacher can link/unlink any answer) with automatic regrading
+- **Grading & feedback** — per-question verdict (correct / partial / incorrect / unanswered),
+  marks awarded, constructive feedback, plus overall score, grade letter, summary, strengths and
+  improvements
+- **Side-by-side results view** — question cards with AI feedback on the left, the answer sheet on
+  the right with color-coded highlight boxes; clicking a question auto-scrolls to and pulses the
+  exact answer region (and vice versa)
+- **History** of evaluations in the current session (in-memory only)
+- **Sample papers** built in ("Try it with sample papers") for instant demo
 
----
+## How it works
 
-# 🌟 Overview
-
-**AI Sheet Evaluator** is an intelligent spreadsheet evaluation platform designed to automate the process of analyzing and evaluating structured spreadsheet submissions.
-
-Instead of manually reviewing every row, answer, or submission, the system provides an automated workflow for:
-
-```text
-📤 Upload Spreadsheet
-        ↓
-📑 Parse Sheet Data
-        ↓
-🧹 Validate & Process
-        ↓
-🤖 AI Evaluation
-        ↓
-📊 Calculate Scores
-        ↓
-💡 Generate Feedback
-        ↓
-📈 Display Results
+```
+Upload → client-side rasterization (PDF pages → JPEG, size-budgeted)
+       → /api/extract-questions  (vision LLM, JSON-schema constrained)
+       → /api/extract-answers    (vision LLM, bounding boxes + transcription)
+       → label matching (server-of-truth: pure functions in lib/labels.ts)
+       → /api/grade              (LLM per-question verdicts + overall summary)
+       → results UI (highlights, remapping, insights)
 ```
 
-The project combines **spreadsheet processing, AI-assisted evaluation, automated scoring, and a modern web interface** into one streamlined workflow.
+PDFs and images are rasterized **in the browser** (pdf.js), so the server never handles PDFs,
+page numbering is deterministic, and highlight boxes align exactly with what you see.
 
----
+## AI providers
 
-# 🎯 Why AI Sheet Evaluator?
+Works with either key (auto-detected, entered in Settings, stored in `localStorage`):
 
-Traditional spreadsheet evaluation can become repetitive and time-consuming when dealing with large numbers of submissions.
+- **OpenRouter** key (`sk-or-…`) — free models such as `dots-3-note`, MiniMax M3, Gemma 4
+- **Google Gemini** key (`AIza…`) from AI Studio — `gemini-2.5-flash` / `gemini-2.5-pro`
 
-### ❌ Traditional Workflow
+You can also provide a key server-side via env var (`OPENROUTER_API_KEY` or `GEMINI_API_KEY`).
 
-```text
-Open File
-   ↓
-Read Rows
-   ↓
-Check Answers
-   ↓
-Calculate Marks
-   ↓
-Write Feedback
-   ↓
-Repeat...
-```
+## Running locally in VS Code
 
-### ✅ AI Sheet Evaluator
+### 1. Prerequisites
 
-```text
-Upload
-  ↓
-Automatic Processing
-  ↓
-AI Analysis
-  ↓
-Instant Scoring
-  ↓
-Structured Feedback
-  ↓
-Evaluation Report
-```
+- **Node.js 20 or newer** — check with `node -v` (download from https://nodejs.org if missing)
+- **Visual Studio Code** — https://code.visualstudio.com
+- **An AI API key** (free):
+  - OpenRouter: https://openrouter.ai/keys → create key (starts with `sk-or-…`), or
+  - Google AI Studio: https://aistudio.google.com/apikey → create key (starts with `AIza…`)
 
-This makes the evaluation process more **consistent, scalable, and easier to manage**.
+Recommended VS Code extensions (optional): **ESLint**, **Prettier**, **Tailwind CSS IntelliSense**.
 
----
+### 2. Open the project
 
-# ✨ Key Features
+1. Open VS Code → **File ▸ Open Folder…** → select the `veda-ai-grader` folder
+2. Open the integrated terminal: **Terminal ▸ New Terminal** (or `` Ctrl+` ``)
 
-## 📤 Spreadsheet Upload
-
-Upload spreadsheet files through a simple interface.
-
-Supported workflows can include:
-
-- 📊 Question-and-answer sheets
-- 🧑‍🎓 Student submissions
-- 📝 Assessment responses
-- 📋 Evaluation datasets
-- 📈 Structured tabular data
-
----
-
-## 🤖 AI-Powered Evaluation
-
-The evaluator can analyze submitted responses and assist with determining:
-
-- ✅ Correct responses
-- ❌ Incorrect responses
-- ⚠️ Partially correct responses
-- 💡 Improvement suggestions
-- 🧠 Reasoning-based feedback
-
-The evaluation pipeline transforms raw spreadsheet data into structured results.
-
----
-
-## 📊 Automated Scoring
-
-Automatically calculate evaluation results based on the configured evaluation criteria.
-
-Example:
-
-```text
-┌─────────────────────────────────────┐
-│         EVALUATION RESULT           │
-├─────────────────────────────────────┤
-│ Questions Evaluated       20        │
-│ Correct Answers           16        │
-│ Partial Answers            2        │
-│ Incorrect Answers          2        │
-│                                     │
-│ Final Score             85%         │
-│ Performance             Excellent   │
-└─────────────────────────────────────┘
-```
-
----
-
-## 💡 Intelligent Feedback
-
-Instead of returning only a numerical score, the system can present useful feedback such as:
-
-```text
-Question 04
-────────────────────────────
-Status: Partially Correct
-
-Feedback:
-Your answer identifies the main concept,
-but the explanation is missing an important
-implementation detail.
-
-Suggestion:
-Include the relationship between the
-two components to make the answer complete.
-```
-
----
-
-# 📈 Evaluation Dashboard
-
-A dashboard can provide a quick overview of the evaluation.
-
-### Example Metrics
-
-| Metric | Result |
-|---|---:|
-| 📄 Total Submissions | 50 |
-| 📝 Evaluated Sheets | 47 |
-| ✅ Average Score | 82% |
-| 🏆 Highest Score | 98% |
-| ⚠️ Needs Review | 3 |
-| ⏱️ Processing Status | Completed |
-
----
-
-# 🧠 Evaluation Pipeline
-
-```text
-                    ┌──────────────────┐
-                    │ Spreadsheet File │
-                    └────────┬─────────┘
-                             │
-                             ▼
-                    ┌──────────────────┐
-                    │ File Validation  │
-                    └────────┬─────────┘
-                             │
-                             ▼
-                    ┌──────────────────┐
-                    │ Sheet Parser     │
-                    └────────┬─────────┘
-                             │
-                             ▼
-                    ┌──────────────────┐
-                    │ Data Normalizer  │
-                    └────────┬─────────┘
-                             │
-                             ▼
-                    ┌──────────────────┐
-                    │ AI Evaluation    │
-                    └────────┬─────────┘
-                             │
-                             ▼
-                    ┌──────────────────┐
-                    │ Scoring Engine   │
-                    └────────┬─────────┘
-                             │
-                             ▼
-                    ┌──────────────────┐
-                    │ Feedback Engine  │
-                    └────────┬─────────┘
-                             │
-                             ▼
-                    ┌──────────────────┐
-                    │ Final Report     │
-                    └──────────────────┘
-```
-
----
-
-# 🔄 End-to-End Workflow
-
-### 1️⃣ Upload
-
-The evaluator receives a spreadsheet submission.
-
-### 2️⃣ Parse
-
-Spreadsheet rows and columns are extracted into structured data.
-
-### 3️⃣ Validate
-
-The application verifies that the uploaded data follows the expected format.
-
-### 4️⃣ Evaluate
-
-Responses are processed against the configured evaluation logic and AI-assisted criteria.
-
-### 5️⃣ Score
-
-Individual results are converted into an overall score.
-
-### 6️⃣ Generate Feedback
-
-The system produces structured feedback for each evaluated response.
-
-### 7️⃣ Review
-
-The final evaluation is presented through a clean dashboard.
-
----
-
-# 🛠️ Technology Stack
-
-> Replace or expand the badges below according to the exact technologies used in your repository.
-
-### Frontend
-
-<p>
-  <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black" />
-  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" />
-  <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white" />
-</p>
-
-### Styling
-
-<p>
-  <img src="https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" />
-</p>
-
-### AI / Data Processing
-
-<p>
-  <img src="https://img.shields.io/badge/AI-Evaluation-7C3AED?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Spreadsheet-Processing-16A34A?style=for-the-badge" />
-</p>
-
-### Development
-
-<p>
-  <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white" />
-  <img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white" />
-  <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" />
-</p>
-
----
-
-# 🏗️ System Architecture
-
-```text
-                         USER
-                           │
-                           ▼
-                 ┌──────────────────┐
-                 │   Web Interface  │
-                 └────────┬─────────┘
-                          │
-                          ▼
-                 ┌──────────────────┐
-                 │ Upload / Input   │
-                 └────────┬─────────┘
-                          │
-                          ▼
-                 ┌──────────────────┐
-                 │ Processing Layer │
-                 └────────┬─────────┘
-                          │
-                ┌─────────┴─────────┐
-                ▼                   ▼
-       ┌────────────────┐   ┌────────────────┐
-       │ Sheet Parser   │   │ Validation     │
-       └────────┬───────┘   └────────┬───────┘
-                │                    │
-                └─────────┬──────────┘
-                          ▼
-                 ┌──────────────────┐
-                 │ AI Evaluation    │
-                 └────────┬─────────┘
-                          │
-                          ▼
-                 ┌──────────────────┐
-                 │ Scoring Engine   │
-                 └────────┬─────────┘
-                          │
-                          ▼
-                 ┌──────────────────┐
-                 │ Results / Report │
-                 └──────────────────┘
-```
-
----
-
-# 📂 Project Structure
-
-```text
-AI-Sheet-Evaluator/
-│
-├── public/
-│   └── assets/
-│
-├── src/
-│   ├── components/
-│   ├── pages/
-│   ├── services/
-│   ├── utils/
-│   ├── hooks/
-│   ├── types/
-│   └── ...
-│
-├── uploads/
-│
-├── package.json
-├── vite.config.*
-├── tsconfig.json
-├── .env.example
-└── README.md
-```
-
-> Adjust the structure above to match the actual repository folders and files.
-
----
-
-# 🚀 Getting Started
-
-## 📋 Prerequisites
-
-Make sure the following are installed:
-
-```text
-Node.js 18+
-npm
-Git
-VS Code
-```
-
----
-
-## 1️⃣ Clone the Repository
-
-```bash
-git clone <YOUR_GITHUB_REPOSITORY_URL>
-
-cd AI-Sheet-Evaluator
-```
-
----
-
-## 2️⃣ Install Dependencies
+### 3. Install & run
 
 ```bash
 npm install
-```
-
----
-
-## 3️⃣ Configure Environment Variables
-
-Create a `.env` file:
-
-```bash
-cp .env.example .env
-```
-
-For Windows PowerShell:
-
-```powershell
-Copy-Item .env.example .env
-```
-
-Add the required configuration values.
-
-```env
-# Example
-AI_API_KEY=your_api_key_here
-```
-
-> Never commit API keys, credentials, or private configuration files to GitHub.
-
----
-
-## 4️⃣ Start Development Server
-
-```bash
 npm run dev
 ```
 
-Open the local development URL displayed in your terminal.
+Then open **http://localhost:3000** in your browser (Ctrl+Click the link printed in the terminal).
 
----
+### 4. Add your API key (one time, per browser)
 
-# 🧪 Testing
+1. Click **Settings** in the left sidebar (or the gear icon, top right)
+2. Paste your OpenRouter or Gemini key → click **Test** → you should see "Key works"
+3. Pick a model (free models are marked) → **Save**
 
-Run the project's available tests with:
+The key is stored only in your browser's `localStorage` — nothing is sent anywhere except the
+AI provider you chose.
+
+### 5. Try it
+
+- Click **Try it with sample papers** to run the full flow on bundled sample files, or
+- Upload your own question paper + answer sheet (PDF, JPG, PNG) and press **Get Feedback**
+
+### Useful commands
+
+| Command           | What it does                              |
+| ----------------- | ----------------------------------------- |
+| `npm run dev`     | Start the dev server (hot reload)         |
+| `npm run build`   | Create a production build                 |
+| `npm start`       | Serve the production build                |
+| `npm run lint`    | Run ESLint                                |
+
+Troubleshooting:
+- **Port already in use** → `npm run dev -- -p 3001`
+- **"No AI API key found"** → add your key in Settings (step 4)
+- **Free model rate-limited (429)** → wait a minute or switch model in Settings
+
+## Deployment
+
+Deployable to any Node host (built with Next.js App Router):
 
 ```bash
-npm test
+npm run build && npm start
 ```
 
-For type checking:
-
-```bash
-npm run typecheck
-```
-
-For linting:
-
-```bash
-npm run lint
-```
-
-> Use only the commands actually defined in `package.json`.
-
----
-
-# 📸 Screenshots & Demo
-
-## 🖥️ Dashboard
-
-Add your dashboard screenshot here:
-
-```text
-docs/screenshots/dashboard.png
-```
-
-## 📤 Upload Interface
-
-```text
-docs/screenshots/upload.png
-```
-
-## 📊 Evaluation Results
-
-```text
-docs/screenshots/results.png
-```
-
-## 🤖 AI Feedback
-
-```text
-docs/screenshots/feedback.png
-```
-
-### 🎥 Demo
-
-Add your deployed application or demonstration video here:
-
-```text
-🔗 Live Demo: YOUR_DEPLOYED_URL
-```
-
----
-
-# 🔐 Security Considerations
-
-The application should follow secure development practices when deployed.
-
-### 🔑 Secrets
-
-Never expose API keys in frontend source code or commit `.env` files.
-
-### 📁 File Uploads
-
-Uploaded spreadsheets should be validated for:
-
-- File type
-- File size
-- Expected structure
-- Malicious content
-
-### 🛡️ API Protection
-
-Production deployments should implement:
-
-- Authentication
-- Authorization
-- Rate limiting
-- Input validation
-- Secure API endpoints
-
----
-
-# 📊 Example Evaluation Result
-
-```text
-╭────────────────────────────────────────╮
-│         🤖 AI EVALUATION REPORT        │
-├────────────────────────────────────────┤
-│                                        │
-│  📄 Submission       Student_01.xlsx   │
-│  📝 Questions                   25     │
-│  ✅ Correct                     20     │
-│  ⚠️ Partial                      3     │
-│  ❌ Incorrect                    2     │
-│                                        │
-│  🎯 SCORE                      86%      │
-│                                        │
-│  Performance: Strong                  │
-│                                        │
-╰────────────────────────────────────────╯
-```
-
----
-
-# 💼 Potential Use Cases
-
-AI Sheet Evaluator can be adapted for:
-
-### 🎓 Education
-
-Automated evaluation of student assignments and assessments.
-
-### 🧑‍💼 Recruitment
-
-Screening structured candidate assessments.
-
-### 🏢 Corporate Training
-
-Evaluating employee training exercises and quizzes.
-
-### 📊 Data Review
-
-Analyzing structured spreadsheet-based submissions.
-
-### 🧪 Assessments
-
-Automating repetitive evaluation workflows.
-
----
-
-# 🚀 Performance & UX Goals
-
-The project focuses on:
-
-| Goal | Description |
-|---|---|
-| ⚡ Speed | Reduce repetitive manual evaluation |
-| 🎯 Consistency | Apply standardized evaluation criteria |
-| 📊 Clarity | Present results in an understandable format |
-| 🤖 Automation | Minimize repetitive spreadsheet processing |
-| 📱 Accessibility | Provide a clean and responsive interface |
-| 🔒 Security | Protect uploaded data and application secrets |
-
----
-
-# 🔮 Future Roadmap
-
-- [ ] 📊 Advanced analytics dashboard
-- [ ] 📥 Excel and CSV export
-- [ ] 📄 PDF evaluation reports
-- [ ] 📚 Multiple evaluation templates
-- [ ] 🧠 Custom AI evaluation criteria
-- [ ] 👥 Multi-user evaluator accounts
-- [ ] 📈 Historical performance tracking
-- [ ] 🔍 Advanced filtering and search
-- [ ] 🏆 Leaderboards and ranking views
-- [ ] 🔔 Evaluation notifications
-- [ ] ☁️ Cloud file storage
-- [ ] 🔐 Enterprise authentication
-- [ ] 📱 Mobile-optimized evaluation interface
-
----
-
-# 🌟 Project Highlights
-
-```text
-┌─────────────────────────────────────────────────┐
-│                 AI SHEET EVALUATOR               │
-├─────────────────────────────────────────────────┤
-│                                                 │
-│   📤 Smart Upload        🤖 AI Evaluation       │
-│                                                 │
-│   📊 Auto Scoring        💡 Feedback             │
-│                                                 │
-│   📈 Analytics           ⚡ Automation            │
-│                                                 │
-│   🔐 Secure Workflow     📋 Reports              │
-│                                                 │
-└─────────────────────────────────────────────────┘
-```
-
----
-
-# 🧠 What This Project Demonstrates
-
-This project showcases practical experience in:
-
-- 🤖 AI-assisted application development
-- 📊 Spreadsheet and structured-data processing
-- ⚙️ Automated evaluation workflows
-- 🧮 Scoring and result generation
-- 🌐 Modern web application development
-- 🔌 API integration
-- 🧩 Component-based architecture
-- 🔐 Secure application practices
-- 🚀 Deployment-ready development
-
----
-
-# 👨‍💻 Author
-
-## Dhanush Gopi Kavala
-
-**Software Engineer • Full-Stack Developer • AI/ML Enthusiast**
-
-<p align="center">
-
-<a href="https://github.com/dhanushgopi2456">
-<img src="https://img.shields.io/badge/GitHub-Dhanush%20Gopi-181717?style=for-the-badge&logo=github" />
-</a>
-
-<a href="https://www.linkedin.com/in/dhanush-gopi-kavala-a460a528b/">
-<img src="https://img.shields.io/badge/LinkedIn-Dhanush%20Gopi-0A66C2?style=for-the-badge&logo=linkedin" />
-</a>
-
-</p>
-
----
-
-# ⭐ Support
-
-If you find **AI Sheet Evaluator** useful or interesting:
-
-⭐ Star the repository  
-🍴 Fork the project  
-🐛 Report issues  
-💡 Suggest improvements  
-🤝 Contribute
-
----
-
-<p align="center">
-
-## 🤖 From Spreadsheet → Intelligence → Insights
-
-### **Upload. Evaluate. Understand. Improve. 🚀**
-
-<strong>AI Sheet Evaluator</strong>
-
-</p>
-
----
-
-<p align="center">
-  Built with ❤️ by <strong>Dhanush Gopi Kavala</strong>
-</p>
+Or push to GitHub and import in Vercel. No database, no auth, no server env required —
+teachers bring their own key through the UI. (Optional: set `OPENROUTER_API_KEY` /
+`GEMINI_API_KEY` as an env var to pre-provision a key.)
+
+## Tech stack
+
+- Next.js (App Router) + TypeScript + Tailwind CSS v4
+- Google Gemini / OpenRouter vision models with JSON-schema-constrained output
+- pdf.js for client-side PDF rasterization
+- No database — in-memory session state only

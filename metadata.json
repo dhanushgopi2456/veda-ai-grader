@@ -1,0 +1,7 @@
+{
+  "name": "VedaAI — AI Answer Sheet Evaluation",
+  "description": "Upload a question paper and a student answer sheet. VedaAI extracts the questions, locates every handwritten answer, and grades the paper with AI feedback.",
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
