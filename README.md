@@ -126,3 +126,5 @@ teachers bring their own key through the UI. (Optional: set `OPENROUTER_API_KEY`
 - Google Gemini / OpenRouter vision models with JSON-schema-constrained output
 - pdf.js for client-side PDF rasterization
 - No database — in-memory session state only
+
+⭐ **Star the repository if you like the project**
