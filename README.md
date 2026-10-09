@@ -542,5 +542,5 @@ If you find VedaAI useful, consider giving the repository a star.
   <br/><br/>
   Built with ❤️ using Next.js, TypeScript, and AI.
   <br/><br/>
-  ⭐ <strong>Star the repository if you like the project!</strong>
+  ⭐ <strong>Star the repository if you like the project</strong>
 </p>
