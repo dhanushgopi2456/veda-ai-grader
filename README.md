@@ -539,6 +539,6 @@ If you find VedaAI useful, consider giving the repository a star.
 
 <p align="center">
   <strong>🎓 Smarter Evaluation. Clearer Feedback. Better Learning.</strong>
-  <br/><br/>
+  <br/>
   ⭐ <strong>Star the repository if you like the project</strong>
 </p>
