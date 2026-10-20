@@ -446,7 +446,7 @@ Explore the VedaAI interface and its AI-powered answer sheet evaluation workflow
 ### Dashboard
 
 <p align="center">
-  <img src="https://github.com/dhanushgopi2456/My-All-Project-Screenshots/blob/main/Screenshot%202026-10-12%20160441.png" width="90%" alt="Dashboard"/>
+  <img src="https://github.com/dhanushgopi2456/My-All-Project-Screenshots/blob/main/Screenshot%202026-10-20%20082125.png" width="90%" alt="Dashboard"/>
 </p>
 
 ## 🌐 Deployment
