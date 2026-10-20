@@ -449,6 +449,12 @@ Explore the VedaAI interface and its AI-powered answer sheet evaluation workflow
   <img src="https://github.com/dhanushgopi2456/My-All-Project-Screenshots/blob/main/Screenshot%202026-10-20%20082125.png" width="90%" alt="Dashboard"/>
 </p>
 
+### 📄 Upload Question Paper & Answer Sheet
+
+<p align="center">
+  <img src="https://github.com/dhanushgopi2456/My-All-Project-Screenshots/blob/main/Screenshot%202026-10-20%20082125.png" width="90%" alt="Upload Question Paper & Answer Sheet"/>
+</p>
+
 ## 🌐 Deployment
 
 VedaAI is built with Next.js App Router and can be deployed to compatible Node.js hosting platforms.
