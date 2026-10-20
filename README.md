@@ -22,7 +22,7 @@
 <p align="center">
   <a href="#-overview">Overview</a> •
   <a href="#-features">Features</a> •
-  <a href="#-system-architecture">Architecture</a> •
+  <a href="#system-architecture">Architecture</a> •
   <a href="#-ai-providers">AI Providers</a> •
   <a href="#-running-locally-in-vs-code">Local Setup</a> •
   <a href="#-deployment">Deployment</a> •
