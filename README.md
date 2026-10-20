@@ -168,6 +168,8 @@ The sample flow is useful for:
 
 ---
 
+<a id="system-architecture"></a>
+
 ## 🏗️ System Architecture
 
 VedaAI uses a staged pipeline that separates document preparation, extraction, mapping, grading, and result visualization.
