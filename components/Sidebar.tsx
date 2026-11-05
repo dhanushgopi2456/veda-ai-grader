@@ -14,7 +14,6 @@ import {
   Sun,
   Monitor,
   GraduationCap,
-  Sparkles,
 } from "lucide-react";
 import type { Stage } from "@/lib/types";
 import { modelsFor, type ThemeMode } from "@/lib/settings";
@@ -74,25 +73,25 @@ export default function Sidebar({
 
   return (
     <aside
-      className={`hidden md:flex flex-col border-r border-[#e5e5e7] bg-[#ffffff] transition-all duration-200 relative select-none ${
+      className={`hidden md:flex flex-col border-r border-[var(--border)] bg-[var(--canvas)] transition-all duration-200 relative select-none ${
         isCollapsed ? "w-18" : "w-64"
       }`}
     >
       {/* Brand Header */}
-      <div className="flex h-16 shrink-0 items-center justify-between px-4 border-b border-[#f2f2f3]">
+      <div className="flex h-16 shrink-0 items-center justify-between px-4 border-b border-[var(--border-subtle)]">
         <button
           onClick={() => onNavigate("dashboard")}
-          className="flex items-center gap-3 overflow-hidden text-left focus-visible:outline-none"
+          className="flex items-center gap-3 overflow-hidden text-left focus-visible:outline-none cursor-pointer"
         >
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#17191c] text-[#ffffff]">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--ink)] text-[var(--canvas)]">
             <GraduationCap className="h-4.5 w-4.5" />
           </div>
           {!isCollapsed && (
             <div className="min-w-0 flex-1">
-              <span className="font-serif text-[17px] font-normal tracking-tight text-[#17191c]">
+              <span className="font-serif text-[17px] font-normal tracking-tight text-[var(--ink)]">
                 VedaAI
               </span>
-              <p className="truncate text-[11px] font-sans text-[#777b86]">
+              <p className="truncate text-[11px] font-sans text-[var(--slate)]">
                 Editorial Grader
               </p>
             </div>
@@ -102,7 +101,7 @@ export default function Sidebar({
         {/* Collapse toggle button */}
         <button
           onClick={onToggleCollapse}
-          className="hidden lg:flex h-7 w-7 items-center justify-center rounded-full border border-[#e5e5e7] text-[#777b86] hover:text-[#17191c] hover:bg-[#f2f2f3] transition-colors"
+          className="hidden lg:flex h-7 w-7 items-center justify-center rounded-full border border-[var(--border)] text-[var(--slate)] hover:text-[var(--ink)] hover:bg-[var(--mist)] transition-colors cursor-pointer"
           title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
           aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
@@ -135,10 +134,10 @@ export default function Sidebar({
                 }}
                 onMouseEnter={() => setHoveredItem(item.key)}
                 onMouseLeave={() => setHoveredItem(null)}
-                className={`flex w-full items-center gap-3 rounded-full px-3.5 py-2.5 text-[14px] font-sans font-medium transition-colors ${
+                className={`flex w-full items-center gap-3 rounded-full px-3.5 py-2.5 text-[14px] font-sans font-medium transition-colors cursor-pointer ${
                   isActive
-                    ? "bg-[#17191c] text-[#ffffff]"
-                    : "text-[#777b86] hover:bg-[#f2f2f3] hover:text-[#17191c]"
+                    ? "bg-[var(--ink)] text-[var(--canvas)]"
+                    : "text-[var(--slate)] hover:bg-[var(--mist)] hover:text-[var(--ink)]"
                 } ${isCollapsed ? "justify-center px-0" : ""}`}
                 aria-current={isActive ? "page" : undefined}
               >
@@ -150,7 +149,7 @@ export default function Sidebar({
 
               {/* Tooltip on collapse */}
               {isCollapsed && hoveredItem === item.key && (
-                <div className="absolute left-full top-1/2 -translate-y-1/2 ml-2.5 z-50 whitespace-nowrap rounded-lg bg-[#17191c] px-2.5 py-1 text-xs font-sans font-medium text-white shadow-md">
+                <div className="absolute left-full top-1/2 -translate-y-1/2 ml-2.5 z-50 whitespace-nowrap rounded-lg bg-[var(--ink)] px-2.5 py-1 text-xs font-sans font-medium text-[var(--canvas)] shadow-md">
                   {item.label}
                 </div>
               )}
@@ -164,27 +163,27 @@ export default function Sidebar({
         <div className="px-3 py-2">
           <button
             onClick={onOpenSettings}
-            className="w-full rounded-[16px] border border-[#e5e5e7] bg-[#f2f2f3] p-3.5 text-left transition-colors hover:bg-[#ebebee]"
+            className="w-full rounded-[16px] border border-[var(--border)] bg-[var(--mist)] p-3.5 text-left transition-colors hover:opacity-90 cursor-pointer"
           >
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-sans font-medium uppercase tracking-[0.04em] text-[#979799]">
+              <span className="text-[11px] font-sans font-medium uppercase tracking-[0.04em] text-[var(--ash)]">
                 Active Engine
               </span>
-              <span className="h-1.5 w-1.5 rounded-full bg-[#17191c]" />
+              <span className="h-1.5 w-1.5 rounded-full bg-[var(--ink)]" />
             </div>
-            <p className="mt-1.5 truncate text-[12px] font-sans font-medium text-[#17191c]">
+            <p className="mt-1.5 truncate text-[12px] font-sans font-medium text-[var(--ink)]">
               {modelLabel}
             </p>
-            <div className="mt-2 flex items-center justify-between text-[11px] font-sans text-[#777b86]">
+            <div className="mt-2 flex items-center justify-between text-[11px] font-sans text-[var(--slate)]">
               <span>{hasKey ? "Key active" : "Using session key"}</span>
-              <span className="text-[#17191c] font-medium">Configure →</span>
+              <span className="text-[var(--ink)] font-medium">Configure →</span>
             </div>
           </button>
         </div>
       )}
 
       {/* User & Actions Footer */}
-      <div className="p-3 border-t border-[#f2f2f3] space-y-2">
+      <div className="p-3 border-t border-[var(--border-subtle)] space-y-2">
         {/* Quick Utilities: Theme Switcher & Logout */}
         <div
           className={`flex items-center gap-1.5 ${
@@ -194,7 +193,7 @@ export default function Sidebar({
           <button
             onClick={onToggleTheme}
             suppressHydrationWarning
-            className="flex h-8 w-8 items-center justify-center rounded-full text-[#777b86] hover:bg-[#f2f2f3] hover:text-[#17191c] transition-colors cursor-pointer"
+            className="flex h-8 w-8 items-center justify-center rounded-full text-[var(--slate)] hover:bg-[var(--mist)] hover:text-[var(--ink)] transition-colors cursor-pointer"
             title={`Current theme: ${theme}. Click to switch.`}
             aria-label="Toggle theme"
           >
@@ -202,14 +201,14 @@ export default function Sidebar({
           </button>
 
           {!isCollapsed && (
-            <span className="text-[12px] font-sans capitalize text-[#777b86]">
+            <span className="text-[12px] font-sans capitalize text-[var(--slate)]">
               {theme} theme
             </span>
           )}
 
           <button
             onClick={onLogoutRequest}
-            className="flex h-8 w-8 items-center justify-center rounded-full text-[#777b86] hover:bg-[#f2f2f3] hover:text-[#17191c] transition-colors"
+            className="flex h-8 w-8 items-center justify-center rounded-full text-[var(--slate)] hover:bg-[var(--mist)] hover:text-[var(--ink)] transition-colors cursor-pointer"
             title="Sign out / reset workspace"
             aria-label="Sign out"
           >
@@ -220,11 +219,11 @@ export default function Sidebar({
         {/* Profile Card */}
         <button
           onClick={onOpenSettings}
-          className={`flex w-full items-center gap-3 rounded-full p-2 text-left transition-colors hover:bg-[#f2f2f3] ${
+          className={`flex w-full items-center gap-3 rounded-full p-2 text-left transition-colors hover:bg-[var(--mist)] cursor-pointer ${
             isCollapsed ? "justify-center" : ""
           }`}
         >
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#f2f2f3] text-[#17191c] font-sans font-medium text-xs border border-[#e5e5e7]">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--mist)] text-[var(--ink)] font-sans font-medium text-xs border border-[var(--border)]">
             {userName
               .split(" ")
               .map((n) => n[0])
@@ -234,10 +233,10 @@ export default function Sidebar({
           </div>
           {!isCollapsed && (
             <div className="min-w-0 flex-1">
-              <p className="truncate text-[13px] font-sans font-medium text-[#17191c]">
+              <p className="truncate text-[13px] font-sans font-medium text-[var(--ink)]">
                 {userName}
               </p>
-              <p className="truncate text-[11px] font-sans text-[#777b86]">
+              <p className="truncate text-[11px] font-sans text-[var(--slate)]">
                 {userEmail}
               </p>
             </div>

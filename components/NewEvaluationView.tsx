@@ -17,6 +17,7 @@ import {
   Eye,
 } from "lucide-react";
 import type { EvaluationConfig } from "@/lib/types";
+import { useToast } from "@/components/ToastProvider";
 
 type Props = {
   qFiles: File[];
@@ -214,6 +215,7 @@ export default function NewEvaluationView({
   onModelChange,
   hasKey,
 }: Props) {
+  const { toast } = useToast();
   const [showConfig, setShowConfig] = useState(true);
   const [previewFile, setPreviewFile] = useState<{ name: string; url: string; isPdf: boolean } | null>(null);
 
@@ -574,9 +576,11 @@ export default function NewEvaluationView({
           onClick={() => {
             if (busy || sampleLoading) return;
             if (!isReady) {
+              toast.info("Loading bundled sample exam files...");
               onLoadSample();
               return;
             }
+            toast.info("Starting AI evaluation pipeline...");
             onProcess(config);
           }}
           disabled={busy || sampleLoading}

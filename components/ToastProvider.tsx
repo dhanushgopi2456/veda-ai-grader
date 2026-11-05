@@ -41,7 +41,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const addToast = useCallback(
-    (type: ToastType, title: string, description?: string, duration = 4000) => {
+    (type: ToastType, title: string, description?: string, duration = 3200) => {
       const id = `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
       setToasts((prev) => [...prev, { id, type, title, description, duration }]);
 
@@ -71,55 +71,47 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
       {/* Toast viewport */}
       <div
         aria-live="polite"
-        className="pointer-events-none fixed bottom-4 right-4 z-50 flex max-w-sm flex-col gap-2.5 sm:bottom-6 sm:right-6"
+        className="pointer-events-none fixed bottom-4 right-4 z-[9999] flex max-w-sm flex-col gap-2.5 sm:bottom-6 sm:right-6"
       >
-        {toasts.map((t) => {
-          return (
-            <div
-              key={t.id}
-              role="alert"
-              className={`pointer-events-auto flex w-full items-start gap-3 rounded-2xl border p-4 shadow-xl backdrop-blur-md transition-all duration-300 anim-fade-up ${
-                t.type === "success"
-                  ? "border-emerald-200 bg-white/95 text-neutral-900 shadow-emerald-500/5 dark:border-emerald-800/60 dark:bg-neutral-900/95 dark:text-neutral-100"
-                  : t.type === "error"
-                    ? "border-rose-200 bg-white/95 text-neutral-900 shadow-rose-500/5 dark:border-rose-800/60 dark:bg-neutral-900/95 dark:text-neutral-100"
-                    : t.type === "warning"
-                      ? "border-amber-200 bg-white/95 text-neutral-900 shadow-amber-500/5 dark:border-amber-800/60 dark:bg-neutral-900/95 dark:text-neutral-100"
-                      : "border-neutral-200 bg-white/95 text-neutral-900 shadow-neutral-500/5 dark:border-neutral-800 dark:bg-neutral-900/95 dark:text-neutral-100"
-              }`}
-            >
-              <span className="mt-0.5 shrink-0">
-                {t.type === "success" && (
-                  <CheckCircle2 className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
-                )}
-                {t.type === "error" && (
-                  <AlertCircle className="h-5 w-5 text-rose-600 dark:text-rose-400" />
-                )}
-                {t.type === "warning" && (
-                  <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400" />
-                )}
-                {t.type === "info" && (
-                  <Info className="h-5 w-5 text-sky-600 dark:text-sky-400" />
-                )}
-              </span>
-              <div className="min-w-0 flex-1">
-                <p className="text-sm font-semibold tracking-tight">{t.title}</p>
-                {t.description && (
-                  <p className="mt-1 text-xs leading-relaxed text-neutral-500 dark:text-neutral-400">
-                    {t.description}
-                  </p>
-                )}
-              </div>
-              <button
-                onClick={() => dismissToast(t.id)}
-                className="shrink-0 rounded-lg p-1 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700 dark:hover:bg-neutral-800 dark:hover:text-neutral-200"
-                aria-label="Dismiss notification"
-              >
-                <X className="h-4 w-4" />
-              </button>
+        {toasts.map((t) => (
+          <div
+            key={t.id}
+            role="alert"
+            className="pointer-events-auto anim-steep-fade flex w-full items-start gap-3 rounded-[16px] border border-[var(--border)] bg-[var(--canvas)] p-4 text-[var(--ink)] shadow-steep-artifact"
+          >
+            <span className="mt-0.5 shrink-0">
+              {t.type === "success" && (
+                <CheckCircle2 className="h-4.5 w-4.5 text-[var(--ink)]" />
+              )}
+              {t.type === "error" && (
+                <AlertCircle className="h-4.5 w-4.5 text-rose-500" />
+              )}
+              {t.type === "warning" && (
+                <AlertTriangle className="h-4.5 w-4.5 text-amber-500" />
+              )}
+              {t.type === "info" && (
+                <Info className="h-4.5 w-4.5 text-[var(--ink)]" />
+              )}
+            </span>
+            <div className="min-w-0 flex-1 text-left">
+              <p className="text-[13.5px] font-sans font-medium text-[var(--ink)]">
+                {t.title}
+              </p>
+              {t.description && (
+                <p className="mt-1 text-[12px] font-sans text-[var(--slate)] leading-relaxed">
+                  {t.description}
+                </p>
+              )}
             </div>
-          );
-        })}
+            <button
+              onClick={() => dismissToast(t.id)}
+              className="shrink-0 rounded-full p-1 text-[var(--slate)] hover:bg-[var(--mist)] hover:text-[var(--ink)] transition-colors cursor-pointer"
+              aria-label="Dismiss notification"
+            >
+              <X className="h-3.5 w-3.5" />
+            </button>
+          </div>
+        ))}
       </div>
     </ToastContext.Provider>
   );

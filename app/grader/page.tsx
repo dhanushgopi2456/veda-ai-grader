@@ -183,7 +183,7 @@ function VedaApp() {
     setSettings(updated);
     saveSettings(updated);
     applyTheme(nextTheme);
-    toast.info(`Theme changed to ${nextTheme} mode`);
+    toast.info(`Theme switched to ${nextTheme === "dark" ? "Dark" : "Light"} mode`);
   }, [settings, toast]);
 
   const setStep = useCallback((key: StepKey, state: StepState, detail?: string) => {
@@ -592,9 +592,9 @@ function VedaApp() {
       isDanger: false,
       onConfirm: () => {
         setConfirmDialog((c) => ({ ...c, open: false }));
-        toast.info("Signed out successfully", "Redirecting to login portal...");
+        toast.success("Signed out successfully", "Redirecting to Educator Portal...");
         setTimeout(() => {
-          router.push("/login");
+          window.location.href = "/login";
         }, 300);
       },
     });
@@ -615,7 +615,7 @@ function VedaApp() {
               : "Overview";
 
   return (
-    <div className="flex h-dvh overflow-hidden bg-[#ffffff] text-[#17191c]">
+    <div className="flex h-dvh overflow-hidden bg-[var(--canvas)] text-[var(--ink)]">
       {/* Sidebar Navigation */}
       <Sidebar
         stage={stage}
@@ -642,7 +642,7 @@ function VedaApp() {
             className="fixed inset-0 bg-neutral-950/60 backdrop-blur-sm"
             onClick={() => setMobileNavOpen(false)}
           />
-          <div className="fixed inset-y-0 left-0 w-72 max-w-[80vw] bg-[#ffffff] border-r border-[#e5e5e7] shadow-steep-artifact flex flex-col z-10">
+          <div className="fixed inset-y-0 left-0 w-72 max-w-[80vw] bg-[var(--canvas)] border-r border-[var(--border)] shadow-steep-artifact flex flex-col z-10">
             <Sidebar
               stage={stage}
               onNavigate={(s) => {
@@ -810,10 +810,10 @@ function VedaApp() {
 
 export default function GraderPage() {
   return (
-    <Suspense fallback={<div className="flex h-dvh items-center justify-center bg-white text-sm text-neutral-500">Loading VedaAI Grader...</div>}>
-      <ToastProvider>
+    <Suspense fallback={<div className="flex h-dvh items-center justify-center bg-[var(--canvas)] text-sm text-[var(--slate)]">Loading VedaAI Grader...</div>}>
+
         <VedaApp />
-      </ToastProvider>
+
     </Suspense>
   );
 }
