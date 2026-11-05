@@ -561,7 +561,7 @@ export function loadSettings(): Settings {
     return {
       apiKey: "",
       model: DEFAULT_MODELS.gemini,
-      theme: "system",
+      theme: "dark",
       user: DEFAULT_USER,
       defaultStrictness: "balanced",
       defaultFeedback: "standard",
@@ -580,7 +580,7 @@ export function loadSettings(): Settings {
       return {
         apiKey,
         model: model || DEFAULT_MODELS.gemini,
-        theme: parsed.theme || "system",
+        theme: parsed.theme || "dark",
         user: parsed.user || DEFAULT_USER,
         defaultStrictness: parsed.defaultStrictness || "balanced",
         defaultFeedback: parsed.defaultFeedback || "standard",
@@ -591,7 +591,7 @@ export function loadSettings(): Settings {
   return {
     apiKey: "",
     model: DEFAULT_MODELS.gemini,
-    theme: "system",
+    theme: "dark",
     user: DEFAULT_USER,
     defaultStrictness: "balanced",
     defaultFeedback: "standard",

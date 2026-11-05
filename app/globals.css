@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-accent: #f4511e;
   --color-accent-soft: #fff0ea;
@@ -12,11 +14,28 @@ html {
   height: 100%;
 }
 
+html.dark {
+  color-scheme: dark;
+}
+
+html:not(.dark) {
+  color-scheme: light;
+}
+
 body {
   height: 100%;
-  background: #050711;
-  color: #f8fafc;
   font-family: var(--font-sans);
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+html.dark body {
+  background: #070913;
+  color: #f8fafc;
+}
+
+html:not(.dark) body {
+  background: #f8fafc;
+  color: #0f172a;
 }
 
 @keyframes float-y {
@@ -25,14 +44,34 @@ body {
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-6px);
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(1.5deg);
+  }
+}
+
+@keyframes float-reverse {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(10px) rotate(-1.5deg);
   }
 }
 
 @keyframes fade-up {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
@@ -42,7 +81,7 @@ body {
 
 @keyframes scanBeam {
   0% {
-    transform: translateY(0%);
+    top: 0%;
     opacity: 0;
   }
   15% {
@@ -52,32 +91,79 @@ body {
     opacity: 1;
   }
   100% {
-    transform: translateY(280%);
+    top: 92%;
     opacity: 0;
   }
 }
 
-@keyframes laserSweep {
-  0%, 100% {
-    transform: translateY(-20%);
-    opacity: 0.3;
+@keyframes textShimmer {
+  0% {
+    background-position: 0% 50%;
   }
   50% {
-    transform: translateY(120%);
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
     opacity: 0.8;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes laserRay {
+  0% {
+    transform: rotate(-35deg) translateY(-100%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: rotate(-35deg) translateY(200%);
+    opacity: 0;
   }
 }
 
 .anim-float {
-  animation: float-y 2.4s ease-in-out infinite;
+  animation: float-y 3s ease-in-out infinite;
+}
+
+.anim-float-slow {
+  animation: float-slow 5s ease-in-out infinite;
+}
+
+.anim-float-reverse {
+  animation: float-reverse 4.5s ease-in-out infinite;
 }
 
 .anim-fade-up {
-  animation: fade-up 0.35s ease-out both;
+  animation: fade-up 0.4s ease-out both;
 }
 
 .anim-scan-beam {
-  animation: scanBeam 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation: scanBeam 3.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.anim-text-shimmer {
+  background-size: 200% auto;
+  animation: textShimmer 4s ease-in-out infinite;
+}
+
+.anim-pulse-glow {
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+.anim-laser-ray {
+  animation: laserRay 7s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
 ::-webkit-scrollbar {
@@ -86,12 +172,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(148, 163, 184, 0.3);
   border-radius: 8px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(148, 163, 184, 0.5);
 }
 
 ::-webkit-scrollbar-track {

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useRef, useState, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import type {
   AnswerExtraction,
   EvaluationConfig,
@@ -72,6 +72,7 @@ type GradeResponse = {
 function VedaApp() {
   const { toast } = useToast();
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   // App Navigation & Modal State
   const [mounted, setMounted] = useState(false);
@@ -79,7 +80,7 @@ function VedaApp() {
   const [settings, setSettings] = useState<Settings>({
     apiKey: "",
     model: "dots-studio/dots-3-note-preview:free",
-    theme: "system",
+    theme: "dark",
     user: {
       name: "Dhanush Gopi",
       email: "gopidhanush615@gmail.com",
@@ -174,12 +175,10 @@ function VedaApp() {
 
   // Toggle Theme helper
   const handleToggleTheme = useCallback(() => {
-    const nextTheme: ThemeMode =
-      settings.theme === "light"
-        ? "dark"
-        : settings.theme === "dark"
-          ? "system"
-          : "light";
+    const isDarkNow =
+      typeof document !== "undefined" &&
+      document.documentElement.classList.contains("dark");
+    const nextTheme: ThemeMode = isDarkNow ? "light" : "dark";
     const updated = { ...settings, theme: nextTheme };
     setSettings(updated);
     saveSettings(updated);
@@ -593,7 +592,10 @@ function VedaApp() {
       isDanger: false,
       onConfirm: () => {
         setConfirmDialog((c) => ({ ...c, open: false }));
-        toast.info("Signed out successfully");
+        toast.info("Signed out successfully", "Redirecting to login portal...");
+        setTimeout(() => {
+          router.push("/login");
+        }, 300);
       },
     });
   }
