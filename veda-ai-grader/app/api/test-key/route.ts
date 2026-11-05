@@ -1,21 +1,31 @@
 import { GoogleGenAI } from "@google/genai";
 import { detectProvider } from "@/lib/ai";
+import { isRealKey } from "@/lib/server";
 
 export const runtime = "nodejs";
+
+export async function GET() {
+  const hasServerKey = Boolean(
+    isRealKey(process.env.GEMINI_API_KEY) || isRealKey(process.env.OPENROUTER_API_KEY)
+  );
+  return Response.json({ hasServerKey });
+}
 
 export async function POST(request: Request) {
   try {
     const body = (await request.json()) as { apiKey?: string; model?: string };
-    const key = (
-      body.apiKey ||
-      process.env.GEMINI_API_KEY ||
-      process.env.OPENROUTER_API_KEY ||
-      ""
-    ).trim();
+    let key = (body.apiKey || "").trim();
+    if (!isRealKey(key)) {
+      if (isRealKey(process.env.OPENROUTER_API_KEY)) {
+        key = (process.env.OPENROUTER_API_KEY as string).trim();
+      } else if (isRealKey(process.env.GEMINI_API_KEY)) {
+        key = (process.env.GEMINI_API_KEY as string).trim();
+      }
+    }
     if (!key) {
       return Response.json({ ok: false, error: "No API key provided." }, { status: 400 });
     }
-    const model = (body.model || "").trim();
+    let model = (body.model || "").trim();
     if (detectProvider(key) === "openrouter") {
       const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
         method: "POST",
@@ -39,9 +49,12 @@ export async function POST(request: Request) {
       }
       return Response.json({ ok: true });
     }
+    if (model.includes("2.5") || model.includes("2.0") || !model) {
+      model = "gemini-3.8-flash";
+    }
     const ai = new GoogleGenAI({ apiKey: key });
     await ai.models.generateContent({
-      model: model || "gemini-2.5-flash",
+      model,
       contents: "Reply with the single word OK.",
       config: { maxOutputTokens: 2000 },
     });

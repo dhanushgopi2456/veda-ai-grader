@@ -7,21 +7,16 @@
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
 }
 
-html,
-body {
+html {
+  scroll-behavior: smooth;
   height: 100%;
 }
 
 body {
-  background: #ffffff;
-  color: #171717;
+  height: 100%;
+  background: #050711;
+  color: #f8fafc;
   font-family: var(--font-sans);
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-html.dark body {
-  background: #09090b;
-  color: #f4f4f5;
 }
 
 @keyframes float-y {
@@ -45,12 +40,44 @@ html.dark body {
   }
 }
 
+@keyframes scanBeam {
+  0% {
+    transform: translateY(0%);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(280%);
+    opacity: 0;
+  }
+}
+
+@keyframes laserSweep {
+  0%, 100% {
+    transform: translateY(-20%);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(120%);
+    opacity: 0.8;
+  }
+}
+
 .anim-float {
   animation: float-y 2.4s ease-in-out infinite;
 }
 
 .anim-fade-up {
-  animation: fade-up 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: fade-up 0.35s ease-out both;
+}
+
+.anim-scan-beam {
+  animation: scanBeam 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
 ::-webkit-scrollbar {
@@ -59,29 +86,14 @@ html.dark body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #d4d4d4;
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 8px;
 }
 
-html.dark ::-webkit-scrollbar-thumb {
-  background: #27272a;
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
 }
 
 ::-webkit-scrollbar-track {
   background: transparent;
-}
-
-/* Print Styles for Download PDF Report */
-@media print {
-  aside,
-  header,
-  button,
-  .no-print {
-    display: none !important;
-  }
-  body,
-  html {
-    background: #ffffff !important;
-    color: #000000 !important;
-  }
 }

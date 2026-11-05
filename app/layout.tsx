@@ -13,18 +13,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "VedaAI — AI Answer Sheet Evaluation",
+  title: "VedaAI Grader — Autonomous Handwritten Assessment & OCR Evaluation",
   description:
-    "Upload a question paper and a student answer sheet. VedaAI extracts the questions, locates every handwritten answer, and grades the paper with AI feedback.",
-  openGraph: {
-    title: "VedaAI — AI Answer Sheet Evaluation",
-    description:
-      "Upload a question paper and a student answer sheet. VedaAI extracts the questions, locates every handwritten answer, and grades the paper with AI feedback.",
-  },
+    "Multimodal AI grading platform. Ingests raw handwritten answer sheets, auto-maps out-of-order questions, and generates step-by-step criteria feedback.",
 };
 
 export const viewport: Viewport = {
-  themeColor: "#ffffff",
+  themeColor: "#050711",
 };
 
 export default function RootLayout({
@@ -35,10 +30,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body suppressHydrationWarning className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col bg-[#050711] text-slate-100">{children}</body>
     </html>
   );
 }

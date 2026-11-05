@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import type { EvaluationResult, PageImage, Region } from "@/lib/types";
-import { EyeIcon, MinusIcon, PlusIcon } from "./Icons";
+import { ZoomIn, ZoomOut, Eye } from "lucide-react";
 
 type Props = {
   result: EvaluationResult;
@@ -68,62 +68,78 @@ export default function SheetViewer({ result, selectedAnswerId, onSelectAnswer }
   }
 
   return (
-    <div className="flex h-full min-h-0 flex-col bg-neutral-100">
-      <div className="flex h-12 shrink-0 items-center justify-between gap-2 border-b border-neutral-200 bg-white px-3">
-        <div className="flex items-center gap-1.5">
-          <span className="hidden text-xs font-medium text-neutral-500 sm:block">
-            Answer sheet
+    <div className="flex h-full min-h-0 flex-col bg-neutral-100 dark:bg-neutral-950">
+      {/* Control bar */}
+      <div className="flex h-12 shrink-0 items-center justify-between gap-2 border-b border-neutral-200/90 bg-white px-3 dark:border-neutral-800 dark:bg-neutral-900">
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-semibold text-neutral-800 dark:text-neutral-200">
+            Student Answer Sheet
           </span>
-          <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-[11px] font-medium text-neutral-500">
-            {result.answerPages.length} page{result.answerPages.length !== 1 ? "s" : ""}
+          <span className="rounded-md bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5 text-[11px] font-medium text-neutral-500 dark:text-neutral-400">
+            {result.answerPages.length} {result.answerPages.length !== 1 ? "pages" : "page"}
           </span>
           {selectedOverlays.length > 1 && (
-            <span className="rounded-full bg-green-100 px-2 py-0.5 text-[11px] font-medium text-green-700">
-              spans {selectedOverlays.length} regions
+            <span className="rounded-md bg-emerald-50 dark:bg-emerald-950/70 border border-emerald-200 dark:border-emerald-800 px-2 py-0.5 text-[11px] font-semibold text-emerald-700 dark:text-emerald-300">
+              Spans {selectedOverlays.length} regions
             </span>
           )}
         </div>
-        <div className="flex items-center gap-1">
+
+        <div className="flex items-center gap-1.5">
           <button
+            type="button"
             onClick={toggleShowAll}
-            className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
-              showAll ? "bg-neutral-900 text-white" : "text-neutral-600 hover:bg-neutral-100"
+            className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-medium transition-colors ${
+              showAll
+                ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900"
+                : "text-neutral-600 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800"
             }`}
           >
-            <EyeIcon className="h-3.5 w-3.5" />
-            All regions
+            <Eye className="h-3.5 w-3.5" />
+            <span>All highlights</span>
           </button>
-          <div className="mx-1 h-5 w-px bg-neutral-200" />
+
+          <div className="h-4 w-px bg-neutral-200 dark:bg-neutral-800" />
+
           <button
+            type="button"
             onClick={() => setZoom((z) => Math.max(50, z - 15))}
-            className="flex h-8 w-8 items-center justify-center rounded-full text-neutral-500 hover:bg-neutral-100"
+            className="flex h-7 w-7 items-center justify-center rounded-lg text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white"
             aria-label="Zoom out"
           >
-            <MinusIcon className="h-4 w-4" />
+            <ZoomOut className="h-4 w-4" />
           </button>
-          <span className="w-10 text-center text-xs font-medium text-neutral-600">{zoom}%</span>
+          <span className="w-9 text-center text-xs font-mono font-medium text-neutral-600 dark:text-neutral-300 tabular-nums">
+            {zoom}%
+          </span>
           <button
+            type="button"
             onClick={() => setZoom((z) => Math.min(220, z + 15))}
-            className="flex h-8 w-8 items-center justify-center rounded-full text-neutral-500 hover:bg-neutral-100"
+            className="flex h-7 w-7 items-center justify-center rounded-lg text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white"
             aria-label="Zoom in"
           >
-            <PlusIcon className="h-4 w-4" />
+            <ZoomIn className="h-4 w-4" />
           </button>
         </div>
       </div>
 
+      {/* Pages Container */}
       <div ref={containerRef} className="min-h-0 flex-1 overflow-auto p-4 lg:p-6">
-        <div className="mx-auto flex flex-col items-center gap-5" style={{ width: `${zoom}%`, maxWidth: zoom > 100 ? "none" : "820px" }}>
+        <div
+          className="mx-auto flex flex-col items-center gap-6"
+          style={{ width: `${zoom}%`, maxWidth: zoom > 100 ? "none" : "820px" }}
+        >
           {result.answerPages.length === 0 && (
             <div className="mt-20 text-center text-sm text-neutral-400">
               Answer sheet pages are not available in this view.
             </div>
           )}
+
           {result.answerPages.map((page: PageImage, pageIndex) => {
             const pageOverlays = overlays.filter((o) => o.region.page === pageIndex + 1);
             return (
               <div key={page.url} className="w-full">
-                <div className="relative w-full overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm">
+                <div className="relative w-full overflow-hidden rounded-2xl border border-neutral-200/90 bg-white shadow-md dark:border-neutral-800 dark:bg-neutral-900">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={page.url}
@@ -131,12 +147,14 @@ export default function SheetViewer({ result, selectedAnswerId, onSelectAnswer }
                     className="block w-full select-none"
                     draggable={false}
                   />
+
                   {pageOverlays
                     .filter((o) => showAll || o.answerId === selectedAnswerId)
                     .map((o) => {
                       const key = `${o.answerId}:${o.region.page}:${o.region.bbox.y0.toFixed(4)}`;
                       const isSelected = o.answerId === selectedAnswerId;
                       const dimmed = selectedAnswerId !== null && !isSelected;
+
                       return (
                         <div
                           key={key}
@@ -148,12 +166,12 @@ export default function SheetViewer({ result, selectedAnswerId, onSelectAnswer }
                             e.stopPropagation();
                             onSelectAnswer(isSelected ? null : o.answerId);
                           }}
-                          className={`absolute cursor-pointer rounded-md transition-all duration-200 ${
+                          className={`absolute cursor-pointer rounded-lg transition-all duration-200 ${
                             isSelected
-                              ? "z-10 border-[3px] border-green-500 bg-green-400/25 shadow-[0_0_0_6px_rgba(34,197,94,0.25)]"
+                              ? "z-20 border-[3px] border-emerald-500 bg-emerald-500/25 shadow-[0_0_0_6px_rgba(16,185,129,0.25)] ring-2 ring-white dark:ring-neutral-900"
                               : o.kind === "unmatched"
-                                ? "border-2 border-amber-400 bg-amber-300/20 hover:bg-amber-300/35"
-                                : "border-2 border-green-500/70 bg-green-400/15 hover:bg-green-400/30"
+                                ? "border-2 border-amber-400 bg-amber-400/20 hover:bg-amber-400/35"
+                                : "border-2 border-emerald-500/70 bg-emerald-500/15 hover:bg-emerald-500/30"
                           } ${dimmed ? "opacity-35" : "opacity-100"}`}
                           style={{
                             left: `${Math.max(0, o.region.bbox.x0 * 100 - 0.4)}%`,
@@ -163,12 +181,12 @@ export default function SheetViewer({ result, selectedAnswerId, onSelectAnswer }
                           }}
                         >
                           <span
-                            className={`absolute -top-3 left-0 whitespace-nowrap rounded-md px-1.5 py-0.5 text-[10px] font-bold shadow-sm ${
+                            className={`absolute -top-3.5 left-0 whitespace-nowrap rounded-md px-1.5 py-0.5 text-[10px] font-bold shadow-xs ${
                               isSelected
-                                ? "bg-green-600 text-white"
+                                ? "bg-emerald-600 text-white"
                                 : o.kind === "unmatched"
-                                  ? "bg-amber-400 text-amber-950"
-                                  : "bg-white text-green-700 ring-1 ring-green-500/60"
+                                  ? "bg-amber-400 text-amber-950 font-bold"
+                                  : "bg-white text-emerald-800 ring-1 ring-emerald-500/60 dark:bg-neutral-900 dark:text-emerald-300"
                             }`}
                           >
                             {o.label === "?" ? "Unmatched" : `Q${o.label}`}
@@ -177,7 +195,8 @@ export default function SheetViewer({ result, selectedAnswerId, onSelectAnswer }
                       );
                     })}
                 </div>
-                <div className="mt-1.5 text-center text-[11px] text-neutral-400">
+
+                <div className="mt-2 text-center text-xs font-medium text-neutral-400 dark:text-neutral-500">
                   Page {pageIndex + 1} of {result.answerPages.length}
                 </div>
               </div>
@@ -186,16 +205,19 @@ export default function SheetViewer({ result, selectedAnswerId, onSelectAnswer }
         </div>
       </div>
 
-      <div className="flex h-9 shrink-0 items-center justify-center gap-4 border-t border-neutral-200 bg-white text-[11px] text-neutral-500">
+      {/* Legend Footer */}
+      <div className="flex h-10 shrink-0 items-center justify-center gap-5 border-t border-neutral-200/90 bg-white px-4 text-xs font-medium text-neutral-500 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-400">
         <span className="flex items-center gap-1.5">
-          <span className="h-2.5 w-2.5 rounded-sm border border-green-500 bg-green-400/30" />
-          Answer
+          <span className="h-3 w-3 rounded-sm border-2 border-emerald-500 bg-emerald-500/30" />
+          <span>Matched Answer</span>
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="h-2.5 w-2.5 rounded-sm border border-amber-400 bg-amber-300/30" />
-          Unmatched
+          <span className="h-3 w-3 rounded-sm border-2 border-amber-400 bg-amber-400/30" />
+          <span>Unmatched Block</span>
         </span>
-        <span className="hidden sm:inline">Click a box to open its question</span>
+        <span className="hidden sm:inline text-neutral-400">
+          Click any highlighted region to locate corresponding question card
+        </span>
       </div>
     </div>
   );

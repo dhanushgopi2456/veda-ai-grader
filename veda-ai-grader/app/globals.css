@@ -7,14 +7,15 @@
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
 }
 
-html,
-body {
+html {
+  scroll-behavior: smooth;
   height: 100%;
 }
 
 body {
-  background: #ffffff;
-  color: #171717;
+  height: 100%;
+  background: #050711;
+  color: #f8fafc;
   font-family: var(--font-sans);
 }
 
@@ -39,6 +40,34 @@ body {
   }
 }
 
+@keyframes scanBeam {
+  0% {
+    transform: translateY(0%);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(280%);
+    opacity: 0;
+  }
+}
+
+@keyframes laserSweep {
+  0%, 100% {
+    transform: translateY(-20%);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(120%);
+    opacity: 0.8;
+  }
+}
+
 .anim-float {
   animation: float-y 2.4s ease-in-out infinite;
 }
@@ -47,15 +76,22 @@ body {
   animation: fade-up 0.35s ease-out both;
 }
 
+.anim-scan-beam {
+  animation: scanBeam 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #d4d4d4;
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 8px;
-  border: 2px solid #ffffff;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
 }
 
 ::-webkit-scrollbar-track {
