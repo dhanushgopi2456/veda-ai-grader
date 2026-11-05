@@ -615,7 +615,7 @@ function VedaApp() {
               : "Overview";
 
   return (
-    <div className="flex h-dvh overflow-hidden bg-neutral-50 text-neutral-900 dark:bg-neutral-950 dark:text-neutral-100">
+    <div className="flex h-dvh overflow-hidden bg-[#ffffff] text-[#17191c]">
       {/* Sidebar Navigation */}
       <Sidebar
         stage={stage}
@@ -642,7 +642,7 @@ function VedaApp() {
             className="fixed inset-0 bg-neutral-950/60 backdrop-blur-sm"
             onClick={() => setMobileNavOpen(false)}
           />
-          <div className="fixed inset-y-0 left-0 w-72 max-w-[80vw] bg-white dark:bg-neutral-950 shadow-2xl flex flex-col z-10">
+          <div className="fixed inset-y-0 left-0 w-72 max-w-[80vw] bg-[#ffffff] border-r border-[#e5e5e7] shadow-steep-artifact flex flex-col z-10">
             <Sidebar
               stage={stage}
               onNavigate={(s) => {

@@ -1,189 +1,125 @@
 "use client";
 
-import { motion } from "framer-motion";
-import SpotlightCard from "./SpotlightCard";
-import {
-  FileText,
-  Shuffle,
-  CheckSquare,
-  BarChart3,
-  Lock,
-  Sparkles,
-  Search,
-  ScanLine,
-} from "lucide-react";
+import Link from "next/link";
+import { ScanLine, Shuffle, CheckCircle, Lock, ArrowRight, Layers, Award } from "lucide-react";
 
 export default function FeatureBento() {
   return (
-    <section className="relative mx-auto w-full max-w-6xl px-4 py-20 sm:px-6">
+    <section id="features" className="relative mx-auto w-full max-w-[1200px] px-6 py-20 lg:px-8">
       {/* Section Header */}
-      <div className="mx-auto max-w-3xl text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-orange-500/30 bg-orange-500/10 px-3 py-1 text-xs font-semibold text-orange-400 backdrop-blur-md">
-          <Sparkles className="h-3.5 w-3.5" />
-          Autonomous Assessment Engine
-        </div>
-        <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-white sm:text-4xl lg:text-5xl">
-          Engineered for Real-World,{" "}
-          <span className="bg-gradient-to-r from-orange-400 via-amber-300 to-indigo-400 bg-clip-text text-transparent">
-            Messy Handwritten Exams
-          </span>
+      <div className="max-w-2xl text-left">
+        <span className="text-[12px] font-sans font-medium uppercase tracking-[0.04em] text-[#979799]">
+          Platform Capabilities
+        </span>
+        <h2 className="mt-2 font-serif text-[38px] sm:text-[48px] font-normal tracking-[-0.96px] text-[#17191c] leading-[1.25]">
+          Architected for unstructured handwriting and strict rubric schemas.
         </h2>
-        <p className="mt-4 text-base text-slate-300 leading-relaxed sm:text-lg">
-          Traditional grading software requires rigid bubble sheets. VedaAI digests natural,
-          handwritten, unstructured exam scripts and grades them against rigorous rubric criteria.
+        <p className="mt-4 text-[16px] font-sans text-[#777b86] leading-relaxed">
+          Traditional grading software forces students onto rigid bubble sheets. VedaAI ingests handwritten, non-linear student answer sheets and maps them directly to instructor criteria.
         </p>
       </div>
 
-      {/* Bento Grid */}
-      <div className="mt-14 grid grid-cols-1 gap-5 md:grid-cols-12">
+      {/* Editorial Bento Grid */}
+      <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-12">
         {/* Card 1: Handwritten OCR Extraction (7 cols) */}
-        <SpotlightCard
-          className="md:col-span-7 flex flex-col justify-between"
-          spotlightColor="rgba(244, 81, 30, 0.2)"
-        >
+        <div className="md:col-span-7 rounded-[24px] bg-[#f2f2f3] p-7 sm:p-9 border border-[#e5e5e7] flex flex-col justify-between">
           <div>
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-orange-500/10 text-orange-400 border border-orange-500/20">
-              <ScanLine className="h-6 w-6" />
-            </div>
-            <h3 className="mt-5 text-xl font-bold text-white">
+            <span className="text-[12px] font-sans font-medium uppercase tracking-wider text-[#979799] block mb-3">
+              Extraction Layer
+            </span>
+            <h3 className="font-serif text-[26px] font-normal tracking-[-0.66px] text-[#17191c]">
               Handwritten OCR & Margin Extraction
             </h3>
-            <p className="mt-2 text-sm text-slate-300 leading-relaxed">
-              Trained on diverse student scripts, multilingual characters, mathematical symbols,
-              and cross-outs. Extracts full bounding polygons with pixel-level precision directly from
-              scanned photos and PDFs.
+            <p className="mt-3 text-[14px] font-sans text-[#777b86] leading-relaxed">
+              Trained across varied penmanship, multilingual characters, cross-outs, and mathematical formulas. Segments answer regions with polygon boundaries directly from phone photos or multi-page PDFs.
             </p>
           </div>
 
-          {/* Interactive Visual Simulation */}
-          <div className="mt-6 overflow-hidden rounded-xl border border-white/10 bg-slate-950/80 p-3">
-            <div className="flex items-center justify-between text-[11px] font-mono text-slate-400 border-b border-white/5 pb-2">
-              <span className="flex items-center gap-1.5 text-cyan-400">
-                <Search className="h-3 w-3" /> Polygon Detection
-              </span>
-              <span>4 Page Regions Tagged</span>
+          {/* Clean Nested Paper Simulation */}
+          <div className="mt-8 rounded-[16px] bg-[#ffffff] p-5 border border-[#e5e5e7]">
+            <div className="flex items-center justify-between text-[11px] font-sans text-[#777b86] border-b border-[#f2f2f3] pb-2 mb-3">
+              <span>SCAN INGESTION · PAGE 01</span>
+              <span className="text-[#17191c] font-medium">99.4% CONFIDENCE</span>
             </div>
-            <div className="mt-3 space-y-2 font-mono text-xs">
-              <div className="flex items-center justify-between rounded bg-white/5 p-2 text-slate-300">
-                <span>[Q1_Answer] &quot;F = m(dv/dt) + kv&quot;</span>
-                <span className="text-emerald-400 font-semibold">99.8% Match</span>
-              </div>
-              <div className="flex items-center justify-between rounded bg-white/5 p-2 text-slate-300">
-                <span>[Q2_Answer] &quot;Integrating from t=0 to T...&quot;</span>
-                <span className="text-emerald-400 font-semibold">98.5% Match</span>
-              </div>
+            <p className="font-serif italic text-[14px] text-[#17191c] leading-relaxed">
+              &ldquo;∫ x · sin(x) dx = -x · cos(x) + ∫ cos(x) dx = -x · cos(x) + sin(x) + C&rdquo;
+            </p>
+            <div className="mt-3 text-[11px] font-sans text-[#777b86]">
+              Integration-by-parts step recognized · Boundary condition logged
             </div>
           </div>
-        </SpotlightCard>
+        </div>
 
         {/* Card 2: Out-of-Order Answer Mapping (5 cols) */}
-        <SpotlightCard
-          className="md:col-span-5 flex flex-col justify-between"
-          spotlightColor="rgba(56, 189, 248, 0.2)"
-        >
+        <div className="md:col-span-5 rounded-[24px] bg-[#f2f2f3] p-7 sm:p-9 border border-[#e5e5e7] flex flex-col justify-between">
           <div>
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
-              <Shuffle className="h-6 w-6" />
-            </div>
-            <h3 className="mt-5 text-xl font-bold text-white">
-              Non-Linear Answer Mapping
+            <span className="text-[12px] font-sans font-medium uppercase tracking-wider text-[#979799] block mb-3">
+              Spatial Resolution
+            </span>
+            <h3 className="font-serif text-[26px] font-normal tracking-[-0.66px] text-[#17191c]">
+              Out-of-Sequence Mapping
             </h3>
-            <p className="mt-2 text-sm text-slate-300 leading-relaxed">
-              Students rarely answer in numerical order. VedaAI semantically analyzes question
-              labels (e.g. &ldquo;Q3.b&rdquo;, &ldquo;Ans 1 continued&rdquo;) and maps them to the right rubric item even across mixed pages.
+            <p className="mt-3 text-[14px] font-sans text-[#777b86] leading-relaxed">
+              Students answer questions out of numerical sequence. VedaAI links scattered answers back to the respective rubric prompt without manual reordering.
             </p>
           </div>
 
-          <div className="mt-6 rounded-xl border border-white/10 bg-slate-950/80 p-3 font-mono text-xs space-y-1.5 text-slate-300">
-            <div className="flex items-center justify-between">
-              <span className="text-slate-400">Page 1 (Bottom):</span>
-              <span className="text-cyan-400">Mapped to Question #4</span>
+          <div className="mt-8 rounded-[16px] bg-[#ffffff] p-5 border border-[#e5e5e7] space-y-2.5">
+            <div className="flex items-center justify-between text-[12px] font-sans">
+              <span className="text-[#777b86]">Page 4, Paragraph 2</span>
+              <span className="rounded-full bg-[#f2f2f3] px-2 py-0.5 text-[11px] text-[#17191c] font-medium">
+                → Mapped to Question 2b
+              </span>
             </div>
-            <div className="flex items-center justify-between">
-              <span className="text-slate-400">Page 3 (Top):</span>
-              <span className="text-indigo-400">Mapped to Question #1</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-slate-400">Page 4 (Margin):</span>
-              <span className="text-amber-400">Mapped to Question #2</span>
+            <div className="flex items-center justify-between text-[12px] font-sans">
+              <span className="text-[#777b86]">Page 2, Header margin</span>
+              <span className="rounded-full bg-[#f2f2f3] px-2 py-0.5 text-[11px] text-[#17191c] font-medium">
+                → Mapped to Question 1c
+              </span>
             </div>
           </div>
-        </SpotlightCard>
+        </div>
 
-        {/* Card 3: Instant Criteria Grading (5 cols) */}
-        <SpotlightCard
-          className="md:col-span-5 flex flex-col justify-between"
-          spotlightColor="rgba(168, 85, 247, 0.2)"
-        >
+        {/* Card 3: Instant Criteria Grading (6 cols) */}
+        <div className="md:col-span-6 rounded-[24px] bg-[#f2f2f3] p-7 sm:p-9 border border-[#e5e5e7] flex flex-col justify-between">
           <div>
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20">
-              <CheckSquare className="h-6 w-6" />
-            </div>
-            <h3 className="mt-5 text-xl font-bold text-white">
-              Instant Rubric & Criteria Scoring
+            <span className="text-[12px] font-sans font-medium uppercase tracking-wider text-[#979799] block mb-3">
+              Scoring Model
+            </span>
+            <h3 className="font-serif text-[26px] font-normal tracking-[-0.66px] text-[#17191c]">
+              Step-by-Step Partial Marks
             </h3>
-            <p className="mt-2 text-sm text-slate-300 leading-relaxed">
-              Awards step-by-step partial credit based on educator criteria. Generates clear, constructive feedback so students understand exactly where marks were earned or lost.
+            <p className="mt-3 text-[14px] font-sans text-[#777b86] leading-relaxed">
+              Evaluates method accuracy, formula setup, algebraic simplifications, and final values independently. Awards transparent partial points alongside verifiable explanations.
             </p>
           </div>
 
-          <div className="mt-6 rounded-xl border border-white/10 bg-slate-950/80 p-3 text-xs space-y-2">
-            <div className="flex items-center justify-between font-mono">
-              <span className="text-slate-300">Calculation Step 1</span>
-              <span className="text-emerald-400 font-bold">+2.0 / 2.0</span>
-            </div>
-            <div className="flex items-center justify-between font-mono">
-              <span className="text-slate-300">Conceptual Justification</span>
-              <span className="text-emerald-400 font-bold">+1.5 / 1.5</span>
-            </div>
-            <div className="flex items-center justify-between font-mono">
-              <span className="text-slate-300">Final Precision Units</span>
-              <span className="text-rose-400 font-bold">-0.5 (Slip)</span>
-            </div>
+          <div className="mt-8 pt-4 border-t border-[#e5e5e7] flex items-center justify-between text-[13px] font-sans">
+            <span className="text-[#777b86]">Audited Schema Compliance</span>
+            <span className="text-[#17191c] font-medium">Deterministic Scoring</span>
           </div>
-        </SpotlightCard>
+        </div>
 
-        {/* Card 4: Classroom Analytics & Teacher Insights (7 cols) */}
-        <SpotlightCard
-          className="md:col-span-7 flex flex-col justify-between"
-          spotlightColor="rgba(99, 102, 241, 0.2)"
-        >
+        {/* Card 4: Complete Privacy & Ephemeral Memory (6 cols) */}
+        <div className="md:col-span-6 rounded-[24px] bg-[#f2f2f3] p-7 sm:p-9 border border-[#e5e5e7] flex flex-col justify-between">
           <div>
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-              <BarChart3 className="h-6 w-6" />
-            </div>
-            <h3 className="mt-5 text-xl font-bold text-white">
-              Classroom Analytics & Gap Diagnostics
+            <span className="text-[12px] font-sans font-medium uppercase tracking-wider text-[#979799] block mb-3">
+              Institutional Safety
+            </span>
+            <h3 className="font-serif text-[26px] font-normal tracking-[-0.66px] text-[#17191c]">
+              Zero Server File Retention
             </h3>
-            <p className="mt-2 text-sm text-slate-300 leading-relaxed">
-              Identify systemic learning gaps instantly. See which specific questions tripped up 60% of students, isolate common conceptual misconceptions, and export grade rosters with one click.
+            <p className="mt-3 text-[14px] font-sans text-[#777b86] leading-relaxed">
+              Files are converted in browser memory via local canvas rasterizers. No student answer sheets or names are permanently archived on intermediate storage servers.
             </p>
           </div>
 
-          {/* Graphical Micro-Distribution */}
-          <div className="mt-6 rounded-xl border border-white/10 bg-slate-950/80 p-4">
-            <div className="flex items-center justify-between text-xs text-slate-400">
-              <span>Grade Distribution (Cohort N=140)</span>
-              <span className="font-mono text-indigo-300">Mean: 84.2%</span>
-            </div>
-            <div className="mt-3 flex items-end gap-2 h-16 pt-2">
-              <div className="flex-1 bg-slate-800 rounded-t h-[20%]" title="F" />
-              <div className="flex-1 bg-slate-800 rounded-t h-[35%]" title="D" />
-              <div className="flex-1 bg-indigo-700/60 rounded-t h-[65%]" title="C" />
-              <div className="flex-1 bg-indigo-500/80 rounded-t h-[95%]" title="B" />
-              <div className="flex-1 bg-emerald-500 rounded-t h-[75%]" title="A" />
-            </div>
-            <div className="mt-2 flex justify-between text-[10px] font-mono text-slate-500">
-              <span>&lt; 50%</span>
-              <span>60%</span>
-              <span>70%</span>
-              <span>80%</span>
-              <span>90%+</span>
-            </div>
+          <div className="mt-8 pt-4 border-t border-[#e5e5e7] flex items-center justify-between text-[13px] font-sans">
+            <span className="text-[#777b86]">Client-Side Rasterization</span>
+            <span className="text-[#17191c] font-medium">FERPA & GDPR Compliant</span>
           </div>
-        </SpotlightCard>
+        </div>
       </div>
     </section>
   );
 }
-

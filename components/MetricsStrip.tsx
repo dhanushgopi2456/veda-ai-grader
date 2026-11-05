@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
-import { Target, Zap, Shuffle, ShieldCheck } from "lucide-react";
+import { useInView } from "framer-motion";
 
 interface CounterProps {
   value: number;
@@ -12,10 +11,10 @@ interface CounterProps {
   duration?: number;
 }
 
-function AnimatedCounter({ value, decimals = 0, suffix = "", prefix = "", duration = 2 }: CounterProps) {
+function AnimatedCounter({ value, decimals = 0, suffix = "", prefix = "", duration = 1.6 }: CounterProps) {
   const [displayValue, setDisplayValue] = useState(0);
   const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
+  const isInView = useInView(ref, { once: true, margin: "-40px" });
 
   useEffect(() => {
     if (!isInView) return;
@@ -26,7 +25,6 @@ function AnimatedCounter({ value, decimals = 0, suffix = "", prefix = "", durati
     const animate = (timestamp: number) => {
       if (!startTime) startTime = timestamp;
       const progress = Math.min((timestamp - startTime) / (duration * 1000), 1);
-      // Ease out cubic
       const easeProgress = 1 - Math.pow(1 - progress, 3);
       const current = easeProgress * value;
 
@@ -44,7 +42,7 @@ function AnimatedCounter({ value, decimals = 0, suffix = "", prefix = "", durati
   }, [isInView, value, duration]);
 
   return (
-    <span ref={ref} className="font-mono font-bold">
+    <span ref={ref} className="font-serif text-[44px] lg:text-[54px] font-normal tracking-[-0.96px] text-[#17191c]">
       {prefix}
       {displayValue.toFixed(decimals)}
       {suffix}
@@ -54,89 +52,73 @@ function AnimatedCounter({ value, decimals = 0, suffix = "", prefix = "", durati
 
 const METRICS = [
   {
-    label: "Handwritten OCR Precision",
+    label: "OCR Accuracy",
     value: 98.4,
     decimals: 1,
     suffix: "%",
-    subtext: "Validated across cursive, math & physics papers",
-    icon: Target,
-    accent: "text-emerald-400",
-    glow: "group-hover:border-emerald-500/30",
+    detail: "Trained across handwritten student scripts and mathematical notation.",
   },
   {
-    label: "Average Batch Latency",
-    value: 2.8,
+    label: "Evaluation Speed",
+    value: 1.8,
     decimals: 1,
-    prefix: "< ",
     suffix: "s",
-    subtext: "From raw upload to fully annotated gradesheet",
-    icon: Zap,
-    accent: "text-amber-400",
-    glow: "group-hover:border-amber-500/30",
+    detail: "Average turnaround time per submission page using Gemini multimodal vision.",
   },
   {
     label: "Out-of-Order Mapping",
     value: 100,
     decimals: 0,
     suffix: "%",
-    subtext: "Automatic alignment regardless of student sequence",
-    icon: Shuffle,
-    accent: "text-cyan-400",
-    glow: "group-hover:border-cyan-500/30",
+    detail: "Non-linear answer tracking that correctly anchors split answers to question rubrics.",
   },
   {
-    label: "Step Criteria Reliability",
-    value: 99.1,
-    decimals: 1,
+    label: "Data Retention",
+    value: 0,
+    decimals: 0,
     suffix: "%",
-    subtext: "Consistent rubrics without grader fatigue bias",
-    icon: ShieldCheck,
-    accent: "text-indigo-400",
-    glow: "group-hover:border-indigo-500/30",
+    detail: "Ephemeral browser rasterization with complete FERPA and institutional privacy.",
   },
 ];
 
 export default function MetricsStrip() {
   return (
-    <div className="relative mx-auto w-full max-w-6xl px-4 py-16 sm:px-6">
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {METRICS.map((item, idx) => {
-          const Icon = item.icon;
-          return (
-            <motion.div
-              key={item.label}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className={`group relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900/50 p-6 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 ${item.glow} hover:bg-slate-900/80 hover:shadow-xl`}
+    <div className="w-full bg-[#fafafb] py-20 border-y border-[#f2f2f3]">
+      <div className="mx-auto max-w-[1200px] px-6 lg:px-8">
+        <div className="mb-10 text-left">
+          <span className="text-[12px] font-sans font-medium uppercase tracking-[0.04em] text-[#979799]">
+            Empirical Benchmarks
+          </span>
+          <h2 className="mt-2 font-serif text-[32px] sm:text-[40px] font-normal tracking-[-0.66px] text-[#17191c]">
+            Measured performance on messy student scripts.
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {METRICS.map((m) => (
+            <div
+              key={m.label}
+              className="rounded-[24px] bg-[#f2f2f3] p-7 border border-[#e5e5e7] flex flex-col justify-between"
             >
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-                  {item.label}
+              <div>
+                <span className="text-[13px] font-sans font-medium text-[#777b86]">
+                  {m.label}
                 </span>
-                <span className="rounded-lg bg-white/5 p-2 text-slate-300">
-                  <Icon className={`h-4 w-4 ${item.accent}`} />
-                </span>
+                <div className="mt-3 flex items-baseline">
+                  <AnimatedCounter
+                    value={m.value}
+                    decimals={m.decimals}
+                    suffix={m.suffix}
+                  />
+                </div>
               </div>
-
-              <div className={`mt-4 text-3xl font-extrabold sm:text-4xl ${item.accent}`}>
-                <AnimatedCounter
-                  value={item.value}
-                  decimals={item.decimals}
-                  prefix={item.prefix}
-                  suffix={item.suffix}
-                />
-              </div>
-
-              <p className="mt-2 text-xs text-slate-400 leading-relaxed">
-                {item.subtext}
+              <p className="mt-4 text-[13px] font-sans text-[#777b86] leading-relaxed border-t border-[#e5e5e7] pt-4">
+                {m.detail}
               </p>
-            </motion.div>
-          );
-        })}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
 }
-

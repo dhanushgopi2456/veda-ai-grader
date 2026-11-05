@@ -1,25 +1,29 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, Source_Serif_4 } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const serifFont = Source_Serif_4({
+  variable: "--font-serif",
   subsets: ["latin"],
+  weight: ["400"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const sansFont = Inter({
+  variable: "--font-sans",
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
   title: "VedaAI Grader — Autonomous Handwritten Assessment & OCR Evaluation",
   description:
-    "Multimodal AI grading platform. Ingests raw handwritten answer sheets, auto-maps out-of-order questions, and generates step-by-step criteria feedback.",
+    "An editorial, multimodal AI assessment engine. Ingests raw handwritten answer sheets, auto-maps out-of-order questions, and generates step-by-step criteria feedback.",
 };
 
 export const viewport: Viewport = {
-  themeColor: "#050711",
+  themeColor: "#ffffff",
 };
 
 export default function RootLayout({
@@ -30,32 +34,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${sansFont.variable} ${serifFont.variable} h-full antialiased`}
     >
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  var saved = localStorage.getItem('veda.settings.v1');
-                  var theme = saved ? JSON.parse(saved).theme : 'dark';
-                  var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                  if (theme === 'dark' || (!theme && prefersDark) || (theme === 'system' && prefersDark) || !saved) {
-                    document.documentElement.classList.add('dark');
-                  } else if (theme === 'light') {
-                    document.documentElement.classList.remove('dark');
-                  }
-                } catch (e) {
-                  document.documentElement.classList.add('dark');
-                }
-              })();
-            `,
-          }}
-        />
-      </head>
-      <body className="min-h-full flex flex-col bg-neutral-50 text-neutral-900 dark:bg-[#070913] dark:text-neutral-100 transition-colors duration-200">
+      <body className="min-h-full flex flex-col bg-[#ffffff] text-[#17191c] font-sans selection:bg-[#f2f2f3] selection:text-[#17191c]">
         {children}
       </body>
     </html>

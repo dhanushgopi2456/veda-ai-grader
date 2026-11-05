@@ -1,89 +1,80 @@
 import Link from "next/link";
-import { Sparkles, Shield, Cpu } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="relative border-t border-white/10 bg-[#04060e] text-slate-400">
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
+    <footer className="w-full bg-[#ffffff] border-t border-[#f2f2f3] text-[#777b86] py-16">
+      <div className="mx-auto max-w-[1200px] px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-4">
           {/* Brand Col */}
-          <div className="md:col-span-2">
-            <div className="flex items-center gap-2.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 shadow-[0_0_15px_rgba(244,81,30,0.3)]">
-                <Sparkles className="h-4 w-4 text-white" />
-              </div>
-              <span className="text-base font-bold text-white tracking-tight">
+          <div className="md:col-span-2 space-y-4">
+            <div className="flex items-center gap-2">
+              <span className="font-serif text-[22px] font-normal tracking-[-0.5px] text-[#17191c]">
                 VedaAI Grader
               </span>
             </div>
-            <p className="mt-3 max-w-md text-sm text-slate-400 leading-relaxed">
-              AI-driven assessment extraction, non-linear OCR answer mapping, and automated rubric grading for universities, schools, and competitive examination bodies.
+            <p className="max-w-md text-[14px] font-sans text-[#777b86] leading-relaxed">
+              An editorial, multimodal assessment platform designed for universities, schools, and examination committees. Ingests raw handwritten answer sheets, auto-maps out-of-order questions, and generates step-by-step criteria feedback.
             </p>
-            <div className="mt-4 flex items-center gap-2 text-xs font-mono text-emerald-400">
-              <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span>Gemini 2.5 Flash / Pro Vision Engine Active</span>
+            <div className="text-[12px] font-sans text-[#979799]">
+              Gemini 2.5 Multimodal Architecture · Zero Permanent Server Storage
             </div>
           </div>
 
           {/* Quick Links */}
-          <div>
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-200">
+          <div className="space-y-3">
+            <span className="text-[12px] font-sans font-medium uppercase tracking-[0.04em] text-[#17191c] block">
               Navigation
-            </h4>
-            <ul className="mt-4 space-y-2.5 text-sm">
+            </span>
+            <ul className="space-y-2 text-[14px] font-sans">
               <li>
-                <Link href="/" className="hover:text-white transition-colors">
-                  Home
+                <Link href="/" className="hover:text-[#17191c] transition-colors">
+                  Overview
                 </Link>
               </li>
               <li>
-                <Link href="/grader" className="hover:text-white transition-colors">
+                <Link href="/grader" className="hover:text-[#17191c] transition-colors">
                   Grader Workspace
                 </Link>
               </li>
               <li>
-                <Link href="/login" className="hover:text-white transition-colors">
-                  Sign In
+                <Link href="/grader?sample=true" className="hover:text-[#17191c] transition-colors">
+                  Sample Assessment
                 </Link>
               </li>
               <li>
-                <Link href="/register" className="hover:text-white transition-colors">
-                  Create Account
+                <Link href="/login" className="hover:text-[#17191c] transition-colors">
+                  Educator Sign In
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Compliance & Legal */}
-          <div>
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-200">
-              Architecture & Trust
-            </h4>
-            <ul className="mt-4 space-y-2.5 text-sm">
-              <li className="flex items-center gap-1.5">
-                <Shield className="h-3.5 w-3.5 text-indigo-400" />
-                <span>Zero Server File Retention</span>
-              </li>
-              <li className="flex items-center gap-1.5">
-                <Cpu className="h-3.5 w-3.5 text-cyan-400" />
-                <span>Client-side Rasterization</span>
-              </li>
-              <li>
-                <span className="text-xs text-slate-500">
-                  Files stay strictly in-memory during session. Only sent to selected Gemini API endpoint.
-                </span>
+          {/* Architecture & Governance */}
+          <div className="space-y-3">
+            <span className="text-[12px] font-sans font-medium uppercase tracking-[0.04em] text-[#17191c] block">
+              Governance & Privacy
+            </span>
+            <ul className="space-y-2 text-[13px] font-sans">
+              <li>Ephemeral In-Browser Rasterization</li>
+              <li>FERPA & GDPR Compliant Operation</li>
+              <li>Zero Student Identity Retention</li>
+              <li className="pt-2 text-[12px] text-[#979799]">
+                Scripts processed exclusively in runtime session.
               </li>
             </ul>
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 border-t border-white/5 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
-          <p>© {new Date().getFullYear()} VedaAI Grader. All rights reserved.</p>
+        <div className="mt-14 border-t border-[#f2f2f3] pt-6 flex flex-col sm:flex-row items-center justify-between text-[12px] font-sans text-[#979799] gap-4">
+          <p>© {new Date().getFullYear()} VedaAI Assessment Systems. All rights reserved.</p>
           <div className="flex items-center gap-6">
-            <span>Privacy Policy</span>
-            <span>Terms of Service</span>
-            <span className="font-mono text-slate-400">v2.4-cinematic</span>
+            <Link href="/" className="hover:text-[#17191c] transition-colors">
+              Privacy Policy
+            </Link>
+            <Link href="/" className="hover:text-[#17191c] transition-colors">
+              Terms of Evaluation
+            </Link>
           </div>
         </div>
       </div>
