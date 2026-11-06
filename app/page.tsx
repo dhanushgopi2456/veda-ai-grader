@@ -5,6 +5,7 @@ import { ArrowRight, Check } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import LiveScanPreview from "@/components/LiveScanPreview";
+import Marquee from "@/components/Marquee";
 import MetricsStrip from "@/components/MetricsStrip";
 import FeatureBento from "@/components/FeatureBento";
 import HowItWorks from "@/components/HowItWorks";
@@ -80,6 +81,9 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      {/* Infinite Loop Marquee Banner */}
+      <Marquee speed={30} />
 
       {/* Metrics Counter Section (Fog White Alternating Band) */}
       <section id="metrics">

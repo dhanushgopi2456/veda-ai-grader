@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useInView } from "framer-motion";
+import InteractiveMetricsCharts from "@/components/InteractiveMetricsCharts";
 
 interface CounterProps {
   value: number;
@@ -42,7 +43,7 @@ function AnimatedCounter({ value, decimals = 0, suffix = "", prefix = "", durati
   }, [isInView, value, duration]);
 
   return (
-    <span ref={ref} className="font-serif text-[44px] lg:text-[54px] font-normal tracking-[-0.96px] text-[#17191c]">
+    <span ref={ref} className="font-serif text-[44px] lg:text-[54px] font-normal tracking-[-0.96px] text-[var(--ink)]">
       {prefix}
       {displayValue.toFixed(decimals)}
       {suffix}
@@ -86,10 +87,10 @@ export default function MetricsStrip() {
     <div className="w-full bg-[var(--fog)]/70 backdrop-blur-md py-20 border-y border-[var(--border-subtle)]">
       <div className="mx-auto max-w-[1200px] px-6 lg:px-8">
         <div className="mb-10 text-left">
-          <span className="text-[12px] font-sans font-medium uppercase tracking-[0.04em] text-[#979799]">
+          <span className="text-[12px] font-sans font-medium uppercase tracking-[0.04em] text-[var(--ash)]">
             Empirical Benchmarks
           </span>
-          <h2 className="mt-2 font-serif text-[32px] sm:text-[40px] font-normal tracking-[-0.66px] text-[#17191c]">
+          <h2 className="mt-2 font-serif text-[32px] sm:text-[40px] font-normal tracking-[-0.66px] text-[var(--ink)]">
             Measured performance on messy student scripts.
           </h2>
         </div>
@@ -98,10 +99,10 @@ export default function MetricsStrip() {
           {METRICS.map((m) => (
             <div
               key={m.label}
-              className="rounded-[24px] bg-[var(--mist)]/90 backdrop-blur-sm p-7 border border-[var(--border)] flex flex-col justify-between shadow-xs"
+              className="rounded-[24px] bg-[var(--mist)]/90 backdrop-blur-sm p-7 border border-[var(--border)] flex flex-col justify-between shadow-xs transition-colors"
             >
               <div>
-                <span className="text-[13px] font-sans font-medium text-[#777b86]">
+                <span className="text-[13px] font-sans font-medium text-[var(--slate)]">
                   {m.label}
                 </span>
                 <div className="mt-3 flex items-baseline">
@@ -112,11 +113,19 @@ export default function MetricsStrip() {
                   />
                 </div>
               </div>
-              <p className="mt-4 text-[13px] font-sans text-[#777b86] leading-relaxed border-t border-[#e5e5e7] pt-4">
+              <p className="mt-4 text-[13px] font-sans text-[var(--slate)] leading-relaxed border-t border-[var(--border)] pt-4">
                 {m.detail}
               </p>
             </div>
           ))}
+        </div>
+
+        {/* Interactive Animated Donut Chart & Silky Line Graph Section */}
+        <div className="mt-14 pt-14 border-t border-[var(--border)]">
+          <InteractiveMetricsCharts
+            title="Real-Time Mastery Dynamics"
+            subtitle="Explore response categorization and score trajectories across multimodal evaluation benchmarks."
+          />
         </div>
       </div>
     </div>

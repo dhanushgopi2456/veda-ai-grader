@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import type { EvaluationResult } from "@/lib/types";
 import AmbientGlareShader from "@/components/ui/ambient-glare-shader";
+import InteractiveMetricsCharts from "@/components/InteractiveMetricsCharts";
 
 interface Props {
   history: EvaluationResult[];
@@ -122,6 +123,33 @@ export default function AnalyticsView({
       unansweredPct,
       subjectStats,
     };
+  }, [history]);
+
+  const donutData = useMemo(() => {
+    if (!analytics) return undefined;
+    return [
+      { label: "Correct (≥85%)", count: analytics.correctCount, pct: analytics.correctPct, color: "#10b981", strokeColor: "stroke-emerald-500", fillBg: "bg-emerald-500" },
+      { label: "Partial Credit", count: analytics.partialCount, pct: analytics.partialPct, color: "#f59e0b", strokeColor: "stroke-amber-500", fillBg: "bg-amber-500" },
+      { label: "Incorrect Attempt", count: analytics.incorrectCount, pct: analytics.incorrectPct, color: "#f43f5e", strokeColor: "stroke-rose-500", fillBg: "bg-rose-500" },
+      { label: "Unanswered / Blank", count: analytics.unansweredCount, pct: analytics.unansweredPct, color: "#64748b", strokeColor: "stroke-slate-500", fillBg: "bg-slate-500" },
+    ];
+  }, [analytics]);
+
+  const lineData = useMemo(() => {
+    if (!history || history.length === 0) return undefined;
+    return history.map((h, i) => {
+      const score = h.overall && h.overall.totalMax > 0
+        ? Math.round((h.overall.totalAwarded / h.overall.totalMax) * 100)
+        : 70;
+      return {
+        id: h.id || String(i + 1),
+        label: `Paper ${i + 1}`,
+        subTitle: h.examTitle || h.subject || `Exam Paper #${i + 1}`,
+        score,
+        grade: score >= 90 ? "Grade A+" : score >= 80 ? "Grade A" : score >= 70 ? "Grade B" : "Grade C",
+        date: new Date(h.createdAt || Date.now()).toLocaleDateString([], { month: "short", day: "numeric" }),
+      };
+    });
   }, [history]);
 
   if (!analytics) {
@@ -237,6 +265,14 @@ export default function AnalyticsView({
           </p>
         </div>
       </div>
+
+      {/* Interactive Animated Donut Chart & Silky Line Graph */}
+      <InteractiveMetricsCharts
+        donutData={donutData}
+        lineData={lineData}
+        title="Visual Evaluation Dynamics"
+        subtitle="Interactive breakdown of student accuracy and historical rubric trajectory."
+      />
 
       {/* Grid: Score Distribution & Question Accuracy Breakdown */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

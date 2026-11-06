@@ -17,6 +17,7 @@ import {
 import type { EvaluationResult } from "@/lib/types";
 import { useToast } from "@/components/ToastProvider";
 import AmbientGlareShader from "@/components/ui/ambient-glare-shader";
+import Marquee from "@/components/Marquee";
 
 type Props = {
   history: EvaluationResult[];
@@ -262,6 +263,11 @@ export default function DashboardView({
             </p>
           </button>
         </div>
+      </div>
+
+      {/* Dynamic Marquee Loop Track */}
+      <div className="rounded-[20px] overflow-hidden border border-[var(--border)] shadow-xs">
+        <Marquee speed={26} />
       </div>
 
       {/* 4. Recent Evaluations Table */}
