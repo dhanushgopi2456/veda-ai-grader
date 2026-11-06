@@ -75,7 +75,7 @@ export default function DashboardView({
   }, [history]);
 
   return (
-    <div className="flex-1 overflow-y-auto p-6 lg:p-10 space-y-10 max-w-[1200px] mx-auto w-full bg-[var(--canvas)] text-[var(--ink)]">
+    <div className="flex-1 overflow-y-auto p-6 lg:p-10 space-y-10 max-w-[1200px] mx-auto w-full bg-transparent text-[var(--ink)]">
       {/* 1. Welcome Editorial Header Card */}
       <div className="rounded-[24px] bg-[var(--mist)] border border-[var(--border)] p-8 sm:p-10 text-left">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">

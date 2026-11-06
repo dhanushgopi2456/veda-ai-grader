@@ -43,7 +43,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center bg-[var(--canvas)] p-6 text-[var(--ink)]">
+    <div className="relative flex min-h-screen items-center justify-center bg-transparent p-6 text-[var(--ink)]">
       {/* Top Brand Link */}
       <div className="fixed top-8 left-8 z-30">
         <Link href="/" className="flex items-center gap-2 group">
@@ -57,7 +57,7 @@ export default function RegisterPage() {
       </div>
 
       {/* Main Split-Screen Shell */}
-      <div className="relative z-10 w-full max-w-[1040px] overflow-hidden rounded-[24px] border border-[var(--border)] bg-[var(--canvas)]">
+      <div className="relative z-10 w-full max-w-[1040px] overflow-hidden rounded-[24px] border border-[var(--border)] bg-[var(--canvas)]/90 backdrop-blur-xl shadow-steep-artifact">
         <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[640px]">
           {/* Left Column: Mist Gray Editorial Overview (5 cols) */}
           <div className="hidden lg:flex flex-col justify-between bg-[var(--mist)] p-10 lg:col-span-5 border-r border-[var(--border)]">

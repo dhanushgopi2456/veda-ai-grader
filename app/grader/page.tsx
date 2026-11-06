@@ -615,7 +615,7 @@ function VedaApp() {
               : "Overview";
 
   return (
-    <div className="flex h-dvh overflow-hidden bg-[var(--canvas)] text-[var(--ink)]">
+    <div className="flex h-dvh overflow-hidden bg-[var(--canvas)]/80 backdrop-blur-sm text-[var(--ink)]">
       {/* Sidebar Navigation */}
       <Sidebar
         stage={stage}

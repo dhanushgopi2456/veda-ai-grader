@@ -83,7 +83,7 @@ const METRICS = [
 
 export default function MetricsStrip() {
   return (
-    <div className="w-full bg-[#fafafb] py-20 border-y border-[#f2f2f3]">
+    <div className="w-full bg-[var(--fog)]/70 backdrop-blur-md py-20 border-y border-[var(--border-subtle)]">
       <div className="mx-auto max-w-[1200px] px-6 lg:px-8">
         <div className="mb-10 text-left">
           <span className="text-[12px] font-sans font-medium uppercase tracking-[0.04em] text-[#979799]">
@@ -98,7 +98,7 @@ export default function MetricsStrip() {
           {METRICS.map((m) => (
             <div
               key={m.label}
-              className="rounded-[24px] bg-[#f2f2f3] p-7 border border-[#e5e5e7] flex flex-col justify-between"
+              className="rounded-[24px] bg-[var(--mist)]/90 backdrop-blur-sm p-7 border border-[var(--border)] flex flex-col justify-between shadow-xs"
             >
               <div>
                 <span className="text-[13px] font-sans font-medium text-[#777b86]">

@@ -9,7 +9,7 @@ export default function LiveScanPreview() {
   return (
     <div className="relative mx-auto w-full max-w-[1040px] select-none">
       {/* Floating Product Artifact Card - Elevated according to Steep Rules */}
-      <div className="rounded-[20px] bg-[#ffffff] p-5 sm:p-7 shadow-steep-artifact border border-[rgba(4,23,43,0.06)] text-left">
+      <div className="rounded-[20px] bg-[var(--canvas)]/95 backdrop-blur-xl p-5 sm:p-7 shadow-steep-artifact border border-[var(--border)] text-left">
         {/* Top Artifact Chrome Bar */}
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3 border-b border-[#f2f2f3] pb-4">
           <div className="flex items-center gap-3">

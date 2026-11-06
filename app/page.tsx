@@ -14,7 +14,7 @@ export default function LandingPage() {
   const { toast } = useToast();
 
   return (
-    <div className="relative min-h-screen bg-[var(--canvas)] text-[var(--ink)] overflow-x-clip selection:bg-[var(--mist)] selection:text-[var(--ink)]">
+    <div className="relative min-h-screen bg-transparent text-[var(--ink)] overflow-x-clip selection:bg-[var(--mist)] selection:text-[var(--ink)]">
       {/* Transparent Editorial Header */}
       <Navbar />
 

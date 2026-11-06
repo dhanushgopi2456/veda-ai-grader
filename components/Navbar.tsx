@@ -10,9 +10,15 @@ export default function Navbar() {
   const { toast } = useToast();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     setIsDark(document.documentElement.classList.contains("dark"));
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 15);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const handleToggleTheme = () => {
@@ -33,7 +39,13 @@ export default function Navbar() {
   };
 
   return (
-    <header className="fixed top-0 inset-x-0 z-50 bg-transparent transition-colors">
+    <header
+      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-[var(--canvas)]/85 backdrop-blur-md border-b border-[var(--border-subtle)] shadow-xs"
+          : "bg-transparent"
+      }`}
+    >
       <div className="mx-auto flex h-20 max-w-[1200px] items-center justify-between px-6 lg:px-8">
         {/* Brand Logo - Ink Black with subtle weight */}
         <Link href="/" className="flex items-center gap-2 group">

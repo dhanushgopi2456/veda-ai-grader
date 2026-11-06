@@ -26,7 +26,7 @@ const STEPS = [
 
 export default function HowItWorks() {
   return (
-    <section id="how-it-works" className="w-full bg-[#fafafb] py-20 border-y border-[#f2f2f3]">
+    <section id="how-it-works" className="w-full bg-[var(--fog)]/70 backdrop-blur-md py-20 border-y border-[var(--border-subtle)]">
       <div className="mx-auto max-w-[1200px] px-6 lg:px-8">
         <div className="max-w-2xl text-left">
           <span className="text-[12px] font-sans font-medium uppercase tracking-[0.04em] text-[#979799]">
@@ -44,7 +44,7 @@ export default function HowItWorks() {
           {STEPS.map((s) => (
             <div
               key={s.step}
-              className="rounded-[24px] bg-[#f2f2f3] p-8 border border-[#e5e5e7] flex flex-col justify-between"
+              className="rounded-[24px] bg-[var(--mist)]/90 backdrop-blur-sm p-8 border border-[var(--border)] flex flex-col justify-between shadow-xs"
             >
               <div>
                 <span className="font-serif text-[42px] font-normal tracking-[-0.66px] text-[#17191c] block">
