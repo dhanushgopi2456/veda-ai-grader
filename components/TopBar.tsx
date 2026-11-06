@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import {
   Bell,
   CheckCircle2,
@@ -47,7 +48,7 @@ export default function TopBar({
   const themeIcon = theme === "dark" ? Moon : theme === "light" ? Sun : Monitor;
 
   return (
-    <header className="flex h-16 shrink-0 items-center justify-between border-b border-[var(--border)] bg-[var(--canvas)] px-4 lg:px-6 relative z-30 transition-colors">
+    <header className="flex h-16 shrink-0 items-center justify-between border-b border-[var(--border)] bg-[var(--canvas)]/80 backdrop-blur-xl px-4 lg:px-6 relative z-30 transition-colors">
       {/* Zone 1: Mobile Hamburger + Breadcrumb Trail */}
       <div className="flex items-center gap-3 min-w-0">
         <button
@@ -59,9 +60,14 @@ export default function TopBar({
         </button>
 
         <div className="flex items-center gap-2 text-[13px] font-sans text-[var(--slate)] overflow-hidden">
-          <span className="hidden sm:inline font-serif font-normal text-[var(--ink)]">
+          <Link
+            href="/"
+            onClick={() => toast.info("Navigating to Homepage...")}
+            className="hidden sm:inline font-serif font-normal text-[var(--ink)] hover:opacity-80 transition-opacity cursor-pointer"
+            title="Go to Homepage"
+          >
             VedaAI
-          </span>
+          </Link>
           <span className="hidden sm:inline text-[var(--border)]">/</span>
           <span className="capitalize text-[var(--slate)]">
             {stage === "upload" || stage === "new-evaluation"

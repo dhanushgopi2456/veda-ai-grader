@@ -2,16 +2,16 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-[#ffffff] border-t border-[#f2f2f3] text-[#777b86] py-16">
+    <footer className="w-full bg-[var(--canvas)]/90 backdrop-blur-md border-t border-[var(--border)] text-[var(--slate)] py-16">
       <div className="mx-auto max-w-[1200px] px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-4">
           {/* Brand Col */}
           <div className="md:col-span-2 space-y-4">
-            <div className="flex items-center gap-2">
-              <span className="font-serif text-[22px] font-normal tracking-[-0.5px] text-[#17191c]">
+            <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+              <span className="font-serif text-[22px] font-normal tracking-[-0.5px] text-[var(--ink)]">
                 VedaAI Grader
               </span>
-            </div>
+            </Link>
             <p className="max-w-md text-[14px] font-sans text-[#777b86] leading-relaxed">
               An editorial, multimodal assessment platform designed for universities, schools, and examination committees. Ingests raw handwritten answer sheets, auto-maps out-of-order questions, and generates step-by-step criteria feedback.
             </p>

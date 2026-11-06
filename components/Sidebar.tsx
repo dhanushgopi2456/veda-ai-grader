@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import {
   LayoutDashboard,
   FilePlus,
@@ -73,22 +74,23 @@ export default function Sidebar({
 
   return (
     <aside
-      className={`hidden md:flex flex-col border-r border-[var(--border)] bg-[var(--canvas)] transition-all duration-200 relative select-none ${
+      className={`hidden md:flex flex-col border-r border-[var(--border)] bg-[var(--canvas)]/85 backdrop-blur-xl transition-all duration-200 relative select-none ${
         isCollapsed ? "w-18" : "w-64"
       }`}
     >
       {/* Brand Header */}
       <div className="flex h-16 shrink-0 items-center justify-between px-4 border-b border-[var(--border-subtle)]">
-        <button
-          onClick={() => onNavigate("dashboard")}
-          className="flex items-center gap-3 overflow-hidden text-left focus-visible:outline-none cursor-pointer"
+        <Link
+          href="/"
+          className="flex items-center gap-3 overflow-hidden text-left focus-visible:outline-none cursor-pointer group"
+          title="Go to Homepage"
         >
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--ink)] text-[var(--canvas)]">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--ink)] text-[var(--canvas)] group-hover:opacity-90 transition-opacity">
             <GraduationCap className="h-4.5 w-4.5" />
           </div>
           {!isCollapsed && (
             <div className="min-w-0 flex-1">
-              <span className="font-serif text-[17px] font-normal tracking-tight text-[var(--ink)]">
+              <span className="font-serif text-[17px] font-normal tracking-tight text-[var(--ink)] group-hover:opacity-90 transition-opacity">
                 VedaAI
               </span>
               <p className="truncate text-[11px] font-sans text-[var(--slate)]">
@@ -96,7 +98,7 @@ export default function Sidebar({
               </p>
             </div>
           )}
-        </button>
+        </Link>
 
         {/* Collapse toggle button */}
         <button

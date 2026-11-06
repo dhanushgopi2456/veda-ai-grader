@@ -75,7 +75,7 @@ function DropZone({
   }
 
   return (
-    <div className="flex flex-col rounded-2xl border border-neutral-200/90 bg-white p-5 shadow-xs transition-all dark:border-neutral-800 dark:bg-neutral-900">
+    <div className="flex flex-col rounded-2xl border border-[var(--border)] bg-[var(--canvas)]/85 backdrop-blur-md p-5 shadow-xs transition-all">
       <div className="flex items-center justify-between mb-3">
         <div>
           <span className="text-xs font-semibold uppercase tracking-wider text-orange-600 dark:text-orange-400">
@@ -121,7 +121,7 @@ function DropZone({
               : "border-neutral-200 bg-neutral-50/60 hover:border-neutral-300 hover:bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-950/40 dark:hover:border-neutral-700"
           }`}
         >
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-xs text-orange-500 border border-neutral-200/60 dark:bg-neutral-800 dark:border-neutral-700/60 mb-3">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--mist)] shadow-xs text-orange-500 border border-[var(--border)] mb-3">
             <Upload className="h-6 w-6" />
           </div>
           <p className="text-sm font-semibold text-neutral-800 dark:text-neutral-200 text-center">
@@ -250,9 +250,9 @@ export default function NewEvaluationView({
   }
 
   return (
-    <div className="flex-1 overflow-y-auto p-4 lg:p-8 space-y-6 max-w-5xl mx-auto w-full">
+    <div className="flex-1 overflow-y-auto p-4 lg:p-8 space-y-6 max-w-5xl mx-auto w-full bg-transparent text-[var(--ink)]">
       {/* 5-Step Stepper Bar */}
-      <div className="rounded-2xl border border-neutral-200/80 bg-white p-4 shadow-xs dark:border-neutral-800 dark:bg-neutral-900">
+      <div className="rounded-2xl border border-[var(--border)] bg-[var(--canvas)]/85 backdrop-blur-md p-4 shadow-xs">
         <div className="flex items-center justify-between overflow-x-auto text-xs font-medium text-neutral-500 dark:text-neutral-400">
           <div className="flex items-center gap-2">
             <span
@@ -370,7 +370,7 @@ export default function NewEvaluationView({
       </div>
 
       {/* Step 3: Evaluation Configuration Panel */}
-      <div className="rounded-2xl border border-neutral-200/90 bg-white shadow-xs dark:border-neutral-800 dark:bg-neutral-900 overflow-hidden">
+      <div className="rounded-2xl border border-[var(--border)] bg-[var(--canvas)]/85 backdrop-blur-md shadow-xs overflow-hidden">
         <button
           type="button"
           onClick={() => setShowConfig((v) => !v)}

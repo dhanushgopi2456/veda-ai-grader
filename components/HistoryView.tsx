@@ -82,7 +82,7 @@ export default function HistoryView({
   }, [history, searchQuery, scoreFilter, sortBy]);
 
   return (
-    <div className="flex-1 overflow-y-auto p-4 lg:p-8 space-y-6 max-w-7xl mx-auto w-full">
+    <div className="flex-1 overflow-y-auto p-4 lg:p-8 space-y-6 max-w-7xl mx-auto w-full bg-transparent text-[var(--ink)]">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -106,7 +106,7 @@ export default function HistoryView({
       </div>
 
       {/* Filter & Search Bar */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-3 rounded-2xl border border-neutral-200/90 bg-white shadow-xs dark:border-neutral-800 dark:bg-neutral-900">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-3 rounded-2xl border border-[var(--border)] bg-[var(--canvas)]/85 backdrop-blur-md shadow-xs">
         {/* Search Input */}
         <div className="relative w-full sm:w-80">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400" />
@@ -164,7 +164,7 @@ export default function HistoryView({
 
       {/* Main Table / Empty State */}
       {filteredHistory.length === 0 ? (
-        <div className="rounded-2xl border border-neutral-200/90 bg-white py-16 px-6 text-center space-y-4 dark:border-neutral-800 dark:bg-neutral-900">
+        <div className="rounded-2xl border border-[var(--border)] bg-[var(--canvas)]/85 backdrop-blur-md py-16 px-6 text-center space-y-4">
           <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-orange-50 text-orange-500 dark:bg-orange-950/60">
             <FileCheck2 className="h-7 w-7" />
           </div>
@@ -211,7 +211,7 @@ export default function HistoryView({
           </div>
         </div>
       ) : (
-        <div className="rounded-2xl border border-neutral-200/90 bg-white shadow-xs dark:border-neutral-800 dark:bg-neutral-900 overflow-hidden">
+        <div className="rounded-2xl border border-[var(--border)] bg-[var(--canvas)]/85 backdrop-blur-md shadow-xs overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead className="bg-neutral-50/70 dark:bg-neutral-800/40 text-[11px] font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 border-b border-neutral-100 dark:border-neutral-800">

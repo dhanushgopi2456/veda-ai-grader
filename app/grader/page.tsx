@@ -615,7 +615,7 @@ function VedaApp() {
               : "Overview";
 
   return (
-    <div className="flex h-dvh overflow-hidden bg-[var(--canvas)]/80 backdrop-blur-sm text-[var(--ink)]">
+    <div className="relative flex h-dvh overflow-hidden bg-transparent text-[var(--ink)]">
       {/* Sidebar Navigation */}
       <Sidebar
         stage={stage}
@@ -671,7 +671,7 @@ function VedaApp() {
       )}
 
       {/* Main Content Area */}
-      <main className="flex min-w-0 flex-1 flex-col overflow-hidden">
+      <main className="relative flex min-w-0 flex-1 flex-col overflow-hidden bg-transparent">
         <TopBar
           stage={stage}
           crumb={crumb}
@@ -683,7 +683,7 @@ function VedaApp() {
           userName={settings.user?.name}
         />
 
-        <div className="min-h-0 flex-1 flex flex-col overflow-hidden">
+        <div className="min-h-0 flex-1 flex flex-col overflow-hidden bg-transparent">
           {/* 1. Dashboard View */}
           {stage === "dashboard" && (
             <DashboardView

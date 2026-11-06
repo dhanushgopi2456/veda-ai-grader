@@ -77,7 +77,7 @@ export default function DashboardView({
   return (
     <div className="flex-1 overflow-y-auto p-6 lg:p-10 space-y-10 max-w-[1200px] mx-auto w-full bg-transparent text-[var(--ink)]">
       {/* 1. Welcome Editorial Header Card */}
-      <div className="rounded-[24px] bg-[var(--mist)] border border-[var(--border)] p-8 sm:p-10 text-left">
+      <div className="rounded-[24px] bg-[var(--canvas)]/85 backdrop-blur-md border border-[var(--border)] p-8 sm:p-10 text-left">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="max-w-2xl space-y-3">
             <span className="text-[12px] font-sans font-medium uppercase tracking-[0.04em] text-[var(--ash)]">
@@ -130,7 +130,7 @@ export default function DashboardView({
       {/* 2. Statistics Grid (Flat Mist Gray Cards with Display Serif Numbers) */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Total Evaluations */}
-        <div className="rounded-[24px] bg-[var(--mist)] p-6 border border-[var(--border)]">
+        <div className="rounded-[24px] bg-[var(--canvas)]/85 backdrop-blur-md p-6 border border-[var(--border)]">
           <span className="text-[12px] font-sans font-medium uppercase tracking-[0.04em] text-[var(--ash)]">
             Total Submissions
           </span>
@@ -145,7 +145,7 @@ export default function DashboardView({
         </div>
 
         {/* Questions Evaluated */}
-        <div className="rounded-[24px] bg-[var(--mist)] p-6 border border-[var(--border)]">
+        <div className="rounded-[24px] bg-[var(--canvas)]/85 backdrop-blur-md p-6 border border-[var(--border)]">
           <span className="text-[12px] font-sans font-medium uppercase tracking-[0.04em] text-[var(--ash)]">
             Questions Mapped
           </span>
@@ -160,7 +160,7 @@ export default function DashboardView({
         </div>
 
         {/* Average Score */}
-        <div className="rounded-[24px] bg-[var(--mist)] p-6 border border-[var(--border)]">
+        <div className="rounded-[24px] bg-[var(--canvas)]/85 backdrop-blur-md p-6 border border-[var(--border)]">
           <span className="text-[12px] font-sans font-medium uppercase tracking-[0.04em] text-[var(--ash)]">
             Cohort Mean Score
           </span>
@@ -175,7 +175,7 @@ export default function DashboardView({
         </div>
 
         {/* Evaluation Velocity */}
-        <div className="rounded-[24px] bg-[var(--mist)] p-6 border border-[var(--border)]">
+        <div className="rounded-[24px] bg-[var(--canvas)]/85 backdrop-blur-md p-6 border border-[var(--border)]">
           <span className="text-[12px] font-sans font-medium uppercase tracking-[0.04em] text-[var(--ash)]">
             Processing Latency
           </span>
@@ -201,7 +201,7 @@ export default function DashboardView({
               toast.info("Navigated to New Evaluation");
               onNewEvaluation();
             }}
-            className="p-5 rounded-[20px] bg-[var(--mist)] border border-[var(--border)] hover:opacity-90 transition-opacity text-left cursor-pointer"
+            className="p-5 rounded-[20px] bg-[var(--canvas)]/80 backdrop-blur-md border border-[var(--border)] hover:bg-[var(--canvas)]/95 transition-all text-left cursor-pointer"
           >
             <p className="text-[14px] font-sans font-medium text-[var(--ink)]">
               New Evaluation
@@ -217,7 +217,7 @@ export default function DashboardView({
               onLoadSample();
             }}
             disabled={sampleLoading}
-            className="p-5 rounded-[20px] bg-[var(--mist)] border border-[var(--border)] hover:opacity-90 transition-opacity text-left disabled:opacity-50 cursor-pointer"
+            className="p-5 rounded-[20px] bg-[var(--canvas)]/80 backdrop-blur-md border border-[var(--border)] hover:bg-[var(--canvas)]/95 transition-all text-left disabled:opacity-50 cursor-pointer"
           >
             <p className="text-[14px] font-sans font-medium text-[var(--ink)]">
               Sample Assessment
@@ -232,7 +232,7 @@ export default function DashboardView({
               toast.info("Navigated to Evaluation History");
               onNavigate("history");
             }}
-            className="p-5 rounded-[20px] bg-[var(--mist)] border border-[var(--border)] hover:opacity-90 transition-opacity text-left cursor-pointer"
+            className="p-5 rounded-[20px] bg-[var(--canvas)]/80 backdrop-blur-md border border-[var(--border)] hover:bg-[var(--canvas)]/95 transition-all text-left cursor-pointer"
           >
             <p className="text-[14px] font-sans font-medium text-[var(--ink)]">
               Archive Records
@@ -247,7 +247,7 @@ export default function DashboardView({
               toast.info("Navigated to Cohort Analytics");
               onNavigate("analytics");
             }}
-            className="p-5 rounded-[20px] bg-[var(--mist)] border border-[var(--border)] hover:opacity-90 transition-opacity text-left cursor-pointer"
+            className="p-5 rounded-[20px] bg-[var(--canvas)]/80 backdrop-blur-md border border-[var(--border)] hover:bg-[var(--canvas)]/95 transition-all text-left cursor-pointer"
           >
             <p className="text-[14px] font-sans font-medium text-[var(--ink)]">
               Cohort Analytics
@@ -260,7 +260,7 @@ export default function DashboardView({
       </div>
 
       {/* 4. Recent Evaluations Table */}
-      <div className="rounded-[24px] bg-[var(--canvas)] border border-[var(--border)] overflow-hidden text-left shadow-steep-artifact">
+      <div className="rounded-[24px] bg-[var(--canvas)]/85 backdrop-blur-md border border-[var(--border)] overflow-hidden text-left shadow-steep-artifact">
         <div className="flex items-center justify-between p-6 border-b border-[var(--border-subtle)]">
           <div>
             <h2 className="font-serif text-[20px] font-normal tracking-tight text-[var(--ink)]">

@@ -294,9 +294,9 @@ export default function ResultsView({
   }
 
   return (
-    <div className="flex h-full min-h-0 flex-col bg-neutral-50 dark:bg-neutral-950">
+    <div className="flex h-full min-h-0 flex-col bg-transparent text-[var(--ink)]">
       {/* Top Header Bar */}
-      <div className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-neutral-200/90 bg-white px-4 py-3 dark:border-neutral-800 dark:bg-neutral-900 lg:px-6">
+      <div className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-[var(--border)] bg-[var(--canvas)]/85 backdrop-blur-md px-4 py-3 lg:px-6">
         <div className="flex items-center gap-3 min-w-0">
           <button
             onClick={onBackToDashboard}
@@ -474,7 +474,7 @@ export default function ResultsView({
           }`}
         >
           {/* Executive Score Card */}
-          <div className="rounded-2xl border border-neutral-200/90 bg-white p-5 shadow-xs dark:border-neutral-800 dark:bg-neutral-900">
+          <div className="rounded-2xl border border-[var(--border)] bg-[var(--canvas)]/85 backdrop-blur-md p-5 shadow-xs">
             <div className="flex items-start justify-between gap-4">
               <div>
                 <span className="text-xs font-semibold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">

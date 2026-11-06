@@ -55,7 +55,7 @@ export default function ProcessingView({
   const activeStep = steps.find((s) => states[s.key] === "active");
 
   return (
-    <div className="flex-1 flex items-center justify-center overflow-y-auto p-4 lg:p-8">
+    <div className="flex-1 flex items-center justify-center overflow-y-auto p-4 lg:p-8 bg-transparent text-[var(--ink)]">
       <div className="w-full max-w-xl text-center space-y-6">
         {/* Animated AI Radar Orb */}
         <div className="relative mx-auto flex h-28 w-28 items-center justify-center">
@@ -126,7 +126,7 @@ export default function ProcessingView({
         )}
 
         {/* Step-by-Step Progress Card List */}
-        <div className="rounded-2xl border border-neutral-200/90 bg-white p-4 shadow-xs dark:border-neutral-800 dark:bg-neutral-900 text-left space-y-2.5 max-w-md mx-auto">
+        <div className="rounded-2xl border border-[var(--border)] bg-[var(--canvas)]/85 backdrop-blur-md p-4 shadow-xs text-left space-y-2.5 max-w-md mx-auto">
           {steps.map((step) => {
             const state = states[step.key];
             const StepIcon = STEP_ICONS[step.key] || ScanText;
