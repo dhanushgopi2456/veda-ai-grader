@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Source_Serif_4 } from "next/font/google";
 import { ToastProvider } from "@/components/ToastProvider";
 import GradientWave from "@/components/GradientWave";
+import MotionCursor from "@/components/MotionCursor";
 import "./globals.css";
 
 const serifFont = Source_Serif_4({
@@ -59,6 +60,8 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-[var(--canvas)] text-[var(--ink)] font-sans selection:bg-[var(--mist)] selection:text-[var(--ink)] transition-colors duration-200 relative">
         {/* Living Gradient Wave Background across all pages */}
         <GradientWave />
+        {/* Smooth Physics-based Motion Cursor */}
+        <MotionCursor />
         <ToastProvider>
           <div className="relative z-10 flex min-h-full flex-1 flex-col">
             {children}
