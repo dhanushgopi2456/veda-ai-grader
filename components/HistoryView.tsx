@@ -2,6 +2,7 @@
 
 import React, { useMemo, useState } from "react";
 import type { EvaluationResult } from "@/lib/types";
+import AmbientGlareShader from "@/components/ui/ambient-glare-shader";
 import {
   Search,
   FileCheck2,
@@ -97,9 +98,10 @@ export default function HistoryView({
         <div className="flex items-center gap-2">
           <button
             onClick={onNewEvaluation}
-            className="inline-flex items-center gap-2 rounded-xl bg-orange-500 px-4 py-2.5 text-xs font-semibold text-white shadow-sm hover:bg-orange-600 transition-colors"
+            className="relative overflow-hidden inline-flex items-center gap-2 rounded-xl bg-orange-500 px-4 py-2.5 text-xs font-semibold text-white shadow-sm hover:bg-orange-600 transition-colors group cursor-pointer"
           >
-            <FilePlus2 className="h-4 w-4" />
+            <AmbientGlareShader radius={12} intensity={1.15} duration={2.2} pause={1.8} />
+            <FilePlus2 className="h-4 w-4 relative z-10" />
             <span>New Evaluation</span>
           </button>
         </div>
@@ -193,9 +195,10 @@ export default function HistoryView({
               <>
                 <button
                   onClick={onNewEvaluation}
-                  className="inline-flex items-center gap-2 rounded-xl bg-orange-500 px-4 py-2.5 text-xs font-semibold text-white shadow-sm hover:bg-orange-600 transition-colors"
+                  className="relative overflow-hidden inline-flex items-center gap-2 rounded-xl bg-orange-500 px-4 py-2.5 text-xs font-semibold text-white shadow-sm hover:bg-orange-600 transition-colors group cursor-pointer"
                 >
-                  <FilePlus2 className="h-4 w-4" />
+                  <AmbientGlareShader radius={12} intensity={1.15} duration={2.2} pause={1.8} />
+            <FilePlus2 className="h-4 w-4 relative z-10" />
                   <span>Start First Evaluation</span>
                 </button>
                 <button

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import type { StepKey, StepState } from "@/lib/types";
+import AmbientGlareShader from "@/components/ui/ambient-glare-shader";
 import {
   Check,
   AlertCircle,
@@ -193,16 +194,18 @@ export default function ProcessingView({
           <div className="flex items-center justify-center gap-3 pt-2">
             <button
               onClick={onBack}
-              className="inline-flex items-center gap-2 rounded-xl border border-neutral-200 bg-white px-5 py-2.5 text-xs font-semibold text-neutral-700 hover:bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700"
+              className="relative overflow-hidden inline-flex items-center gap-2 rounded-xl border border-[var(--border)] bg-[var(--canvas)]/85 backdrop-blur-md px-5 py-2.5 text-xs font-semibold text-[var(--ink)] hover:bg-[var(--mist)] transition-colors cursor-pointer"
             >
-              <ArrowLeft className="h-3.5 w-3.5" />
+              <AmbientGlareShader radius={12} intensity={0.9} duration={2.5} pause={2.0} />
+              <ArrowLeft className="h-3.5 w-3.5 relative z-10" />
               <span>Back to Upload</span>
             </button>
             <button
               onClick={onRetry}
-              className="inline-flex items-center gap-2 rounded-xl bg-orange-500 px-5 py-2.5 text-xs font-semibold text-white shadow-md hover:bg-orange-600"
+              className="relative overflow-hidden inline-flex items-center gap-2 rounded-xl bg-orange-500 px-5 py-2.5 text-xs font-semibold text-white shadow-md hover:bg-orange-600 cursor-pointer"
             >
-              <RefreshCw className="h-3.5 w-3.5" />
+              <AmbientGlareShader radius={12} intensity={1.2} duration={2.2} pause={1.8} />
+              <RefreshCw className="h-3.5 w-3.5 relative z-10" />
               <span>Retry Evaluation</span>
             </button>
           </div>

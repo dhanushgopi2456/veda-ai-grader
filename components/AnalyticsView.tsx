@@ -14,6 +14,7 @@ import {
   XCircle,
 } from "lucide-react";
 import type { EvaluationResult } from "@/lib/types";
+import AmbientGlareShader from "@/components/ui/ambient-glare-shader";
 
 interface Props {
   history: EvaluationResult[];
@@ -139,17 +140,19 @@ export default function AnalyticsView({
           <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
             <button
               onClick={onNewEvaluation}
-              className="btn-steep-primary cursor-pointer"
+              className="btn-steep-primary cursor-pointer group"
             >
-              <span>Create Evaluation</span>
+              <AmbientGlareShader radius={9999} intensity={1.2} duration={2.2} pause={1.8} />
+              <span className="relative z-10">Create Evaluation</span>
             </button>
             <button
               onClick={onLoadSample}
               disabled={sampleLoading}
-              className="btn-steep-secondary cursor-pointer"
+              className="btn-steep-secondary cursor-pointer group"
             >
-              <Sparkles className="h-4 w-4" />
-              <span>{sampleLoading ? "Loading Sample…" : "Load Sample Pack"}</span>
+              <AmbientGlareShader radius={9999} intensity={0.9} duration={2.5} pause={2.0} />
+              <Sparkles className="h-4 w-4 relative z-10" />
+              <span className="relative z-10">{sampleLoading ? "Loading Sample…" : "Load Sample Pack"}</span>
             </button>
           </div>
         </div>

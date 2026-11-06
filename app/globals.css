@@ -117,29 +117,107 @@ body {
   color: var(--ink);
 }
 
-/* Steep Buttons */
+/* Glass Glare Animation Keyframes (21st.dev @1haim ambient-glare-shader) */
+@keyframes glass-glare-sweep {
+  0% {
+    transform: translateX(-160%) skewX(-20deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.95;
+  }
+  50% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 0.95;
+  }
+  100% {
+    transform: translateX(260%) skewX(-20deg);
+    opacity: 0;
+  }
+}
+
+@keyframes glass-rim-pulse {
+  0%, 100% {
+    opacity: 0.75;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Steep Buttons with Adaptive Glass Glare */
 .btn-steep-primary {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   height: 44px;
-  padding: 0 20px;
+  padding: 0 22px;
   border-radius: 9999px;
   background-color: var(--btn-primary-bg);
   color: var(--btn-primary-text);
   font-family: var(--font-sans);
   font-size: 15px;
-  font-weight: 480;
-  border: none;
+  font-weight: 500;
+  border: 1px solid rgba(255, 255, 255, 0.16);
   text-decoration: none;
-  box-shadow: none;
-  transition: opacity 0.2s ease, transform 0.15s ease, background-color 0.2s ease, color 0.2s ease;
   cursor: pointer;
+  overflow: hidden;
+  box-shadow: 
+    rgba(0, 0, 0, 0.04) 0px 0px 0px 1px inset,
+    rgba(0, 0, 0, 0.07) 0px 1px 3px 0px,
+    0 1px 1px 0 rgba(255, 255, 255, 0.20) inset;
+  transition: opacity 0.2s ease, transform 0.15s cubic-bezier(0.23, 1, 0.32, 1), background-color 0.2s ease, color 0.2s ease, box-shadow 0.25s ease;
+}
+
+/* Ambient Glare Sweep Front */
+.btn-steep-primary::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    105deg,
+    transparent 12%,
+    rgba(0, 51, 255, 0.16) 34%,
+    rgba(255, 255, 255, 0.45) 50%,
+    rgba(127, 34, 254, 0.20) 66%,
+    transparent 88%
+  );
+  transform: translateX(-160%) skewX(-20deg);
+  transition: transform 0.75s cubic-bezier(0.23, 1, 0.32, 1);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Top Specular Rim Reflection */
+.btn-steep-primary::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 45%;
+  border-radius: 9999px 9999px 0 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.btn-steep-primary:hover::before {
+  transform: translateX(180%) skewX(-20deg);
 }
 
 .btn-steep-primary:hover {
-  opacity: 0.88;
+  opacity: 0.96;
+  box-shadow: 
+    rgba(0, 0, 0, 0.04) 0px 0px 0px 1px inset,
+    0 4px 16px -2px rgba(0, 51, 255, 0.25),
+    0 2px 4px 0 rgba(0, 0, 0, 0.08);
+  transform: translateY(-0.5px);
 }
 
 .btn-steep-primary:active {
@@ -147,30 +225,106 @@ body {
 }
 
 .btn-steep-secondary {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   height: 44px;
-  padding: 0 20px;
+  padding: 0 22px;
   border-radius: 9999px;
-  background-color: transparent;
+  background-color: var(--canvas);
   color: var(--btn-secondary-text);
   border: 1px solid var(--btn-secondary-border);
   font-family: var(--font-sans);
   font-size: 15px;
-  font-weight: 480;
+  font-weight: 500;
   text-decoration: none;
-  box-shadow: none;
-  transition: background-color 0.2s ease, opacity 0.2s ease, transform 0.15s ease, border-color 0.2s ease, color 0.2s ease;
   cursor: pointer;
+  overflow: hidden;
+  box-shadow: 
+    rgba(0, 0, 0, 0.04) 0px 0px 0px 1px inset,
+    rgba(0, 0, 0, 0.05) 0px 1px 2px 0px,
+    0 1px 0px 0 rgba(255, 255, 255, 0.70) inset;
+  transition: background-color 0.2s ease, opacity 0.2s ease, transform 0.15s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.2s ease, color 0.2s ease, box-shadow 0.25s ease;
+}
+
+.btn-steep-secondary::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    105deg,
+    transparent 12%,
+    rgba(0, 51, 255, 0.10) 34%,
+    rgba(255, 255, 255, 0.75) 50%,
+    rgba(127, 34, 254, 0.12) 66%,
+    transparent 88%
+  );
+  transform: translateX(-160%) skewX(-20deg);
+  transition: transform 0.75s cubic-bezier(0.23, 1, 0.32, 1);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.btn-steep-secondary:hover::before {
+  transform: translateX(180%) skewX(-20deg);
 }
 
 .btn-steep-secondary:hover {
   background-color: var(--btn-secondary-hover);
+  box-shadow: 
+    rgba(0, 0, 0, 0.04) 0px 0px 0px 1px inset,
+    0 3px 10px -2px rgba(0, 0, 0, 0.10);
+  transform: translateY(-0.5px);
 }
 
 .btn-steep-secondary:active {
+  transform: scale(0.98);
+}
+
+/* Glass Glare Dark Mode Refinement */
+.dark .btn-steep-primary {
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: 
+    rgba(255, 255, 255, 0.14) 0px 0px 0px 1px inset,
+    rgba(0, 0, 0, 0.30) 0px 2px 4px 0px,
+    0 1px 1px 0 rgba(255, 255, 255, 0.35) inset;
+}
+
+.dark .btn-steep-primary:hover {
+  box-shadow: 
+    rgba(255, 255, 255, 0.20) 0px 0px 0px 1px inset,
+    0 0 20px rgba(127, 34, 254, 0.35),
+    0 4px 14px rgba(0, 0, 0, 0.50);
+}
+
+.dark .btn-steep-secondary {
+  background-color: rgba(26, 28, 32, 0.85);
+  backdrop-filter: blur(14px);
+  border-color: var(--border);
+  box-shadow: 
+    rgba(255, 255, 255, 0.08) 0px 0px 0px 1px inset,
+    rgba(0, 0, 0, 0.25) 0px 1px 2px 0px;
+}
+
+.dark .btn-steep-secondary:hover {
+  background-color: var(--mist);
+  box-shadow: 
+    rgba(255, 255, 255, 0.15) 0px 0px 0px 1px inset,
+    0 0 16px rgba(0, 51, 255, 0.25);
+}
+
+/* Universal Glass Glare Utility for Buttons across Views */
+.glass-glare-btn,
+button:not(.no-glare) {
+  position: relative;
+  transition: transform 0.15s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.glass-glare-btn:active,
+button:not(.no-glare):active {
   transform: scale(0.98);
 }
 

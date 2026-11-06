@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowRight, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/components/ToastProvider";
+import AmbientGlareShader from "@/components/ui/ambient-glare-shader";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -107,10 +108,11 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={handleDemoAccess}
-                  className="btn-steep-secondary w-full"
+                  className="btn-steep-secondary w-full group"
                 >
-                  <span>Launch 1-Click Sample Sandbox</span>
-                  <ArrowRight className="h-4 w-4" />
+                  <AmbientGlareShader radius={9999} intensity={0.9} duration={2.5} pause={2.0} />
+                  <span className="relative z-10">Launch 1-Click Sample Sandbox</span>
+                  <ArrowRight className="h-4 w-4 relative z-10 transition-transform group-hover:translate-x-0.5" />
                 </button>
               </div>
 
@@ -198,7 +200,8 @@ export default function LoginPage() {
                   disabled={loading}
                   className="btn-steep-primary w-full mt-2"
                 >
-                  {loading ? "Authenticating…" : "Sign In to Workspace"}
+                  <AmbientGlareShader radius={9999} intensity={1.2} duration={2.2} pause={1.8} />
+                  <span className="relative z-10">{loading ? "Authenticating…" : "Sign In to Workspace"}</span>
                 </button>
               </form>
 

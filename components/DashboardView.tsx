@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import type { EvaluationResult } from "@/lib/types";
 import { useToast } from "@/components/ToastProvider";
+import AmbientGlareShader from "@/components/ui/ambient-glare-shader";
 
 type Props = {
   history: EvaluationResult[];
@@ -99,10 +100,11 @@ export default function DashboardView({
                 toast.info("Opening New Evaluation...");
                 onNewEvaluation();
               }}
-              className="btn-steep-primary cursor-pointer"
+              className="btn-steep-primary cursor-pointer group"
             >
-              <FilePlus2 className="h-4 w-4" />
-              <span>New Evaluation</span>
+              <AmbientGlareShader radius={9999} intensity={1.2} duration={2.2} pause={1.8} />
+              <FilePlus2 className="h-4 w-4 relative z-10" />
+              <span className="relative z-10">New Evaluation</span>
             </button>
 
             <button
@@ -112,16 +114,19 @@ export default function DashboardView({
                 onLoadSample();
               }}
               disabled={sampleLoading}
-              className="btn-steep-secondary cursor-pointer"
+              className="btn-steep-secondary cursor-pointer group"
             >
-              {sampleLoading ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  <span>Loading Sample…</span>
-                </>
-              ) : (
-                <span>Load Sample Exam</span>
-              )}
+              <AmbientGlareShader radius={9999} intensity={0.9} duration={2.5} pause={2.0} />
+              <span className="relative z-10">
+                {sampleLoading ? (
+                  <span className="flex items-center gap-2">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <span>Loading Sample…</span>
+                  </span>
+                ) : (
+                  <span>Load Sample Exam</span>
+                )}
+              </span>
             </button>
           </div>
         </div>
@@ -298,9 +303,10 @@ export default function DashboardView({
                   toast.info("Opening New Evaluation...");
                   onNewEvaluation();
                 }}
-                className="btn-steep-primary cursor-pointer"
+                className="btn-steep-primary cursor-pointer group"
               >
-                <span>Start Evaluation</span>
+                <AmbientGlareShader radius={9999} intensity={1.2} duration={2.2} pause={1.8} />
+                <span className="relative z-10">Start Evaluation</span>
               </button>
               <button
                 onClick={() => {
@@ -308,9 +314,10 @@ export default function DashboardView({
                   onLoadSample();
                 }}
                 disabled={sampleLoading}
-                className="btn-steep-secondary cursor-pointer"
+                className="btn-steep-secondary cursor-pointer group"
               >
-                <span>Load Sample Exam</span>
+                <AmbientGlareShader radius={9999} intensity={0.9} duration={2.5} pause={2.0} />
+                <span className="relative z-10">Load Sample Exam</span>
               </button>
             </div>
           </div>

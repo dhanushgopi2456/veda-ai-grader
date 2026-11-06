@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import type { EvaluationConfig } from "@/lib/types";
 import { useToast } from "@/components/ToastProvider";
+import AmbientGlareShader from "@/components/ui/ambient-glare-shader";
 
 type Props = {
   qFiles: File[];
@@ -339,9 +340,10 @@ export default function NewEvaluationView({
         <button
           onClick={onLoadSample}
           disabled={sampleLoading || busy}
-          className="inline-flex items-center gap-2 shrink-0 rounded-xl border border-orange-200/80 bg-orange-50/80 px-3.5 py-2.5 text-xs font-semibold text-orange-700 hover:bg-orange-100 dark:border-orange-900/60 dark:bg-orange-950/40 dark:text-orange-300 dark:hover:bg-orange-950/70 transition-all disabled:opacity-50"
+          className="relative overflow-hidden inline-flex items-center gap-2 shrink-0 rounded-xl border border-orange-200/80 bg-orange-50/80 px-3.5 py-2.5 text-xs font-semibold text-orange-700 hover:bg-orange-100 dark:border-orange-900/60 dark:bg-orange-950/40 dark:text-orange-300 dark:hover:bg-orange-950/70 transition-all disabled:opacity-50 cursor-pointer shadow-xs"
         >
-          <Sparkles className="h-3.5 w-3.5 text-orange-500" />
+          <AmbientGlareShader radius={12} intensity={0.9} duration={2.5} pause={2.0} />
+          <Sparkles className="h-3.5 w-3.5 text-orange-500 relative z-10" />
           <span>{sampleLoading ? "Loading Sample..." : "Use Sample Exam Pack"}</span>
         </button>
       </div>
@@ -584,7 +586,7 @@ export default function NewEvaluationView({
             onProcess(config);
           }}
           disabled={busy || sampleLoading}
-          className={`inline-flex items-center justify-center gap-2.5 rounded-2xl px-10 py-4 text-sm font-bold text-white shadow-xl transition-all duration-200 min-w-[280px] active:scale-98 ${
+          className={`relative overflow-hidden inline-flex items-center justify-center gap-2.5 rounded-2xl px-10 py-4 text-sm font-bold text-white shadow-xl transition-all duration-200 min-w-[280px] active:scale-98 ${
             busy || sampleLoading
               ? "bg-neutral-800 cursor-wait dark:bg-neutral-700"
               : !isReady
@@ -592,6 +594,7 @@ export default function NewEvaluationView({
                 : "bg-orange-500 hover:bg-orange-600 shadow-orange-500/25 hover:shadow-orange-500/40 hover:-translate-y-0.5"
           }`}
         >
+          <AmbientGlareShader radius={16} intensity={1.3} duration={2.0} pause={1.5} />
           {busy || sampleLoading ? (
             <>
               <Loader2 className="h-5 w-5 animate-spin" />
@@ -620,7 +623,8 @@ export default function NewEvaluationView({
               disabled={sampleLoading}
               className="font-bold text-orange-600 dark:text-orange-400 hover:underline inline-flex items-center gap-1"
             >
-              <Sparkles className="h-3.5 w-3.5 text-orange-500" />
+              <AmbientGlareShader radius={12} intensity={0.9} duration={2.5} pause={2.0} />
+          <Sparkles className="h-3.5 w-3.5 text-orange-500 relative z-10" />
               <span>Use Sample Exam Pack</span>
             </button>
           </div>

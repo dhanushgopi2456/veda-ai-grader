@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Menu, X, ArrowRight, Sun, Moon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@/components/ToastProvider";
+import AmbientGlareShader from "@/components/ui/ambient-glare-shader";
 
 export default function Navbar() {
   const { toast } = useToast();
@@ -109,10 +110,11 @@ export default function Navbar() {
           <Link
             href="/login"
             onClick={() => toast.info("Navigating to Educator Portal...")}
-            className="btn-steep-primary"
+            className="btn-steep-primary group"
           >
-            <span>Launch Grader</span>
-            <ArrowRight className="h-4 w-4" />
+            <AmbientGlareShader radius={9999} intensity={1.15} duration={2.2} pause={1.8} />
+            <span className="relative z-10">Launch Grader</span>
+            <ArrowRight className="h-4 w-4 relative z-10 transition-transform group-hover:translate-x-0.5" />
           </Link>
         </div>
 
@@ -187,7 +189,8 @@ export default function Navbar() {
                   }}
                   className="btn-steep-secondary w-full"
                 >
-                  Sign In
+                  <AmbientGlareShader radius={9999} intensity={0.9} duration={2.5} pause={2.0} />
+                  <span className="relative z-10">Sign In</span>
                 </Link>
                 <Link
                   href="/login"
@@ -197,7 +200,8 @@ export default function Navbar() {
                   }}
                   className="btn-steep-primary w-full"
                 >
-                  Launch Grader
+                  <AmbientGlareShader radius={9999} intensity={1.2} duration={2.2} pause={1.8} />
+                  <span className="relative z-10">Launch Grader</span>
                 </Link>
               </div>
             </div>

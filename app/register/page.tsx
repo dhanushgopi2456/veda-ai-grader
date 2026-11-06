@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowRight, Eye, EyeOff, Check } from "lucide-react";
 import { useToast } from "@/components/ToastProvider";
+import AmbientGlareShader from "@/components/ui/ambient-glare-shader";
 
 const ROLES = [
   { id: "teacher", label: "School / K-12 Teacher" },
@@ -214,7 +215,8 @@ export default function RegisterPage() {
                   disabled={loading}
                   className="btn-steep-primary w-full mt-2"
                 >
-                  {loading ? "Creating Profile…" : "Complete Registration"}
+                  <AmbientGlareShader radius={9999} intensity={1.2} duration={2.2} pause={1.8} />
+                  <span className="relative z-10">{loading ? "Creating Profile…" : "Complete Registration"}</span>
                 </button>
               </form>
 

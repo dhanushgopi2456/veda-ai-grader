@@ -9,6 +9,7 @@ import MetricsStrip from "@/components/MetricsStrip";
 import FeatureBento from "@/components/FeatureBento";
 import HowItWorks from "@/components/HowItWorks";
 import { useToast } from "@/components/ToastProvider";
+import AmbientGlareShader from "@/components/ui/ambient-glare-shader";
 
 export default function LandingPage() {
   const { toast } = useToast();
@@ -43,18 +44,20 @@ export default function LandingPage() {
             <Link
               href="/login"
               onClick={() => toast.info("Navigating to Educator Portal...")}
-              className="btn-steep-primary"
+              className="btn-steep-primary group"
             >
-              <span>Start Grading Now</span>
-              <ArrowRight className="h-4 w-4" />
+              <AmbientGlareShader radius={9999} intensity={1.2} duration={2.2} pause={1.8} />
+              <span className="relative z-10">Start Grading Now</span>
+              <ArrowRight className="h-4 w-4 relative z-10 transition-transform group-hover:translate-x-0.5" />
             </Link>
 
             <Link
               href="/grader?sample=true"
               onClick={() => toast.info("Loading sample assessment...")}
-              className="btn-steep-secondary"
+              className="btn-steep-secondary group"
             >
-              <span>Try Sample Assessment</span>
+              <AmbientGlareShader radius={9999} intensity={0.9} duration={2.5} pause={2.0} />
+              <span className="relative z-10">Try Sample Assessment</span>
             </Link>
           </div>
 
@@ -112,10 +115,11 @@ export default function LandingPage() {
             <Link
               href="/login"
               onClick={() => toast.info("Navigating to Educator Portal...")}
-              className="inline-flex h-[44px] items-center justify-center gap-2 rounded-full bg-[var(--sienna)] px-6 text-[15px] font-sans font-medium text-[var(--canvas)] transition-opacity hover:opacity-90"
+              className="relative overflow-hidden inline-flex h-[44px] items-center justify-center gap-2 rounded-full bg-[var(--sienna)] px-6 text-[15px] font-sans font-medium text-[var(--canvas)] transition-opacity hover:opacity-95 shadow-sm group"
             >
-              <span>Launch Workspace</span>
-              <ArrowRight className="h-4 w-4" />
+              <AmbientGlareShader radius={9999} intensity={1.3} duration={2.2} pause={1.8} />
+              <span className="relative z-10">Launch Workspace</span>
+              <ArrowRight className="h-4 w-4 relative z-10 transition-transform group-hover:translate-x-0.5" />
             </Link>
             <Link
               href="/grader?sample=true"
