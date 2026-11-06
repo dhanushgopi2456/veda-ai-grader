@@ -15,6 +15,7 @@ import {
   Sun,
   Monitor,
   GraduationCap,
+  Clock,
   X,
 } from "lucide-react";
 import type { Stage } from "@/lib/types";
@@ -64,6 +65,13 @@ export default function Sidebar({
   isMobile = false,
 }: Props) {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const [currentTime, setCurrentTime] = useState<Date | null>(null);
+
+  React.useEffect(() => {
+    setCurrentTime(new Date());
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   const modelLabel =
     modelsFor("sk-or-")
@@ -235,6 +243,22 @@ export default function Sidebar({
             <LogOut className="h-4 w-4" />
           </button>
         </div>
+
+        {/* Live Date & Time Widget */}
+        {!isCollapsed && currentTime && (
+          <div
+            suppressHydrationWarning
+            className="flex items-center justify-between px-3 py-1.5 rounded-full bg-[var(--mist)] text-[11px] font-sans text-[var(--slate)] border border-[var(--border)] transition-colors"
+          >
+            <span className="flex items-center gap-1.5 text-[var(--ink)] font-medium tabular-nums">
+              <Clock className="h-3 w-3 text-emerald-500" />
+              {currentTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
+            </span>
+            <span className="truncate text-[var(--slate)] text-[10px]">
+              {currentTime.toLocaleDateString([], { weekday: "short", month: "short", day: "numeric" })}
+            </span>
+          </div>
+        )}
 
         {/* Profile Card */}
         <button

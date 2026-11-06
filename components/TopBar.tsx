@@ -45,6 +45,13 @@ export default function TopBar({
 }: Props) {
   const { toast } = useToast();
   const [showNotifications, setShowNotifications] = useState(false);
+  const [currentTime, setCurrentTime] = useState<Date | null>(null);
+
+  React.useEffect(() => {
+    setCurrentTime(new Date());
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   const themeIcon = theme === "dark" ? Moon : theme === "light" ? Sun : Monitor;
 
@@ -87,6 +94,28 @@ export default function TopBar({
           )}
         </div>
       </div>
+
+      {/* Zone 2: Center Live Date & Time Widget */}
+      {currentTime && (
+        <div
+          suppressHydrationWarning
+          className="hidden md:flex items-center gap-2 rounded-full bg-[var(--mist)] px-3.5 py-1.5 border border-[var(--border)] text-[12px] font-sans text-[var(--slate)] shadow-xs transition-colors"
+        >
+          <div className="flex items-center gap-1.5">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+            </span>
+            <span className="font-medium text-[var(--ink)] tabular-nums">
+              {currentTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
+            </span>
+          </div>
+          <span className="text-[var(--border)]">|</span>
+          <span className="truncate">
+            {currentTime.toLocaleDateString([], { weekday: "short", month: "short", day: "numeric", year: "numeric" })}
+          </span>
+        </div>
+      )}
 
       {/* Zone 3: Actions Cluster */}
       <div className="flex items-center gap-2">

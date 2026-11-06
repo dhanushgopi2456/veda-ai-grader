@@ -8,7 +8,16 @@ interface TrailPoint {
   x: number;
   y: number;
   angle: number;
+  isDrag: boolean;
+  colorIndex: number;
 }
+
+const GRADIENT_PALETTES = [
+  "from-violet-500 via-fuchsia-500 to-cyan-400",
+  "from-cyan-400 via-blue-500 to-indigo-500",
+  "from-amber-400 via-rose-500 to-purple-600",
+  "from-emerald-400 via-teal-500 to-blue-500",
+];
 
 export default function MotionCursor() {
   const [isVisible, setIsVisible] = useState(false);
@@ -31,9 +40,11 @@ export default function MotionCursor() {
   // Velocity-driven deformation
   const [angle, setAngle] = useState(0);
   const [speedScale, setSpeedScale] = useState(1);
+  const [velocityMagnitude, setVelocityMagnitude] = useState(0);
   const lastPos = useRef({ x: 0, y: 0, time: 0 });
   const trailIdCounter = useRef(0);
   const isMouseDownRef = useRef(false);
+  const lastTrailEmitTime = useRef(0);
 
   useEffect(() => {
     // Only run on desktop/fine pointers and respect prefers-reduced-motion
@@ -57,27 +68,35 @@ export default function MotionCursor() {
       const dy = e.clientY - lastPos.current.y;
       const dist = Math.hypot(dx, dy);
       const velocity = dist / dt;
+      setVelocityMagnitude(velocity);
 
       // Velocity stretching & directional rotation
-      if (dist > 3) {
+      if (dist > 2) {
         const rad = Math.atan2(dy, dx);
         setAngle(rad * (180 / Math.PI));
-        // Subtle stretch proportional to speed, clamped to [1, 1.45]
-        const stretch = Math.min(1.45, 1 + velocity * 0.12);
+        // Subtle stretch proportional to speed, clamped to [1, 1.5]
+        const stretch = Math.min(1.5, 1 + velocity * 0.15);
         setSpeedScale(stretch);
       } else {
         setSpeedScale(1);
       }
 
-      // Drag / movement trail effect when dragging or moving rapidly
-      if (isMouseDownRef.current && dist > 12) {
+      // Continuous gradient motion trail (emitted while moving)
+      const isDragging = isMouseDownRef.current;
+      const minDistance = isDragging ? 8 : 16;
+      const timeSinceLastEmit = now - lastTrailEmitTime.current;
+
+      if (dist > minDistance && timeSinceLastEmit > 32) {
+        lastTrailEmitTime.current = now;
         const newPoint: TrailPoint = {
           id: ++trailIdCounter.current,
           x: e.clientX,
           y: e.clientY,
           angle: Math.atan2(dy, dx) * (180 / Math.PI),
+          isDrag: isDragging,
+          colorIndex: trailIdCounter.current % GRADIENT_PALETTES.length,
         };
-        setTrail((prev) => [...prev.slice(-6), newPoint]);
+        setTrail((prev) => [...prev.slice(-10), newPoint]);
       }
 
       lastPos.current = { x: e.clientX, y: e.clientY, time: now };
@@ -129,12 +148,12 @@ export default function MotionCursor() {
     };
   }, [mouseX, mouseY, isVisible]);
 
-  // Clean up drag trail points periodically
+  // Clean up movement trail points periodically with graceful fade
   useEffect(() => {
     if (trail.length === 0) return;
     const timer = setTimeout(() => {
       setTrail((prev) => prev.slice(1));
-    }, 180);
+    }, 120);
     return () => clearTimeout(timer);
   }, [trail]);
 
@@ -145,26 +164,56 @@ export default function MotionCursor() {
       aria-hidden="true"
       className="pointer-events-none fixed inset-0 z-[9999] overflow-hidden select-none"
     >
-      {/* Dragging Motion Particle Ripples */}
+      {/* 1. Fluid Gradient Movement & Drag Trails */}
       <AnimatePresence>
         {trail.map((point) => (
           <motion.div
             key={point.id}
-            initial={{ opacity: 0.55, scale: 0.8 }}
-            animate={{ opacity: 0, scale: 2 }}
+            initial={{
+              opacity: point.isDrag ? 0.8 : 0.45,
+              scale: point.isDrag ? 0.9 : 0.6,
+            }}
+            animate={{
+              opacity: 0,
+              scale: point.isDrag ? 2.2 : 1.6,
+            }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.35, ease: "easeOut" }}
+            transition={{ duration: point.isDrag ? 0.45 : 0.3, ease: "easeOut" }}
             style={{
               left: point.x,
               top: point.y,
               transform: "translate(-50%, -50%)",
             }}
-            className="absolute h-5 w-5 rounded-full border border-[var(--ink)]/30 dark:border-white/40 bg-[var(--ink)]/5 dark:bg-white/10 blur-[1px]"
+            className={`absolute rounded-full blur-[2px] ${
+              point.isDrag
+                ? "h-6 w-6 bg-gradient-to-r from-cyan-400 via-fuchsia-500 to-amber-400 shadow-[0_0_12px_rgba(217,70,239,0.5)]"
+                : "h-4 w-4 bg-gradient-to-r from-violet-500/40 via-cyan-400/40 to-pink-500/40"
+            }`}
           />
         ))}
       </AnimatePresence>
 
-      {/* Smooth Trailing Halo Ring with Cult UI Glassmorphic Rim */}
+      {/* 2. Ambient Gradient Glow Aura that Breathes with Velocity */}
+      <motion.div
+        style={{
+          x: haloSpringX,
+          y: haloSpringY,
+          translateX: "-50%",
+          translateY: "-50%",
+        }}
+        className="absolute will-change-transform flex items-center justify-center pointer-events-none"
+      >
+        <motion.div
+          animate={{
+            scale: isMouseDown ? 1.6 : isHovered ? 1.8 : 1 + Math.min(0.6, velocityMagnitude * 0.15),
+            opacity: isVisible ? (isMouseDown ? 0.75 : isHovered ? 0.6 : 0.35) : 0,
+          }}
+          transition={{ duration: 0.2 }}
+          className="h-14 w-14 rounded-full bg-gradient-to-tr from-cyan-500/30 via-fuchsia-500/30 to-amber-500/30 blur-lg dark:from-cyan-400/40 dark:via-purple-500/40 dark:to-pink-500/40"
+        />
+      </motion.div>
+
+      {/* 3. Smooth Trailing Halo Ring with Shifting Prismatic Gradient Rim */}
       <motion.div
         style={{
           x: haloSpringX,
@@ -177,30 +226,52 @@ export default function MotionCursor() {
         }}
         className="absolute will-change-transform flex items-center justify-center pointer-events-none"
       >
-        <motion.div
-          animate={{
-            width: isHovered ? 44 : 26,
-            height: isHovered ? 44 : 26,
-            opacity: isVisible ? 1 : 0,
-            scale: isHovered ? 1.15 : isMouseDown ? 0.8 : 1,
-          }}
-          transition={{
-            type: "spring",
-            stiffness: 450,
-            damping: 30,
-            mass: 0.2,
-          }}
-          className={`rounded-full transition-colors duration-150 ${
-            isHovered
-              ? "border border-[var(--ink)]/40 dark:border-white/60 bg-[var(--ink)]/10 dark:bg-white/15 backdrop-blur-[2px] shadow-[0_0_12px_rgba(0,0,0,0.08)] dark:shadow-[0_0_16px_rgba(255,255,255,0.18)]"
-              : isMouseDown
-              ? "border-2 border-[var(--ink)]/60 dark:border-white/80 bg-[var(--ink)]/20 dark:bg-white/25 shadow-[0_0_8px_rgba(0,0,0,0.15)] dark:shadow-[0_0_10px_rgba(255,255,255,0.25)]"
-              : "border border-[var(--ink)]/25 dark:border-white/40 bg-[var(--ink)]/[0.03] dark:bg-white/[0.05] shadow-[0_1px_3px_rgba(0,0,0,0.05)] dark:shadow-[0_1px_6px_rgba(255,255,255,0.08)]"
-          }`}
-        />
+        {/* Animated Conic Gradient Border Track */}
+        <div className="relative flex items-center justify-center">
+          <motion.div
+            animate={{
+              rotate: [0, 360],
+            }}
+            transition={{
+              duration: 4,
+              repeat: Number.POSITIVE_INFINITY,
+              ease: "linear",
+            }}
+            style={{
+              width: isHovered ? 48 : 30,
+              height: isHovered ? 48 : 30,
+            }}
+            className="absolute rounded-full p-[1.5px] bg-gradient-to-r from-cyan-400 via-fuchsia-500 via-amber-400 to-blue-500 opacity-90 shadow-[0_0_10px_rgba(168,85,247,0.35)]"
+          >
+            <div className="h-full w-full rounded-full bg-[var(--canvas)]/70 dark:bg-black/60 backdrop-blur-[2px]" />
+          </motion.div>
+
+          {/* Inner Interactive Lens Fill */}
+          <motion.div
+            animate={{
+              width: isHovered ? 44 : 26,
+              height: isHovered ? 44 : 26,
+              opacity: isVisible ? 1 : 0,
+              scale: isHovered ? 1.1 : isMouseDown ? 0.8 : 1,
+            }}
+            transition={{
+              type: "spring",
+              stiffness: 450,
+              damping: 30,
+              mass: 0.2,
+            }}
+            className={`rounded-full transition-colors duration-150 ${
+              isHovered
+                ? "bg-gradient-to-tr from-cyan-500/10 via-purple-500/15 to-pink-500/10 backdrop-blur-[3px] border border-white/40 dark:border-white/50"
+                : isMouseDown
+                ? "bg-gradient-to-tr from-fuchsia-500/30 via-cyan-500/30 to-amber-500/30 border border-white/60"
+                : "bg-transparent border border-transparent"
+            }`}
+          />
+        </div>
       </motion.div>
 
-      {/* Ultra-responsive Center Focal Dot */}
+      {/* 4. Ultra-responsive Center Focal Dot with Vibrant Gradient Core */}
       <motion.div
         style={{
           x: dotSpringX,
@@ -212,7 +283,7 @@ export default function MotionCursor() {
       >
         <motion.div
           animate={{
-            scale: isMouseDown ? 0.6 : isHovered ? 1.5 : 1,
+            scale: isMouseDown ? 0.6 : isHovered ? 1.6 : 1,
             opacity: isVisible ? 1 : 0,
           }}
           transition={{
@@ -220,12 +291,12 @@ export default function MotionCursor() {
             stiffness: 600,
             damping: 35,
           }}
-          className={`rounded-full transition-colors duration-150 ${
+          className={`rounded-full shadow-[0_0_8px_rgba(236,72,153,0.6)] ${
             isHovered
-              ? "h-2 w-2 bg-[var(--ink)] dark:bg-white shadow-[0_0_6px_rgba(0,0,0,0.3)] dark:shadow-[0_0_8px_rgba(255,255,255,0.8)]"
+              ? "h-2.5 w-2.5 bg-gradient-to-tr from-cyan-400 via-fuchsia-400 to-amber-300 ring-2 ring-white/80 dark:ring-white/90"
               : isMouseDown
-              ? "h-1.5 w-1.5 bg-[var(--ink)] dark:bg-white"
-              : "h-1.5 w-1.5 bg-[var(--ink)]/80 dark:bg-white/90"
+              ? "h-2 w-2 bg-gradient-to-r from-amber-400 via-rose-500 to-cyan-400"
+              : "h-2 w-2 bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400 ring-1 ring-white/60 dark:ring-black/60"
           }`}
         />
       </motion.div>
