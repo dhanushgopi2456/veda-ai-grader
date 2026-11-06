@@ -642,8 +642,9 @@ function VedaApp() {
             className="fixed inset-0 bg-neutral-950/60 backdrop-blur-sm"
             onClick={() => setMobileNavOpen(false)}
           />
-          <div className="fixed inset-y-0 left-0 w-72 max-w-[80vw] bg-[var(--canvas)] border-r border-[var(--border)] shadow-steep-artifact flex flex-col z-10">
+          <div className="fixed inset-y-0 left-0 w-72 max-w-[85vw] bg-[var(--canvas)] border-r border-[var(--border)] shadow-2xl flex flex-col z-10 overflow-hidden">
             <Sidebar
+              isMobile={true}
               stage={stage}
               onNavigate={(s) => {
                 setStage(s);

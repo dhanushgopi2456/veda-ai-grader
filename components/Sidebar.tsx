@@ -15,6 +15,7 @@ import {
   Sun,
   Monitor,
   GraduationCap,
+  X,
 } from "lucide-react";
 import type { Stage } from "@/lib/types";
 import { modelsFor, type ThemeMode } from "@/lib/settings";
@@ -32,6 +33,7 @@ type Props = {
   onToggleCollapse: () => void;
   userEmail?: string;
   userName?: string;
+  isMobile?: boolean;
 };
 
 const NAV_ITEMS: {
@@ -59,6 +61,7 @@ export default function Sidebar({
   onToggleCollapse,
   userEmail = "evaluator@institution.edu",
   userName = "Dhanush Gopi",
+  isMobile = false,
 }: Props) {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
@@ -74,8 +77,12 @@ export default function Sidebar({
 
   return (
     <aside
-      className={`hidden md:flex flex-col border-r border-[var(--border)] bg-[var(--canvas)]/85 backdrop-blur-xl transition-all duration-200 relative select-none ${
-        isCollapsed ? "w-18" : "w-64"
+      className={`${
+        isMobile
+          ? "flex h-full w-full flex-col bg-[var(--canvas)] text-[var(--ink)] select-none overflow-y-auto"
+          : `hidden md:flex h-full flex-col border-r border-[var(--border)] bg-[var(--canvas)]/85 backdrop-blur-xl transition-all duration-200 relative select-none ${
+              isCollapsed ? "w-18" : "w-64"
+            }`
       }`}
     >
       {/* Brand Header */}
@@ -100,19 +107,30 @@ export default function Sidebar({
           )}
         </Link>
 
-        {/* Collapse toggle button */}
-        <button
-          onClick={onToggleCollapse}
-          className="hidden lg:flex h-7 w-7 items-center justify-center rounded-full border border-[var(--border)] text-[var(--slate)] hover:text-[var(--ink)] hover:bg-[var(--mist)] transition-colors cursor-pointer"
-          title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-          aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-        >
-          {isCollapsed ? (
-            <ChevronRight className="h-3.5 w-3.5" />
-          ) : (
-            <ChevronLeft className="h-3.5 w-3.5" />
-          )}
-        </button>
+        {/* Close button for mobile or Collapse toggle button for desktop */}
+        {isMobile ? (
+          <button
+            onClick={onToggleCollapse}
+            className="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--border)] text-[var(--slate)] hover:text-[var(--ink)] hover:bg-[var(--mist)] transition-colors cursor-pointer"
+            title="Close navigation"
+            aria-label="Close navigation"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        ) : (
+          <button
+            onClick={onToggleCollapse}
+            className="hidden lg:flex h-7 w-7 items-center justify-center rounded-full border border-[var(--border)] text-[var(--slate)] hover:text-[var(--ink)] hover:bg-[var(--mist)] transition-colors cursor-pointer"
+            title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+            aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+          >
+            {isCollapsed ? (
+              <ChevronRight className="h-3.5 w-3.5" />
+            ) : (
+              <ChevronLeft className="h-3.5 w-3.5" />
+            )}
+          </button>
+        )}
       </div>
 
       {/* Main Navigation List */}

@@ -14,6 +14,7 @@ import {
   Settings,
   Sparkles,
   ChevronRight,
+  X,
 } from "lucide-react";
 import type { Stage } from "@/lib/types";
 import type { ThemeMode } from "@/lib/settings";
@@ -130,36 +131,51 @@ export default function TopBar({
           {showNotifications && (
             <>
               <div
-                className="fixed inset-0 z-40"
+                className="fixed inset-0 z-40 bg-black/40 backdrop-blur-xs sm:bg-transparent"
                 onClick={() => setShowNotifications(false)}
               />
-              <div className="anim-steep-fade absolute right-0 top-full mt-2 w-80 rounded-[16px] border border-[var(--border)] bg-[var(--canvas)] p-4 shadow-steep-artifact z-50">
+              <div className="anim-steep-fade fixed left-4 right-4 top-20 z-50 max-w-sm mx-auto sm:absolute sm:inset-auto sm:right-0 sm:top-full sm:mt-2 sm:w-80 rounded-[20px] border border-[var(--border)] bg-[var(--canvas)]/95 backdrop-blur-xl p-4 shadow-steep-artifact text-left">
                 <div className="flex items-center justify-between pb-3 border-b border-[var(--border-subtle)]">
                   <span className="text-[12px] font-sans font-medium uppercase tracking-wider text-[var(--ash)]">
                     Notifications
                   </span>
-                  <span className="rounded-full bg-[var(--mist)] px-2 py-0.5 text-[11px] font-sans font-medium text-[var(--ink)]">
-                    2 Updates
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="rounded-full bg-[var(--mist)] px-2.5 py-0.5 text-[11px] font-sans font-medium text-[var(--ink)]">
+                      2 Updates
+                    </span>
+                    <button
+                      onClick={() => setShowNotifications(false)}
+                      className="sm:hidden flex h-6 w-6 items-center justify-center rounded-full text-[var(--slate)] hover:bg-[var(--mist)] hover:text-[var(--ink)] transition-colors cursor-pointer"
+                      aria-label="Close notifications"
+                    >
+                      <X className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
                 </div>
-                <div className="mt-3 space-y-2 text-left">
-                  <div className="rounded-[12px] p-2.5 hover:bg-[var(--mist)] transition-colors">
-                    <p className="text-[13px] font-sans font-medium text-[var(--ink)]">
-                      AI Engine Ready
+                <div className="mt-3 space-y-2.5 text-left">
+                  <div className="rounded-[14px] p-3 bg-[var(--mist)]/70 hover:bg-[var(--mist)] transition-colors">
+                    <div className="flex items-center justify-between">
+                      <p className="text-[13px] font-sans font-medium text-[var(--ink)]">
+                        AI Engine Ready
+                      </p>
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                    </div>
+                    <p className="text-[12px] font-sans text-[var(--slate)] leading-relaxed mt-0.5">
+                      Multimodal OCR &amp; reasoning models active.
                     </p>
-                    <p className="text-[12px] font-sans text-[var(--slate)] leading-relaxed">
-                      Multimodal OCR & reasoning models active.
-                    </p>
-                    <span className="text-[11px] text-[var(--ash)] mt-1 block">
+                    <span className="text-[11px] text-[var(--ash)] mt-1.5 block">
                       Just now
                     </span>
                   </div>
 
-                  <div className="rounded-[12px] p-2.5 hover:bg-[var(--mist)] transition-colors">
-                    <p className="text-[13px] font-sans font-medium text-[var(--ink)]">
-                      Sample Exam Pack Bundled
-                    </p>
-                    <p className="text-[12px] font-sans text-[var(--slate)] leading-relaxed">
+                  <div className="rounded-[14px] p-3 bg-[var(--mist)]/70 hover:bg-[var(--mist)] transition-colors">
+                    <div className="flex items-center justify-between">
+                      <p className="text-[13px] font-sans font-medium text-[var(--ink)]">
+                        Sample Exam Pack Bundled
+                      </p>
+                      <span className="h-1.5 w-1.5 rounded-full bg-orange-500" />
+                    </div>
+                    <p className="text-[12px] font-sans text-[var(--slate)] leading-relaxed mt-0.5">
                       Test evaluation workflow instantly with one click.
                     </p>
                   </div>
